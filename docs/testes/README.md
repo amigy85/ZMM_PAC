@@ -5,16 +5,16 @@ testes manuais em QAS, §14). Todos usam o layout oficial de 5 colunas separadas
 (`ANO;COD_CATEGORIA;DESC_CATEGORIA;COD_SUBCATEGORIA;DESC_SUBCATEGORIA`, sem coluna de
 status — D-02), terminador CRLF, uma linha física por registo (sem aspas — D-06/A5).
 
-Codificação: UTF-8 (sem BOM), **excepto** `valido.csv` e `ansi_1252.csv` que estão em
-Windows-1252 (cp1252) para exercitar o caminho ANSI (D-06/A1). `valido_303.csv` está em
-cp1252 por ter sido derivado do ficheiro real.
+Codificação: UTF-8 (sem BOM), **excepto** `ansi_1252.csv` e `valido_303.csv` que estão em
+Windows-1252 (cp1252) para exercitar o caminho ANSI (D-06/A1). O `valido.csv` (ficheiro
+real em bruto) **não é versionado** — ver Notas.
 
 ## Ficheiro válido (caso feliz)
 
 | Ficheiro | Conteúdo | Uso |
 |---|---|---|
-| `valido.csv` | Ficheiro real em bruto (cp1252, 6 famílias, com anomalias A6/A7/A8). | Fonte; não é fixture de teste directo. |
-| `valido_303.csv` | Subconjunto só PAC, limpo: 303 linhas (215 categorias, 303 subcategorias), 0 erros. cp1252. | M1/M2 QAS; base do caso feliz. |
+| `valido.csv` | Ficheiro real em bruto (cp1252, 6 famílias). **Local-only / gitignored** (dados reais, §8). | Fonte; não é fixture de teste directo. |
+| `valido_303.csv` | **Anonimizado** (dados fictícios): 303 linhas (215 categorias, 303 subcategorias), 0 erros, cp1252 com acentos. O real fica local em `valido_303.real.csv` (gitignored). | M1/M2 QAS; base do caso feliz. |
 | `modelo_pac.csv` | Modelo/template do layout oficial. | Referência de formato. |
 
 ## Fixtures de erro
@@ -41,5 +41,7 @@ Linha física: cabeçalho = 1, primeira linha de dados = 2.
   obsoletos — a inactivação de categorias é manutenção (mudança 3).
 - Os cenários da BD (REQ-06 `subcat_exists_in_other_cat`/`023`, REQ-09 existentes) não
   têm fixture CSV: testam-se com o duplo `ltd_repository` em memória, não por ficheiro.
-- `valido.csv` e `valido_303.csv` contêm dados do catálogo real; não fazer commit de
-  dados reais não anonimizados em produção (§8 do CLAUDE.md).
+- **Dados reais do catálogo (§8 do CLAUDE.md):** os ficheiros com dados reais —
+  `valido.csv` e `valido_303.real.csv` — estão em `.gitignore` e ficam **só locais**.
+  O `valido_303.csv` versionado é **anonimizado** (nomes/códigos fictícios), mantendo
+  estrutura, contagens (215/303) e casos de validação. Nunca versionar CSV de produção.

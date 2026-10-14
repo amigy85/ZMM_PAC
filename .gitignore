@@ -1,6 +1,10 @@
 # Claude Code — definições locais/pessoais (não versionar)
 .claude/settings.local.json
 
+# Dados reais do catálogo PAC — NUNCA versionar (CLAUDE.md §8). Manter só localmente.
+docs/testes/valido.csv
+docs/testes/*.real.csv
+
 # Ficheiros de SO
 Thumbs.db
 .DS_Store

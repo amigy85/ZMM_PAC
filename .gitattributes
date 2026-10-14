@@ -7,8 +7,9 @@
 *.xml  text eol=lf
 *.json text eol=lf
 
-# Fixtures de teste sensíveis a bytes — nunca normalizar (preservar encoding exacto).
-docs/testes/ansi_1252.csv binary
+# Fixtures de teste sensíveis a bytes — nunca normalizar.
+# O layout oficial é CRLF e alguns ficheiros são cp1252; preservar bytes exactos.
+docs/testes/*.csv binary
 
 # Linguist: contar ABAP como ABAP e ignorar a estatística de docs/openspec.
 *.abap linguist-language=ABAP
