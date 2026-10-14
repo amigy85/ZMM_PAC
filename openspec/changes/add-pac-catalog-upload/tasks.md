@@ -10,7 +10,7 @@ passar (o utilizador confirma a activação). Referência de commit:
 - [x] 0.2 Nível de SP do SAP_BASIS confirmado via MCP (CVERS: SAP_BASIS 740 SP0022) e registado no `CLAUDE.md` — 2026-10-14; `FILTER`/`REDUCE`/`FOR` permitidos (SP22 ≥ SP08)
 - [x] 0.3 Data elements standard da §5.2 confirmados via MCP (DD04L) — 2026-10-14: `MANDT`, `DATAB`, `DATBI`, `ERNAM`, `ERDAT`, `ERZET`, `AENAM`, `AEDAT`, `AEZET` existem todos; `AEZET` presente (TIMS 6), sem fallback para `UZEIT`
 - [ ] 0.4 `rec/client` em QAS/PRD confirmado com Basis (registo de alterações) [REQ-14 / segurança]
-- [ ] 0.5 Packages `ZMM_PAC`, `_DATA`, `_CORE`, `_UI` criados no DEV; repositório abapGit ligado; nº da ordem de transporte registado em `proposal.md`
+- [x] 0.5 Packages `ZMM_PAC`, `_DATA`, `_CORE`, `_UI` criados no DEV; repositório abapGit ligado (online, branch `change/add-pac-catalog-upload`, PREFIX); pull sem diffs fantasma; ordem `CBDK918074` registada em `proposal.md` — 2026-10-14
 - [x] 0.6 `.abapgit.xml`, `.gitattributes` e os `package.devc.xml` gerados; `abapgit_meta.py check` sem erros — 2026-10-14 (`check` exit 0; `.abapgit.xml` com `MASTER_LANGUAGE=P`, `/src/`, `PREFIX`); git inicializado no ramo `change/add-pac-catalog-upload`
 
 ## 1. Dicionário de dados
