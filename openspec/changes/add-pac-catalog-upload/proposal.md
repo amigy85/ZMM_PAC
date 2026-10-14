@@ -215,5 +215,6 @@ mudanças futuras (manutenção e `.xlsx`) e fora do âmbito da mudança 1.
 
 ## Ordem de transporte
 
-- **Nº da ordem de transporte**: _a registar no DEV antes do primeiro pull_
-  (tarefa 0.5). Commits seguem `feat(pac): … [refs: add-pac-catalog-upload <n.º>]`.
+- **Nº da ordem de transporte**: **`CBDK918074`** (Workbench, DEV/CBD — registada
+  2026-10-14). Packages `ZMM_PAC`, `ZMM_PAC_DATA`, `ZMM_PAC_CORE`, `ZMM_PAC_UI`
+  criados. Commits seguem `feat(pac): … [refs: add-pac-catalog-upload <n.º>]`.
