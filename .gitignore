@@ -1,0 +1,6 @@
+# Claude Code — definições locais/pessoais (não versionar)
+.claude/settings.local.json
+
+# Ficheiros de SO
+Thumbs.db
+.DS_Store

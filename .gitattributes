@@ -1,0 +1,16 @@
+# abapGit — manter LF e tratamento de texto consistente nos artefactos ABAP.
+# Sem isto, o checkout em Windows converte para CRLF e cada pull gera diffs fantasma.
+# Catch-all: tudo o que for texto fica LF no repositório e no working tree,
+# independentemente de core.autocrlf na máquina de quem faz checkout.
+* text=auto eol=lf
+*.abap text eol=lf
+*.xml  text eol=lf
+*.json text eol=lf
+
+# Fixtures de teste sensíveis a bytes — nunca normalizar (preservar encoding exacto).
+docs/testes/ansi_1252.csv binary
+
+# Linguist: contar ABAP como ABAP e ignorar a estatística de docs/openspec.
+*.abap linguist-language=ABAP
+docs/**     linguist-documentation
+openspec/** linguist-documentation

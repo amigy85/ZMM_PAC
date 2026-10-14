@@ -1,0 +1,4 @@
+ANO;COD_CATEGORIA;DESC_CATEGORIA;COD_SUBCATEGORIA;DESC_SUBCATEGORIA
+2026;STK-E001;Material de stock fora de âmbito;STK-E001.1;Item de armazém
+2026;PAC-G155;Equipamento válido;PAC-G155-3;Formato de subcategoria inválido
+2026;PAC-E010;Categoria válida;PAC-E010.1;Descrição longa de teste para exceder o limite de cem caracteres do domínio de descrição PAC Descriçã
