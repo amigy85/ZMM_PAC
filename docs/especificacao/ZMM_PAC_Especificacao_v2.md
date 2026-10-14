@@ -507,7 +507,7 @@ Data elements standard reutilizados: `MANDT`, `DATAB`, `DATBI`, `ERNAM`, `ERDAT`
 
 Ambas: transparentes, dependentes de mandante, classe de entrega **A** (dados de aplicação — não transportadas, carregadas por upload em cada mandante), classe de dados `APPL0` (dados-mestre), categoria de tamanho 0, sem buffering, **registo de alterações activo** (histórico antes/depois via SCU3, complementar aos campos `AE*`, que só guardam a última alteração).
 
-#### `ZMM_PAC_CAT` — Categoria PAC
+#### `ZMM_PAC_CATG` — Categoria PAC
 
 | Campo | Chave | Data element | Obs. |
 |---|---|---|---|
@@ -522,30 +522,30 @@ Ambas: transparentes, dependentes de mandante, classe de entrega **A** (dados de
 | `ERNAM` `ERDAT` `ERZET` | | standard | Criação — imutáveis |
 | `AENAM` `AEDAT` `AEZET` | | standard | Última alteração |
 
-#### `ZMM_PAC_SUBCAT` — Subcategoria PAC
+#### `ZMM_PAC_SUBCATG` — Subcategoria PAC
 
 | Campo | Chave | Data element | Obs. |
 |---|---|---|---|
 | `MANDT` | ✔ | `MANDT` | |
 | `PAC_YEAR` | ✔ | `ZDE_PAC_YEAR` | |
 | `PAC_SUBCAT` | ✔ | `ZDE_PAC_SUBCAT` | **Chave sem `PAC_CAT`** (ADR-02) |
-| `PAC_CAT` | | `ZDE_PAC_CAT` | Não nulo; foreign key → `ZMM_PAC_CAT` |
+| `PAC_CAT` | | `ZDE_PAC_CAT` | Não nulo; foreign key → `ZMM_PAC_CATG` |
 | `PAC_SUBCAT_DESC` | | `ZDE_PAC_SUBCAT_DESC` | |
 | `STATUS` … `AEZET` | | igual à categoria | |
 
-**Foreign key** em `ZMM_PAC_SUBCAT-PAC_CAT`, tabela de verificação `ZMM_PAC_CAT`, cardinalidade 1:CN, tipo "campos-chave":
+**Foreign key** em `ZMM_PAC_SUBCATG-PAC_CAT`, tabela de verificação `ZMM_PAC_CATG`, cardinalidade 1:CN, tipo "campos-chave":
 
 | Campo verificado | Campo da tabela de verificação |
 |---|---|
-| `ZMM_PAC_SUBCAT-MANDT` | `ZMM_PAC_CAT-MANDT` |
-| `ZMM_PAC_SUBCAT-PAC_YEAR` | `ZMM_PAC_CAT-PAC_YEAR` |
-| `ZMM_PAC_SUBCAT-PAC_CAT` | `ZMM_PAC_CAT-PAC_CAT` |
+| `ZMM_PAC_SUBCATG-MANDT` | `ZMM_PAC_CATG-MANDT` |
+| `ZMM_PAC_SUBCATG-PAC_YEAR` | `ZMM_PAC_CATG-PAC_YEAR` |
+| `ZMM_PAC_SUBCATG-PAC_CAT` | `ZMM_PAC_CATG-PAC_CAT` |
 
 A foreign key de ABAP não é aplicada pela base de dados em `INSERT`; a garantia é dada pelo validador (INV-3) e a FK serve documentação, ajuda F4 e manutenção. Criação da FK: §11.6.
 
 #### `ZMM_PAC_ITEM`
 
-Fora da mudança 1 (mudança 5). Notas para essa mudança: `VALUE` como `CURR` com referência a `WAERS`, `QTY` como `QUAN` com referência a `MEINS`, `PAC_ITEM` numerado por objecto de intervalo de números, e `PAC_SUBCAT` com FK para `ZMM_PAC_SUBCAT`.
+Fora da mudança 1 (mudança 5). Notas para essa mudança: `VALUE` como `CURR` com referência a `WAERS`, `QTY` como `QUAN` com referência a `MEINS`, `PAC_ITEM` numerado por objecto de intervalo de números, e `PAC_SUBCAT` com FK para `ZMM_PAC_SUBCATG`.
 
 ### 5.4 Layout do ficheiro (CSV)
 
@@ -660,8 +660,8 @@ INTERFACE zif_mm_pac_types PUBLIC.
       warnings        TYPE i,
     END OF ty_stats,
 
-    tt_cat    TYPE STANDARD TABLE OF zmm_pac_cat    WITH DEFAULT KEY,
-    tt_subcat TYPE STANDARD TABLE OF zmm_pac_subcat WITH DEFAULT KEY.
+    tt_cat    TYPE STANDARD TABLE OF zmm_pac_catg    WITH DEFAULT KEY,
+    tt_subcat TYPE STANDARD TABLE OF zmm_pac_subcatg WITH DEFAULT KEY.
 
 ENDINTERFACE.
 ```
@@ -732,7 +732,7 @@ ENDCLASS.
 ```abap
 METHOD zif_mm_pac_repository~read_subcategories.
   SELECT mandt, pac_year, pac_subcat, pac_cat, pac_subcat_desc, status
-    FROM zmm_pac_subcat
+    FROM zmm_pac_subcatg
     WHERE pac_year = @iv_year
     ORDER BY PRIMARY KEY
     INTO CORRESPONDING FIELDS OF TABLE @rt_subcat.
@@ -781,10 +781,10 @@ ENDMETHOD.
 METHOD zif_mm_pac_repository~insert_new.
   TRY.
       IF it_cat IS NOT INITIAL.
-        INSERT zmm_pac_cat FROM TABLE @it_cat.
+        INSERT zmm_pac_catg FROM TABLE @it_cat.
       ENDIF.
       IF it_subcat IS NOT INITIAL.
-        INSERT zmm_pac_subcat FROM TABLE @it_subcat.
+        INSERT zmm_pac_subcatg FROM TABLE @it_subcat.
       ENDIF.
     CATCH cx_sy_open_sql_db INTO DATA(lx_db).
       RAISE EXCEPTION TYPE zcx_mm_pac
@@ -912,8 +912,8 @@ ALV `CL_SALV_TABLE` em ecrã completo: colunas Linha, Tipo (ícone), Categoria, 
 | `ZMM_PAC` | `ZMM_PAC_MENU` | Report (ecrã 1000) | 1 |
 | `ZMM_PAC_UPLOAD` | `ZMM_PAC_UPLOAD` | Report (ecrã 1000) | 1 |
 | `ZMM_PAC_CONSULT` | `ZMM_PAC_CONSULT` | Report | 2 |
-| `ZMM_PAC_CAT_MAINT` | a decidir (D-04) | — | 3 |
-| `ZMM_PAC_SUBCAT_MAINT` | a decidir (D-04) | — | 3 |
+| `ZMM_PAC_CATG_MAINT` | a decidir (D-04) | — | 3 |
+| `ZMM_PAC_SUBCATG_MAINT` | a decidir (D-04) | — | 3 |
 | `ZMM_PAC_EXEC` | `ZMM_PAC_EXEC` | Report | 6 |
 
 `ZMM_PAC_MENU` apresenta apenas as opções já entregues e chama-as com `CALL TRANSACTION ... WITH AUTHORITY-CHECK` (verificação de `S_TCODE`).
@@ -1049,8 +1049,8 @@ Um ramo por mudança (`change/add-pac-catalog-upload`); commits `feat(pac): … 
 | `/src/data/` | `zde_pac_subcat_desc.dtel.xml` | `ZDE_PAC_SUBCAT_DESC` | DTEL | G |  |
 | `/src/data/` | `zde_pac_status.dtel.xml` | `ZDE_PAC_STATUS` | DTEL | G |  |
 | `/src/data/` | `zde_pac_status_reason.dtel.xml` | `ZDE_PAC_STATUS_REASON` | DTEL | G |  |
-| `/src/data/` | `zmm_pac_cat.tabl.xml` | `ZMM_PAC_CAT` | TABL | G |  |
-| `/src/data/` | `zmm_pac_subcat.tabl.xml` | `ZMM_PAC_SUBCAT` | TABL | G → S | FK adicionada no SE11 e reserializada |
+| `/src/data/` | `zmm_pac_catg.tabl.xml` | `ZMM_PAC_CATG` | TABL | G |  |
+| `/src/data/` | `zmm_pac_subcatg.tabl.xml` | `ZMM_PAC_SUBCATG` | TABL | G → S | FK adicionada no SE11 e reserializada |
 | `/src/data/` | `zmm_pac.msag.xml` | `ZMM_PAC` | MSAG | G | Todas as mensagens da §8.1 |
 | `/src/core/` | `package.devc.xml` | `ZMM_PAC_CORE` | DEVC | G | Lógica de negócio |
 | `/src/core/` | `zif_mm_pac_types.intf.xml · .intf.abap` | `ZIF_MM_PAC_TYPES` | INTF | G |  |
@@ -1219,7 +1219,7 @@ Legenda da coluna Origem: **G** = gerado por Claude Code e importado por pull; *
 </abapGit>
 ```
 
-`src/data/zmm_pac_cat.tabl.xml`
+`src/data/zmm_pac_catg.tabl.xml`
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -1227,7 +1227,7 @@ Legenda da coluna Origem: **G** = gerado por Claude Code e importado por pull; *
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DD02V>
-    <TABNAME>ZMM_PAC_CAT</TABNAME>
+    <TABNAME>ZMM_PAC_CATG</TABNAME>
     <DDLANGUAGE>P</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
@@ -1237,7 +1237,7 @@ Legenda da coluna Origem: **G** = gerado por Claude Code e importado por pull; *
     <EXCLASS>1</EXCLASS>
    </DD02V>
    <DD09L>
-    <TABNAME>ZMM_PAC_CAT</TABNAME>
+    <TABNAME>ZMM_PAC_CATG</TABNAME>
     <AS4LOCAL>A</AS4LOCAL>
     <TABKAT>0</TABKAT>
     <TABART>APPL0</TABART>
@@ -1341,7 +1341,7 @@ Legenda da coluna Origem: **G** = gerado por Claude Code e importado por pull; *
 </abapGit>
 ```
 
-`src/data/zmm_pac_subcat.tabl.xml`
+`src/data/zmm_pac_subcatg.tabl.xml`
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -1349,7 +1349,7 @@ Legenda da coluna Origem: **G** = gerado por Claude Code e importado por pull; *
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DD02V>
-    <TABNAME>ZMM_PAC_SUBCAT</TABNAME>
+    <TABNAME>ZMM_PAC_SUBCATG</TABNAME>
     <DDLANGUAGE>P</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
@@ -1359,7 +1359,7 @@ Legenda da coluna Origem: **G** = gerado por Claude Code e importado por pull; *
     <EXCLASS>1</EXCLASS>
    </DD02V>
    <DD09L>
-    <TABNAME>ZMM_PAC_SUBCAT</TABNAME>
+    <TABNAME>ZMM_PAC_SUBCATG</TABNAME>
     <AS4LOCAL>A</AS4LOCAL>
     <TABKAT>0</TABKAT>
     <TABART>APPL0</TABART>
@@ -1582,7 +1582,7 @@ Estes tipos não se geram à mão: dependem de estrutura interna ou de nós cuja
 | Objecto | Tipo abapGit | Onde criar | Especificação |
 |---|---|---|---|
 | `ZCX_MM_PAC` | CLAS (excepção) | SE24 | Superclasse `CX_STATIC_CHECK`, interface `IF_T100_MESSAGE`, textos `NO_AUTHORIZATION` (050), `YEAR_LOCKED` (051), `DB_INSERT_FAILED` (063). Depois de serializada, o `.clas.abap` passa a ser editado no Git. |
-| FK `ZMM_PAC_SUBCAT-PAC_CAT` | TABL (reserializada) | SE11 | §5.3. Após criar, o `.tabl.xml` ganha os nós da FK — commit. |
+| FK `ZMM_PAC_SUBCATG-PAC_CAT` | TABL (reserializada) | SE11 | §5.3. Após criar, o `.tabl.xml` ganha os nós da FK — commit. |
 | `ZMM_PAC` | SUSO | SU21 | Classe `MM_E` (D-09), campo `ACTVT`, actividades 01, 02, 03 |
 | `ZMM_PAC_UPLOAD`, `ZMM_PAC` | TRAN | SE93 | Transacção de report → programa, ecrã 1000; GUI: SAP GUI Windows/Java/HTML |
 | Textos de selecção | PROG (reserializado) | SE38 | §11.5 |
@@ -1627,7 +1627,7 @@ Cada tarefa é marcada **depois** de o objecto activar e o teste passar. Referê
 
 ### 1. Dicionário de dados
 - [ ] 1.1 Domínios e data elements; pull e activação
-- [ ] 1.2 Tabelas `ZMM_PAC_CAT` e `ZMM_PAC_SUBCAT`; pull e activação
+- [ ] 1.2 Tabelas `ZMM_PAC_CATG` e `ZMM_PAC_SUBCATG`; pull e activação
 - [ ] 1.3 FK criada em SE11 e `.tabl.xml` reserializado
 - [ ] 1.4 Classe de mensagens `ZMM_PAC` completa
 

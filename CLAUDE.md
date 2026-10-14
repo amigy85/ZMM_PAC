@@ -12,8 +12,8 @@ Solução SAP ECC para carregar e gerir o catálogo do Plano Anual de Compras (c
 
 - Especificação completa: `docs/especificacao/ZMM_PAC_Especificacao_v2.md` — fonte de detalhe; os artefactos OpenSpec já existem e são a referência operacional.
 - Mudança activa: `openspec/changes/add-pac-catalog-upload/` (mudança 1 de 6, §1.3 da spec) — `proposal.md`, `design.md`, `tasks.md` e `specs/plano-anual-compras/spec.md` criados; `openspec validate --strict` verde.
-- Estado actual: **proposta válida — aguarda revisão humana**. Não há código ABAP aprovado para escrever. Tarefas de preparação 0.1/0.2/0.3 concluídas (3/26).
-- **Em disco neste momento**: `CLAUDE.md`, `abapgit_meta.py`, `docs/` (spec v2 e `testes/`; os ADRs estão inline no `design.md`, ainda sem `docs/adr/`), `openspec/` (inicializado, com `project.md` e a mudança activa) e `src/` (apenas os `package.devc.xml` da raiz e de `_DATA`/`_CORE`/`_UI`, ainda **sem objectos**). **Git ainda não inicializado** (tarefa 0.5).
+- Estado actual: **proposta válida — aguarda revisão humana para a secção 1 (código)**. Não há código ABAP aprovado para escrever. Preparação 0.1/0.2/0.3/0.5/0.6 concluídas (**5/26**); falta a 0.4 (Basis). Tabelas renomeadas para `ZMM_PAC_CATG`/`ZMM_PAC_SUBCATG` (2026-10-14).
+- **Em disco neste momento**: `CLAUDE.md`, `abapgit_meta.py`, `docs/` (spec v2, `testes/`, `setup/`; os ADRs estão inline no `design.md`, ainda sem `docs/adr/`), `openspec/` (inicializado, com `project.md` e a mudança activa) e `src/` (apenas os `package.devc.xml` da raiz e de `_DATA`/`_CORE`/`_UI`, ainda **sem objectos**). **Git inicializado** no ramo `change/add-pac-catalog-upload`, remoto `github.com/amigy85/ZMM_PAC` (**público**).
 
 ### Ordem de leitura no início de cada sessão
 
@@ -177,7 +177,7 @@ python3 abapgit_meta.py dtel --name ZDE_... --description "<texto>" --domain ZDO
 | Objecto | Onde | Nota |
 |---|---|---|
 | `ZCX_MM_PAC` | SE24 | `CX_STATIC_CHECK` + `IF_T100_MESSAGE`; textos `NO_AUTHORIZATION` (050), `YEAR_LOCKED` (051), `DB_INSERT_FAILED` (063). Tem de existir **antes** do pull das classes `core`. Depois de serializada, o `.clas.abap` é editado no Git. |
-| FK `ZMM_PAC_SUBCAT-PAC_CAT` | SE11 | Nunca escrever nós `DD05M`/`DD08V` à mão |
+| FK `ZMM_PAC_SUBCATG-PAC_CAT` | SE11 | Nunca escrever nós `DD05M`/`DD08V` à mão |
 | Objecto de autorização `ZMM_PAC` (SUSO) | SU21 | Classe a confirmar (D-09) |
 | Transacções `ZMM_PAC`, `ZMM_PAC_UPLOAD` (TRAN) | SE93 | Report → ecrã 1000 |
 | Textos de selecção e símbolos de texto | SE38 | Nunca reconstruir `TPOOL` à mão |

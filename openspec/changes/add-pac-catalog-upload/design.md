@@ -49,17 +49,17 @@ Standard reutilizados: `MANDT`, `DATAB`, `DATBI`, `ERNAM`, `ERDAT`, `ERZET`,
 2026-10-14): todos existem; `AEZET` está presente (TIMS 6), pelo que **não** é
 necessário o fallback para `UZEIT`.
 
-**Tabelas** (§5.3): `ZMM_PAC_CAT` e `ZMM_PAC_SUBCAT`, transparentes, dependentes de
+**Tabelas** (§5.3): `ZMM_PAC_CATG` e `ZMM_PAC_SUBCATG`, transparentes, dependentes de
 mandante, classe de entrega **A** (dados de aplicação, carregados por upload em cada
 mandante), classe de dados `APPL0`, categoria de tamanho 0, sem buffering, **registo
 de alterações activo** (`PROTOKOLL = X`, histórico via SCU3). Chaves:
 
-- `ZMM_PAC_CAT`: chave `MANDT + PAC_YEAR + PAC_CAT`; campos `PAC_CAT_DESC`, **`STATUS`**
+- `ZMM_PAC_CATG`: chave `MANDT + PAC_YEAR + PAC_CAT`; campos `PAC_CAT_DESC`, **`STATUS`**
   (`ZDE_PAC_STATUS`, `A`/`I`), validade e auditoria. O status vive **na categoria**
   (D-02); no upload nasce sempre `A` (a coluna de status não existe no ficheiro).
-- `ZMM_PAC_SUBCAT`: chave `MANDT + PAC_YEAR + PAC_SUBCAT` (sem `PAC_CAT` na chave — ADR-02);
+- `ZMM_PAC_SUBCATG`: chave `MANDT + PAC_YEAR + PAC_SUBCAT` (sem `PAC_CAT` na chave — ADR-02);
   campos `PAC_SUBCAT_DESC`, `PAC_CAT` (não-chave, não nulo, com foreign key para
-  `ZMM_PAC_CAT`, cardinalidade 1:CN, tipo campos-chave), validade e auditoria.
+  `ZMM_PAC_CATG`, cardinalidade 1:CN, tipo campos-chave), validade e auditoria.
   A subcategoria **não tem status** (D-02).
 
 A FK de ABAP não é aplicada pela BD em `INSERT`; a garantia vem do validador (INV-3);
@@ -177,7 +177,7 @@ suportado; `python abapgit_meta.py check --root .` sem erros antes de cada commi
 Inventário completo e moldes XML na §11.2–11.5 da spec v2.
 
 **Objectos criados no SAP e serializados (não gerar à mão):** `ZCX_MM_PAC` (SE24,
-antes do pull das classes core), FK de `ZMM_PAC_SUBCAT-PAC_CAT` (SE11), `ZMM_PAC`
+antes do pull das classes core), FK de `ZMM_PAC_SUBCATG-PAC_CAT` (SE11), `ZMM_PAC`
 SUSO (SU21), transacções (SE93), textos de selecção (SE38) e, condicionalmente,
 objecto de bloqueio `EZ_MM_PAC` (SE11) se a verificação de `ENQUEUE_E_TABLE` em SM12
 falhar.

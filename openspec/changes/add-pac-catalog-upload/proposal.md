@@ -30,8 +30,8 @@ críticos da v1 (`ZMM_PAC_ABAP_Desenvolvimento.md`):
 ## What Changes
 
 - **Modelo de dados**: domínios `ZDO_PAC_*`, data elements `ZDE_PAC_*` e tabelas
-  `ZMM_PAC_CAT` / `ZMM_PAC_SUBCAT` (dependentes de mandante, classe de entrega A,
-  registo de alterações activo), com foreign key de `ZMM_PAC_SUBCAT-PAC_CAT`.
+  `ZMM_PAC_CATG` / `ZMM_PAC_SUBCATG` (dependentes de mandante, classe de entrega A,
+  registo de alterações activo), com foreign key de `ZMM_PAC_SUBCATG-PAC_CAT`.
 - **Upload com dois modos**: Simulação (por omissão, sem qualquer efeito na BD) e
   Gravação (atómica, após confirmação explícita). Ficheiro **CSV UTF-8** com `;`,
   layout oficial de 5 colunas, máximo de 10 000 linhas de dados.
@@ -137,8 +137,8 @@ principal. Irreversível após o primeiro pull. Consequência: `LANGU`/`DDLANGUA
 CBD (SMLT) e é língua de logon antes do primeiro pull (tarefa 0.5).
 
 **D-02 — `STATUS` aplica-se só à categoria.** A coluna `STATUS` passa a pertencer à
-**categoria** (tabela `ZMM_PAC_CAT`), com valores `A` (Activa) / `I` (Inactiva). A
-**subcategoria deixa de ter status** (`ZMM_PAC_SUBCAT` sem campo de status). O **Item
+**categoria** (tabela `ZMM_PAC_CATG`), com valores `A` (Activa) / `I` (Inactiva). A
+**subcategoria deixa de ter status** (`ZMM_PAC_SUBCATG` sem campo de status). O **Item
 PAC** (mudança 5, `ZMM_PAC_ITEM`) terá uma coluna própria `STATUS_PACITEM` com o
 ciclo de vida `D/A/B/C/F`. Isto substitui a premissa anterior da spec (status na
 subcategoria com `D/A/B/C/F`) e obriga a actualizar REQ-08, REQ-09, o domínio de

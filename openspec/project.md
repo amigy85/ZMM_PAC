@@ -45,6 +45,6 @@ de execução, Power BI. Estes pertencem às mudanças 2–6.
 
 ## Objectos criados no SAP (não serializar à mão)
 
-`ZCX_MM_PAC`, FK de `ZMM_PAC_SUBCAT-PAC_CAT`, objecto de autorização `ZMM_PAC` (SUSO),
+`ZCX_MM_PAC`, FK de `ZMM_PAC_SUBCATG-PAC_CAT`, objecto de autorização `ZMM_PAC` (SUSO),
 transacções, textos de selecção/símbolos de texto, objecto de bloqueio `EZ_MM_PAC`
 (condicional). São criados no SAP pelo utilizador e depois serializados para o Git.
