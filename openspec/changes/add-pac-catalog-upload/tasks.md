@@ -15,9 +15,9 @@ passar (o utilizador confirma a activação). Referência de commit:
 
 ## 1. Dicionário de dados
 
-- [ ] 1.1 Domínios (`ZDO_PAC_*`) e data elements (`ZDE_PAC_*`); pull e activação [modelo de dados]
-- [ ] 1.2 Tabelas `ZMM_PAC_CATG` e `ZMM_PAC_SUBCATG`; pull e activação [ADR-02]
-- [ ] 1.3 Foreign key de `ZMM_PAC_SUBCATG-PAC_CAT` criada em SE11 e `.tabl.xml` reserializado [REQ-06]
+- [ ] 1.1 Domínios e data elements `ZMM_PAC_*` — objectos existentes corrigidos no local (SE11) e movidos para `ZMM_PAC_DATA`; **falta serializar** para `/src/data/` [modelo de dados]
+- [ ] 1.2 Tabelas `ZMM_PAC_CATG` e `ZMM_PAC_SUBCATG` corrigidas no local (chave MANDT+PAC_YEAR+PAC_SUBCAT, validade BEGDA/ENDDA, auditoria com ERZET, descrições CHAR 72); **falta serializar** [ADR-02]
+- [ ] 1.3 Foreign key `ZMM_PAC_SUBCATG-PAC_CAT` → `ZMM_PAC_CATG` criada e verificada via MCP (2026-10-15); **falta** o `.tabl.xml` serializado [REQ-06]
 - [ ] 1.4 Classe de mensagens `ZMM_PAC` completa com todas as mensagens da §8.1 [todos os REQ]
 
 ## 2. Núcleo

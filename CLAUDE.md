@@ -94,7 +94,7 @@ Estas regras vêm de defeitos encontrados na v1. Violar qualquer uma é bloquead
 8. Um único carimbo `ERDAT/ERZET` por execução; `AE*` vazios na criação; validade `01.01.AAAA–31.12.AAAA` (REQ-14).
 9. Categorias inseridas antes das subcategorias. `CX_SY_OPEN_SQL_DB` convertida em `ZCX_MM_PAC` (`063`). Sem `ACCEPTING DUPLICATE KEYS`.
 10. Mensagens só pela classe `ZMM_PAC` (`MESSAGE ID … INTO` para o log). Nenhum texto literal para o utilizador; textos ≤ 73 caracteres.
-11. Códigos normalizados (trim + maiúsculas); descrições > 100 caracteres são erro, **nunca truncar**.
+11. Códigos normalizados (trim + maiúsculas); descrições > 72 caracteres são erro, **nunca truncar** (campo `ZMM_PAC_DESC` CHAR 72).
 
 ## 5. Arquitectura (resumo — detalhe em `design.md`)
 
@@ -117,7 +117,7 @@ Todos ──► ZIF_MM_PAC_TYPES, ZCX_MM_PAC, MSAG ZMM_PAC
 
 - Clean ABAP; métodos ≤ 50 linhas; sem variáveis globais fora do programa de UI.
 - Prefixos: `iv_/it_/io_` importação, `rv_/rt_/ro_` retorno, `lv_/lt_/ls_/lo_` locais, `mv_/mt_/mo_` atributos.
-- DDIC: domínios `ZDO_PAC_*`, data elements `ZDE_PAC_*`, tabelas `ZMM_PAC_*`.
+- DDIC: o modelo PAC **adoptado** usa domínios e data elements `ZMM_PAC_*` (objectos existentes corrigidos no local em `ZMM_PAC_DATA`, não greenfield) e tabelas `ZMM_PAC_CATG`/`ZMM_PAC_SUBCATG`/`ZMM_PAC_ITEM`.
 - Antes de usar qualquer data element, classe ou módulo de função standard, **confirmar via MCP que existe no CBD** (ex.: `AEZET`; se ausente, usar `UZEIT`).
 
 ## 6. abapGit
@@ -228,7 +228,7 @@ Quando uma tarefa depende de um destes, parar e dar ao utilizador as instruçõe
 | D-03 | Matrizes de transição: categoria `A`/`I`; Item PAC `D/A/B/C/F` (mudança 5) | **decidida** | 2026-10-12 |
 | D-04 | Manutenção: SM30 ou programa próprio | pendente (mudança 3) | |
 | D-05 | Upload só cria (ADR-01); correcções de descrição/status pela manutenção (mudança 3) | **decidida: aceite** | 2026-10-14 |
-| D-06 | Regex dos códigos validada com o ficheiro real | **decidida: só PAC; regex `^PAC-[A-Z][0-9]{3}$` / subcat `…\.[1-9][0-9]{0,2}$` validada (0 falhas); domínios CHAR 10/12 mantêm-se; parser suporta cp1252; aspas proibidas** — ver `docs/testes/D06_achados.md` | 2026-10-13 |
+| D-06 | Regex dos códigos validada com o ficheiro real | **decidida: só PAC; regex `^PAC-[A-Z][0-9]{3}$` / subcat `…\.[1-9][0-9]{0,2}$` validada (0 falhas); domínios cat CHAR 8 / subcat CHAR 12 (reais); parser suporta cp1252; aspas proibidas** — ver `docs/testes/D06_achados.md` | 2026-10-13 |
 | D-07 | Intervalo de anos: corrente a corrente + 1 | **decidida** | 2026-10-12 |
 | D-08 | Suporte `.xlsx` (`CL_FDT_XL_SPREADSHEET` no CBD?) | pendente | |
 | D-09 | Classe do objecto de autorização e segregação de funções | **decidida: classe `MM_E`; perfis Consulta `03`, Gestor `01/02/03`; segregação carregar-vs-fechar fica em aberto** | 2026-10-14 |

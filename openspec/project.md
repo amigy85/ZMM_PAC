@@ -34,7 +34,7 @@ Nunca gravar com erros nem parcialmente; o upload **só cria** (`INSERT`, nunca
 `MODIFY`/`UPDATE`); `COMMIT WORK` só no repositório, sem `AND WAIT`; zona sem diálogos
 entre o primeiro `INSERT` e o `COMMIT`/`ROLLBACK`; bloqueio por ano antes de ler a BD
 em modo Gravação; autorização antes de ler o ficheiro; mensagens só pela classe
-`ZMM_PAC`; códigos normalizados (trim + maiúsculas), descrições > 100 caracteres são
+`ZMM_PAC`; códigos normalizados (trim + maiúsculas), descrições > 72 caracteres são
 erro (nunca truncar). Detalhe no `CLAUDE.md` §4 e no `design.md`.
 
 ## Fora de âmbito por princípio (mudança 1)

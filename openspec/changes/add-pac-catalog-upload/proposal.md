@@ -29,7 +29,7 @@ críticos da v1 (`ZMM_PAC_ABAP_Desenvolvimento.md`):
 
 ## What Changes
 
-- **Modelo de dados**: domínios `ZDO_PAC_*`, data elements `ZDE_PAC_*` e tabelas
+- **Modelo de dados**: domínios e data elements `ZMM_PAC_*` (objectos existentes corrigidos no local) e tabelas
   `ZMM_PAC_CATG` / `ZMM_PAC_SUBCATG` (dependentes de mandante, classe de entrega A,
   registo de alterações activo), com foreign key de `ZMM_PAC_SUBCATG-PAC_CAT`.
 - **Upload com dois modos**: Simulação (por omissão, sem qualquer efeito na BD) e
@@ -183,8 +183,8 @@ três decisões:
 - **Regex (A3) — validada, 0 falhas:** categoria `^PAC-[A-Z][0-9]{3}$`; subcategoria
   `^PAC-[A-Z][0-9]{3}\.[1-9][0-9]{0,2}$` (0/215 categorias e 0/303 subcategorias do
   ficheiro real falham; REQ-06 pertença 0 falhas).
-- **Domínios (A4):** `ZDO_PAC_CAT` CHAR 10 e `ZDO_PAC_SUBCAT` CHAR 12 **mantêm-se**
-  (PAC: cat máx 8, subcat máx 11).
+- **Domínios (A4):** código de categoria CHAR **8** e de subcategoria CHAR **12**
+  (PAC: cat máx 8, subcat máx 11). Objectos reais `ZMM_PAC_*` em `ZMM_PAC_DATA`; descrições CHAR 72 (ajustado 2026-10-15).
 - **Codificação (A1):** o parser **suporta cp1252** na leitura (Excel exporta ANSI) —
   revê a ADR-03.
 - **Aspas (A5):** mantém-se "linha física = registo"; aspas/registos multi-linha são

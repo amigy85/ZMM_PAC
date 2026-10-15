@@ -86,7 +86,7 @@ todos os erros de uma linha e não apenas o primeiro.
 ### Requirement: REQ-05 — Formato e comprimento
 O sistema DEVE (MUST) normalizar os códigos (remover espaços nas extremidades,
 converter para maiúsculas) e rejeitar códigos fora do formato oficial e descrições
-com mais de 100 caracteres, sem truncar. O formato oficial (D-06, validado contra o
+com mais de 72 caracteres, sem truncar. O formato oficial (D-06, validado contra o
 ficheiro real — âmbito só família PAC) é: categoria `^PAC-[A-Z][0-9]{3}$`;
 subcategoria `^PAC-[A-Z][0-9]{3}\.[1-9][0-9]{0,2}$`. Códigos de outras famílias
 (STK, CTR, FOR, GRA, PLA) estão fora de âmbito da mudança 1 e são erro de formato.
@@ -107,7 +107,7 @@ subcategoria `^PAC-[A-Z][0-9]{3}\.[1-9][0-9]{0,2}$`. Códigos de outras família
 - **THEN** é registado erro `ZMM_PAC/016` (formato de categoria inválido) e a gravação fica impedida
 
 #### Scenario: descrição longa
-- **GIVEN** uma descrição de subcategoria com 101 caracteres
+- **GIVEN** uma descrição de subcategoria com 73 caracteres
 - **WHEN** o upload é executado
 - **THEN** é registado erro `ZMM_PAC/022` e a descrição não é truncada
 

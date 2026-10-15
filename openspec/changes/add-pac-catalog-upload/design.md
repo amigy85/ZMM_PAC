@@ -35,19 +35,22 @@ Restrições que moldam a abordagem:
 
 ### Modelo de dados
 
-**Domínios** (§5.1): `ZDO_PAC_CAT` (CHAR 10), `ZDO_PAC_SUBCAT` (CHAR 12),
-`ZDO_PAC_DESC` (CHAR 100, **LOWERCASE**), `ZDO_PAC_STATUS` (CHAR 1, valores fixos
-**`A` = Activa / `I` = Inactiva**, D-02/D-03). O ano usa o domínio standard `GJAHR`
-(NUMC 4). O ciclo de vida alargado `D/A/B/C/F` pertence ao **Item PAC** (mudança 5);
-nessa altura nasce um domínio próprio para `STATUS_PACITEM` — não é usado aqui.
+> **Nota (2026-10-15):** os objectos DDIC já existiam no DEV (criados por CAI-S2) e
+> foram **corrigidos no local** (SE11) e movidos para `ZMM_PAC_DATA` — não foi
+> greenfield. O naming real é `ZMM_PAC_*` (não `ZDO_PAC_*`/`ZDE_PAC_*`, que era o
+> plano inicial). Estrutura confirmada via `abap-crud` (DD03L/DD04L/DD08L).
 
-**Data elements** (§5.2): `ZDE_PAC_YEAR`, `ZDE_PAC_CAT`, `ZDE_PAC_CAT_DESC`,
-`ZDE_PAC_SUBCAT`, `ZDE_PAC_SUBCAT_DESC`, `ZDE_PAC_STATUS` (status da **categoria**),
-`ZDE_PAC_STATUS_REASON` (motivo de mudança de status — usado na manutenção, mudança 3).
-Standard reutilizados: `MANDT`, `DATAB`, `DATBI`, `ERNAM`, `ERDAT`, `ERZET`,
-`AENAM`, `AEDAT`, `AEZET` — existência confirmada via MCP no CBD (tarefa 0.3,
-2026-10-14): todos existem; `AEZET` está presente (TIMS 6), pelo que **não** é
-necessário o fallback para `UZEIT`.
+**Domínios** (reais, package `ZMM_PAC_DATA`): `ZMM_PAC_CAT` (CHAR **8** — chega para
+PAC, cat máx 8), `ZMM_PAC_STATUS` (CHAR 1, valores fixos **`A` = Activa / `I` = Inactiva**,
+D-02/D-03), `ZMM_PAC_DESC` (CHAR **72**, para as descrições). O código de subcategoria
+usa domínio CHAR **12**; o ano usa `ZPAC_D_YEAR` (NUMC 4). O ciclo de vida `D/A/B/C/F`
+pertence ao **Item PAC** (mudança 5, `ZMM_PACITEM_STATUS`) — não é usado aqui.
+
+**Data elements** (reais): `ZMM_PAC_YEAR`, `ZMM_PAC_CAT`, `ZMM_PAC_SUBCAT`,
+`ZMM_PAC_CAT_DESC`, `ZMM_PAC_SUBCAT_DESC`, `ZMM_PAC_STATUS` (status da **categoria**).
+Standard reutilizados: `MANDT`, `ERNAM`, `ERDAT`, `ERZET`, `AENAM`, `AEDAT` e
+`BEGDA`/`ENDDA` (validade) — confirmados via MCP (tarefa 0.3). A auditoria regista a
+hora na criação (`ERZET`); `AEZET` só será necessário na manutenção (mudança 3).
 
 **Tabelas** (§5.3): `ZMM_PAC_CATG` e `ZMM_PAC_SUBCATG`, transparentes, dependentes de
 mandante, classe de entrega **A** (dados de aplicação, carregados por upload em cada
@@ -55,12 +58,12 @@ mandante), classe de dados `APPL0`, categoria de tamanho 0, sem buffering, **reg
 de alterações activo** (`PROTOKOLL = X`, histórico via SCU3). Chaves:
 
 - `ZMM_PAC_CATG`: chave `MANDT + PAC_YEAR + PAC_CAT`; campos `PAC_CAT_DESC`, **`STATUS`**
-  (`ZDE_PAC_STATUS`, `A`/`I`), validade e auditoria. O status vive **na categoria**
+  (`ZMM_PAC_STATUS`, `A`/`I`), validade e auditoria. O status vive **na categoria**
   (D-02); no upload nasce sempre `A` (a coluna de status não existe no ficheiro).
 - `ZMM_PAC_SUBCATG`: chave `MANDT + PAC_YEAR + PAC_SUBCAT` (sem `PAC_CAT` na chave — ADR-02);
   campos `PAC_SUBCAT_DESC`, `PAC_CAT` (não-chave, não nulo, com foreign key para
-  `ZMM_PAC_CATG`, cardinalidade 1:CN, tipo campos-chave), validade e auditoria.
-  A subcategoria **não tem status** (D-02).
+  `ZMM_PAC_CATG`, cardinalidade 1:CN, tipo campos não-chave — FK criada e verificada
+  via MCP em 2026-10-15), validade e auditoria. A subcategoria **não tem status** (D-02).
 
 A FK de ABAP não é aplicada pela BD em `INSERT`; a garantia vem do validador (INV-3);
 a FK serve documentação, ajuda F4 e manutenção.
