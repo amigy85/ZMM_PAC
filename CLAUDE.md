@@ -94,7 +94,7 @@ Estas regras vêm de defeitos encontrados na v1. Violar qualquer uma é bloquead
 8. Um único carimbo `ERDAT/ERZET` por execução; `AE*` vazios na criação; validade `01.01.AAAA–31.12.AAAA` (REQ-14).
 9. Categorias inseridas antes das subcategorias. `CX_SY_OPEN_SQL_DB` convertida em `ZCX_MM_PAC` (`063`). Sem `ACCEPTING DUPLICATE KEYS`.
 10. Mensagens só pela classe `ZMM_PAC` (`MESSAGE ID … INTO` para o log). Nenhum texto literal para o utilizador; textos ≤ 73 caracteres.
-11. Códigos normalizados (trim + maiúsculas); descrições > 72 caracteres são erro, **nunca truncar** (campo `ZMM_PAC_DESC` CHAR 72).
+11. Códigos normalizados (trim + maiúsculas); descrições > 72 caracteres são erro, **nunca truncar** (domínios `ZMM_PAC_CAT_DESC`/`ZMM_PAC_SUBCAT_DESC` CHAR 72).
 
 ## 5. Arquitectura (resumo — detalhe em `design.md`)
 

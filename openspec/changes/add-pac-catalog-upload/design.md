@@ -42,8 +42,8 @@ Restrições que moldam a abordagem:
 
 **Domínios** (reais, package `ZMM_PAC_DATA`): `ZMM_PAC_CAT` (CHAR **8** — chega para
 PAC, cat máx 8), `ZMM_PAC_STATUS` (CHAR 1, valores fixos **`A` = Activa / `I` = Inactiva**,
-D-02/D-03), `ZMM_PAC_DESC` (CHAR **72**, para as descrições). O código de subcategoria
-usa domínio CHAR **12**; o ano usa `ZPAC_D_YEAR` (NUMC 4). O ciclo de vida `D/A/B/C/F`
+D-02/D-03), `ZMM_PAC_CAT_DESC` e `ZMM_PAC_SUBCAT_DESC` (CHAR **72**, descrições). O
+código de subcategoria usa `ZMM_D_PAC_SUBCATG` (CHAR **12**); o ano usa `ZPAC_D_YEAR` (NUMC 4). O ciclo de vida `D/A/B/C/F`
 pertence ao **Item PAC** (mudança 5, `ZMM_PACITEM_STATUS`) — não é usado aqui.
 
 **Data elements** (reais): `ZMM_PAC_YEAR`, `ZMM_PAC_CAT`, `ZMM_PAC_SUBCAT`,
