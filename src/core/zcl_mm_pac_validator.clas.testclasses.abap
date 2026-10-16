@@ -47,7 +47,8 @@ CLASS ltc_validator IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD has.
-    rv_ok = xsdbool( line_exists( mo_log->get_messages( )[ msgno = iv_no ] ) ).
+    DATA(lt) = mo_log->get_messages( ).
+    rv_ok = xsdbool( line_exists( lt[ msgno = iv_no ] ) ).
   ENDMETHOD.
 
   METHOD valid_new_builds_output.
