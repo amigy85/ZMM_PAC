@@ -7,14 +7,16 @@ INTERFACE zif_mm_pac_types
     "! Subcategorias (chave sem PAC_CAT, ADR-02)
     tt_subcatg TYPE SORTED TABLE OF zmm_pac_subcatg WITH UNIQUE KEY pac_year pac_subcat,
 
-    "! Uma linha de dados do ficheiro, já lida pelo parser
+    "! Uma linha de dados do ficheiro, "crua" (tudo string) — o parser só normaliza
+    "! (trim/maiúsculas) e NÃO trunca; o validador mede comprimento (REQ-11), valida
+    "! o ano (REQ-03) e constrói depois as linhas tipadas ZMM_PAC_CATG/SUBCATG.
     BEGIN OF ty_file_row,
       row         TYPE i,                     " nº da linha física (mensagens)
-      pac_year    TYPE zmm_pac_year,
-      pac_cat     TYPE zmm_pac_cat,
-      cat_desc    TYPE zmm_pac_cat_desc,
-      pac_subcat  TYPE zmm_pac_subcat,
-      subcat_desc TYPE zmm_pac_subcat_desc,
+      pac_year    TYPE string,
+      pac_cat     TYPE string,
+      cat_desc    TYPE string,
+      pac_subcat  TYPE string,
+      subcat_desc TYPE string,
     END OF ty_file_row,
     tt_file_row TYPE STANDARD TABLE OF ty_file_row WITH DEFAULT KEY,
 
