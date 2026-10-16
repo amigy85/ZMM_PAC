@@ -15,10 +15,10 @@ passar (o utilizador confirma a activação). Referência de commit:
 
 ## 1. Dicionário de dados
 
-- [ ] 1.1 Domínios e data elements `ZMM_PAC_*` — objectos existentes corrigidos no local (SE11) e movidos para `ZMM_PAC_DATA`; **falta serializar** para `/src/data/` [modelo de dados]
-- [ ] 1.2 Tabelas `ZMM_PAC_CATG` e `ZMM_PAC_SUBCATG` corrigidas no local (chave MANDT+PAC_YEAR+PAC_SUBCAT, validade BEGDA/ENDDA, auditoria com ERZET, descrições CHAR 72); **falta serializar** [ADR-02]
-- [ ] 1.3 Foreign key `ZMM_PAC_SUBCATG-PAC_CAT` → `ZMM_PAC_CATG` criada e verificada via MCP (2026-10-15); **falta** o `.tabl.xml` serializado [REQ-06]
-- [ ] 1.4 Classe de mensagens `ZMM_PAC` completa com todas as mensagens da §8.1 [todos os REQ]
+- [x] 1.1 Domínios e data elements `ZMM_PAC_*` corrigidos no local e movidos para `ZMM_PAC_DATA`; serializados em `/src/data/` (2026-10-16) [modelo de dados]
+- [x] 1.2 Tabelas `ZMM_PAC_CATG` e `ZMM_PAC_SUBCATG` (chave MANDT+PAC_YEAR+PAC_SUBCAT, validade BEGDA/ENDDA, auditoria com ERZET, descrições CHAR 72); serializadas (2026-10-16) [ADR-02]
+- [x] 1.3 Foreign key `ZMM_PAC_SUBCATG-PAC_CAT` → `ZMM_PAC_CATG` criada, verificada via MCP e serializada no `.tabl.xml` (2026-10-16) [REQ-06]
+- [x] 1.4 Classe de mensagens `ZMM_PAC` com as 42 mensagens da §8.1 (MASTERLANG P) serializada (2026-10-16) [todos os REQ]
 
 ## 2. Núcleo
 
