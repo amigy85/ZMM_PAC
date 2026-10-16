@@ -47,8 +47,8 @@ CLASS ltc_parser IMPLEMENTATION.
 
   METHOD wrong_header_reports_column.
     DATA(lt_raw) = VALUE string_table(
-      ( 'ANO;COD_CATEGORIA;DESC_CATEGORIA;SUBCAT;DESC_SUBCATEGORIA' )
-      ( '2026;PAC-E001;Assessoria;PAC-E001.1;Assessoria' ) ).
+      ( `ANO;COD_CATEGORIA;DESC_CATEGORIA;SUBCAT;DESC_SUBCATEGORIA` )
+      ( `2026;PAC-E001;Assessoria;PAC-E001.1;Assessoria` ) ).
     mo_cut->parse( EXPORTING it_raw = lt_raw
                    IMPORTING et_rows = DATA(lt_rows) et_msg = DATA(lt_msg) ).
     cl_abap_unit_assert=>assert_true( has_msg( it_msg = lt_msg iv_no = '004' ) ).
@@ -57,7 +57,7 @@ CLASS ltc_parser IMPLEMENTATION.
   METHOD wrong_column_count_is_error.
     DATA(lt_raw) = VALUE string_table(
       ( header_line( ) )
-      ( '2026;PAC-E001;Assessoria;PAC-E001.1;Assessoria;extra6;extra7' ) ).
+      ( `2026;PAC-E001;Assessoria;PAC-E001.1;Assessoria;extra6;extra7` ) ).
     mo_cut->parse( EXPORTING it_raw = lt_raw
                    IMPORTING et_rows = DATA(lt_rows) et_msg = DATA(lt_msg) ).
     cl_abap_unit_assert=>assert_true( has_msg( it_msg = lt_msg iv_no = '005' ) ).
@@ -68,7 +68,7 @@ CLASS ltc_parser IMPLEMENTATION.
     DATA(lt_raw) = VALUE string_table( ( header_line( ) ) ).
     DATA(lv_n) = zcl_mm_pac_parser=>c_max_rows + 1.
     DO lv_n TIMES.
-      APPEND '2026;PAC-E001;Assessoria;PAC-E001.1;Assessoria' TO lt_raw.
+      APPEND `2026;PAC-E001;Assessoria;PAC-E001.1;Assessoria` TO lt_raw.
     ENDDO.
     mo_cut->parse( EXPORTING it_raw = lt_raw
                    IMPORTING et_rows = DATA(lt_rows) et_msg = DATA(lt_msg) ).
@@ -78,7 +78,7 @@ CLASS ltc_parser IMPLEMENTATION.
   METHOD lowercase_code_is_normalized.
     DATA(lt_raw) = VALUE string_table(
       ( header_line( ) )
-      ( ' 2026 ; pac-e001 ;Assessoria tecnica; pac-e001.1 ;Assessoria' ) ).
+      ( ` 2026 ; pac-e001 ;Assessoria tecnica; pac-e001.1 ;Assessoria` ) ).
     mo_cut->parse( EXPORTING it_raw = lt_raw
                    IMPORTING et_rows = DATA(lt_rows) et_msg = DATA(lt_msg) ).
     cl_abap_unit_assert=>assert_equals( act = lines( lt_rows ) exp = 1 ).
@@ -90,7 +90,7 @@ CLASS ltc_parser IMPLEMENTATION.
   METHOD accents_preserved.
     DATA(lt_raw) = VALUE string_table(
       ( header_line( ) )
-      ( '2026;PAC-E001;Construção da Estação;PAC-E001.1;Manutenção e protecção' ) ).
+      ( `2026;PAC-E001;Construção da Estação;PAC-E001.1;Manutenção e protecção` ) ).
     mo_cut->parse( EXPORTING it_raw = lt_raw
                    IMPORTING et_rows = DATA(lt_rows) et_msg = DATA(lt_msg) ).
     cl_abap_unit_assert=>assert_equals( act = lt_rows[ 1 ]-cat_desc    exp = 'Construção da Estação' ).
@@ -100,7 +100,7 @@ CLASS ltc_parser IMPLEMENTATION.
   METHOD formula_risk_warns.
     DATA(lt_raw) = VALUE string_table(
       ( header_line( ) )
-      ( '2026;PAC-E001;=SOMA(A1);PAC-E001.1;Assessoria' ) ).
+      ( `2026;PAC-E001;=SOMA(A1);PAC-E001.1;Assessoria` ) ).
     mo_cut->parse( EXPORTING it_raw = lt_raw
                    IMPORTING et_rows = DATA(lt_rows) et_msg = DATA(lt_msg) ).
     cl_abap_unit_assert=>assert_true( has_msg( it_msg = lt_msg iv_no = '024' ) ).
