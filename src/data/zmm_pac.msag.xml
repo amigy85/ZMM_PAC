@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZMM_PAC</ARBGB>
+    <MASTERLANG>P</MASTERLANG>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>Ficheiro não informado.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Não foi possível ler o ficheiro &amp;1.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Formato &amp;1 não suportado. Utilize um ficheiro .csv.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Cabeçalho inválido: esperada a coluna &amp;1 na posição &amp;2.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Número de colunas inválido: esperadas &amp;1, encontradas &amp;2.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>O ficheiro não contém linhas de dados.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>O ficheiro excede o limite de &amp;1 linhas de dados.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>O ficheiro contém mais do que um ano PAC (&amp;1 e &amp;2).</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>010</MSGNR>
+     <TEXT>Ano PAC não informado.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>011</MSGNR>
+     <TEXT>Ano PAC &amp;1 inválido. Permitido de &amp;2 a &amp;3.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>012</MSGNR>
+     <TEXT>Código Categoria PAC não informado.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>013</MSGNR>
+     <TEXT>Descrição da Categoria PAC não informada.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>014</MSGNR>
+     <TEXT>Código Subcategoria PAC não informado.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>015</MSGNR>
+     <TEXT>Descrição da Subcategoria PAC não informada.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>016</MSGNR>
+     <TEXT>Código de categoria &amp;1 com formato inválido.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>017</MSGNR>
+     <TEXT>Código de subcategoria &amp;1 com formato inválido.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>018</MSGNR>
+     <TEXT>A subcategoria &amp;1 não pertence à categoria &amp;2.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>019</MSGNR>
+     <TEXT>Subcategoria &amp;1 duplicada no ficheiro (ver linha &amp;2).</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>020</MSGNR>
+     <TEXT>Status PAC &amp;1 inválido. Valores permitidos: D, A, B, C, F.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>021</MSGNR>
+     <TEXT>Categoria &amp;1 com descrição diferente da linha &amp;2.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>022</MSGNR>
+     <TEXT>A descrição excede &amp;1 caracteres.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>023</MSGNR>
+     <TEXT>A subcategoria &amp;1 já existe na categoria &amp;2 no ano &amp;3.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>024</MSGNR>
+     <TEXT>Descrição começa por &amp;1: risco de fórmula ao exportar para Excel.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>030</MSGNR>
+     <TEXT>O registo PAC &amp;1 está FECHADO e não pode ser alterado.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>031</MSGNR>
+     <TEXT>Transição de status de &amp;1 para &amp;2 não permitida (&amp;3).</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>032</MSGNR>
+     <TEXT>&amp;1 já existe com dados diferentes; o upload não o altera.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>033</MSGNR>
+     <TEXT>&amp;1 já existe e é idêntico; será ignorado.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>034</MSGNR>
+     <TEXT>Categoria &amp;1 com status &amp;2 não aceita novas subcategorias.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>035</MSGNR>
+     <TEXT>Categoria &amp;1 está BLOQUEADA; a subcategoria &amp;2 não será utilizável.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>036</MSGNR>
+     <TEXT>Registo novo válido.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>050</MSGNR>
+     <TEXT>Sem autorização (objecto ZMM_PAC, actividade &amp;1).</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>051</MSGNR>
+     <TEXT>O PAC &amp;1 está a ser gravado pelo utilizador &amp;2. Tente mais tarde.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>052</MSGNR>
+     <TEXT>O upload do PAC não pode ser executado em fundo.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>060</MSGNR>
+     <TEXT>Simulação concluída. Nenhum dado foi gravado no SAP.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>061</MSGNR>
+     <TEXT>Existem &amp;1 erros de validação. O PAC não foi gravado.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>062</MSGNR>
+     <TEXT>PAC &amp;1 gravado: &amp;2 categorias e &amp;3 subcategorias criadas.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>063</MSGNR>
+     <TEXT>Erro ao gravar na base de dados. Nenhuma alteração foi aplicada.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>064</MSGNR>
+     <TEXT>Gravação cancelada pelo utilizador. Nenhum dado foi gravado.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>065</MSGNR>
+     <TEXT>Nada a gravar: todos os registos do ficheiro já existem.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>066</MSGNR>
+     <TEXT>Gravar &amp;1 categorias e &amp;2 subcategorias no PAC &amp;3?</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>070</MSGNR>
+     <TEXT>A subcategoria PAC &amp;1 está BLOQUEADA: não utilizável em novas PR.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>071</MSGNR>
+     <TEXT>A subcategoria PAC &amp;1 (status &amp;2) não pode ser usada em novas PR.</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>
