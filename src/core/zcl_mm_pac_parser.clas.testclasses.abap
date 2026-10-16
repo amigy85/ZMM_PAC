@@ -41,7 +41,7 @@ CLASS ltc_parser IMPLEMENTATION.
     mo_cut->parse( EXPORTING it_raw  = VALUE string_table( ( header_line( ) ) )
                    IMPORTING et_rows = DATA(lt_rows)
                              et_msg  = DATA(lt_msg) ).
-    cl_abap_unit_assert=>assert_true( has_msg( lt_msg, '006' ) ).
+    cl_abap_unit_assert=>assert_true( has_msg( it_msg = lt_msg iv_no = '006' ) ).
     cl_abap_unit_assert=>assert_initial( lt_rows ).
   ENDMETHOD.
 
@@ -51,7 +51,7 @@ CLASS ltc_parser IMPLEMENTATION.
       ( '2026;PAC-E001;Assessoria;PAC-E001.1;Assessoria' ) ).
     mo_cut->parse( EXPORTING it_raw = lt_raw
                    IMPORTING et_rows = DATA(lt_rows) et_msg = DATA(lt_msg) ).
-    cl_abap_unit_assert=>assert_true( has_msg( lt_msg, '004' ) ).
+    cl_abap_unit_assert=>assert_true( has_msg( it_msg = lt_msg iv_no = '004' ) ).
   ENDMETHOD.
 
   METHOD wrong_column_count_is_error.
@@ -60,7 +60,7 @@ CLASS ltc_parser IMPLEMENTATION.
       ( '2026;PAC-E001;Assessoria;PAC-E001.1;Assessoria;extra6;extra7' ) ).
     mo_cut->parse( EXPORTING it_raw = lt_raw
                    IMPORTING et_rows = DATA(lt_rows) et_msg = DATA(lt_msg) ).
-    cl_abap_unit_assert=>assert_true( has_msg( lt_msg, '005' ) ).
+    cl_abap_unit_assert=>assert_true( has_msg( it_msg = lt_msg iv_no = '005' ) ).
     cl_abap_unit_assert=>assert_initial( lt_rows ).
   ENDMETHOD.
 
@@ -72,7 +72,7 @@ CLASS ltc_parser IMPLEMENTATION.
     ENDDO.
     mo_cut->parse( EXPORTING it_raw = lt_raw
                    IMPORTING et_rows = DATA(lt_rows) et_msg = DATA(lt_msg) ).
-    cl_abap_unit_assert=>assert_true( has_msg( lt_msg, '007' ) ).
+    cl_abap_unit_assert=>assert_true( has_msg( it_msg = lt_msg iv_no = '007' ) ).
   ENDMETHOD.
 
   METHOD lowercase_code_is_normalized.
@@ -103,7 +103,7 @@ CLASS ltc_parser IMPLEMENTATION.
       ( '2026;PAC-E001;=SOMA(A1);PAC-E001.1;Assessoria' ) ).
     mo_cut->parse( EXPORTING it_raw = lt_raw
                    IMPORTING et_rows = DATA(lt_rows) et_msg = DATA(lt_msg) ).
-    cl_abap_unit_assert=>assert_true( has_msg( lt_msg, '024' ) ).
+    cl_abap_unit_assert=>assert_true( has_msg( it_msg = lt_msg iv_no = '024' ) ).
   ENDMETHOD.
 
 ENDCLASS.
