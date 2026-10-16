@@ -3,7 +3,7 @@
 abapgit_meta.py - Gera e valida metafiles do abapGit.
 
 Garante deterministicamente a codificacao que o abapGit espera:
-UTF-8 com BOM, LF, quebra de linha final, indentacao de 2 espacos.
+UTF-8, LF, quebra de linha final, indentacao de 2 espacos. BOM nos XML; .abap SEM BOM.
 
 Sem dependencias externas. Python 3.8+.
 
@@ -37,13 +37,15 @@ VALID_FOLDER_LOGIC = {"PREFIX", "FULL", "MIXED"}
 # --------------------------------------------------------------------------
 
 def write_file(path, text):
-    """Grava em UTF-8 com BOM, LF, e quebra de linha final."""
+    """Grava em UTF-8, LF, quebra de linha final. BOM nos XML; .abap SEM BOM
+    (o abapGit nao remove o BOM do fonte .abap na importacao -> erro de sintaxe)."""
     text = text.replace("\r\n", "\n").replace("\r", "\n")
     if not text.endswith("\n"):
         text += "\n"
     os.makedirs(os.path.dirname(os.path.abspath(path)) or ".", exist_ok=True)
+    use_bom = not path.endswith(".abap")
     with open(path, "w", encoding="utf-8", newline="\n") as fh:
-        fh.write(BOM + text)
+        fh.write((BOM if use_bom else "") + text)
     print("escrito: {}".format(path))
 
 
@@ -348,8 +350,12 @@ def cmd_check(args):
             # codificacao
             text, has_bom, has_crlf, ends_nl = read_text(fpath)
             problems = []
-            if not has_bom:
-                problems.append("sem BOM")
+            if fname.endswith(".abap"):
+                if has_bom:
+                    problems.append("tem BOM (abap nao leva BOM)")
+            else:
+                if not has_bom:
+                    problems.append("sem BOM")
             if has_crlf:
                 problems.append("CRLF")
             if not ends_nl:

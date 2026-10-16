@@ -1,4 +1,4 @@
-﻿INTERFACE zif_mm_pac_types
+INTERFACE zif_mm_pac_types
   PUBLIC .
 
   TYPES:

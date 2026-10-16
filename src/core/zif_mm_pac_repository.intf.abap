@@ -1,4 +1,4 @@
-﻿INTERFACE zif_mm_pac_repository
+INTERFACE zif_mm_pac_repository
   PUBLIC .
 
   "! Lê as categorias existentes de um ano (uma leitura filtrada por PAC_YEAR).

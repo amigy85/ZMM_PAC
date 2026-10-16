@@ -136,7 +136,7 @@ Todos ──► ZIF_MM_PAC_TYPES, ZCX_MM_PAC, MSAG ZMM_PAC
 
 ### Regras de ficheiro
 
-- **UTF-8 com BOM, LF, quebra de linha final, indentação de 2 espaços.** Sem isto, cada pull gera diffs fantasma.
+- **UTF-8, LF, quebra de linha final, indentação de 2 espaços.** **BOM só nos metafiles XML; os ficheiros de fonte `.abap` NÃO levam BOM** — o abapGit do CBD não remove o BOM do fonte na importação e o compilador rejeita (`﻿INTERFACE não previsto`). Sem LF/newline, cada pull gera diffs fantasma. (`abapgit_meta.py check` aplica esta regra: BOM obrigatório em XML, proibido em `.abap`.)
 - Metafiles de objecto **com** `<abapGit version="v1.0.0" …>`; `.abapgit.xml` **sem**.
 - Nomes de ficheiro em minúsculas (`zcl_mm_pac_parser.clas.abap`); nomes dentro do XML em maiúsculas.
 - Todos os ficheiros de um objecto na mesma pasta. Não criar ficheiros de partes vazias (`locals_def`, `locals_imp`, `testclasses` só se tiverem conteúdo).

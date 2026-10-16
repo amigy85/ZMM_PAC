@@ -1,4 +1,4 @@
-﻿class ZCX_MM_PAC definition
+class ZCX_MM_PAC definition
   public
   inheriting from CX_STATIC_CHECK
   create private .
