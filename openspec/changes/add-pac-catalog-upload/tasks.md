@@ -24,7 +24,7 @@ passar (o utilizador confirma a activação). Referência de commit:
 
 - [x] 2.1 `ZCX_MM_PAC` criada no SE24 (CX_STATIC_CHECK + IF_T100_MESSAGE; textos 050/051/063) e serializada (2026-10-16) — atributos para `&1/&2` a acrescentar quando as classes de raise (AUTH/repository) forem escritas
 - [x] 2.2 `ZIF_MM_PAC_TYPES` e `ZIF_MM_PAC_REPOSITORY` geradas, pull e activação sem erro (2026-10-16; `.abap` sem BOM)
-- [ ] 2.3 `ZCL_MM_PAC_PARSER` + testes [REQ-02, REQ-05 normalização]
+- [x] 2.3 `ZCL_MM_PAC_PARSER` + testes (7 ABAP Unit verdes) — activo no DEV (2026-10-16) [REQ-02, REQ-05 normalização]
 - [ ] 2.4 `ZCL_MM_PAC_LOG` + testes [REQ-16]
 - [ ] 2.5 `ZCL_MM_PAC_VALIDATOR` + testes [REQ-03..REQ-09]
 - [ ] 2.6 `ZCL_MM_PAC_CHANGESET` + testes [REQ-14]
