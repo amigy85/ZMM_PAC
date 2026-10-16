@@ -100,11 +100,13 @@ CLASS zcl_mm_pac_parser IMPLEMENTATION.
       " aviso de risco de fórmula ao exportar para Excel (descrições)
       IF is_formula_risk( ls_row-cat_desc ) = abap_true.
         add_msg( EXPORTING iv_type = 'W' iv_no = '024' iv_row = lv_row
-                           iv_v1 = ls_row-cat_desc(1) CHANGING ct_msg = et_msg ).
+                           iv_v1 = substring( val = ls_row-cat_desc len = 1 )
+                 CHANGING ct_msg = et_msg ).
       ENDIF.
       IF is_formula_risk( ls_row-subcat_desc ) = abap_true.
         add_msg( EXPORTING iv_type = 'W' iv_no = '024' iv_row = lv_row
-                           iv_v1 = ls_row-subcat_desc(1) CHANGING ct_msg = et_msg ).
+                           iv_v1 = substring( val = ls_row-subcat_desc len = 1 )
+                 CHANGING ct_msg = et_msg ).
       ENDIF.
     ENDLOOP.
   ENDMETHOD.
@@ -144,8 +146,12 @@ CLASS zcl_mm_pac_parser IMPLEMENTATION.
 
 
   METHOD is_formula_risk.
-    DATA(lv_first) = condense( iv_text ).
-    rv_ok = xsdbool( lv_first IS NOT INITIAL AND lv_first(1) CA '=+-@' ).
+    DATA(lv) = condense( iv_text ).
+    IF lv IS INITIAL.
+      rv_ok = abap_false.
+      RETURN.
+    ENDIF.
+    rv_ok = xsdbool( substring( val = lv len = 1 ) CA '=+-@' ).
   ENDMETHOD.
 
 
