@@ -29,7 +29,7 @@ passar (o utilizador confirma a activação). Referência de commit:
 - [x] 2.5 `ZCL_MM_PAC_VALIDATOR` + testes (12 ABAP Unit verdes) — activo no DEV (2026-10-16) [REQ-03..REQ-09]
 - [x] 2.6 `ZCL_MM_PAC_CHANGESET` + testes (5 ABAP Unit verdes) — activo no DEV (2026-10-17) [REQ-14]
 - [x] 2.7 `ZCL_MM_PAC_REPOSITORY` activo no DEV (2026-10-17); Open SQL por ano, `ENQUEUE/DEQUEUE_E_TABLE` `_scope 1`, `insert_new` sem commit (cat antes de subcat, `cx_sy_open_sql_db`→063), `commit` sem `AND WAIT`. Verificação do bloqueio em SM12 fica para QAS (§14.3) [REQ-13, REQ-11]
-- [ ] 2.8 `ZCL_MM_PAC_AUTH` e objecto de autorização `ZMM_PAC` (SU21) serializado [REQ-15]
+- [x] 2.8 `ZCL_MM_PAC_AUTH` (2 ABAP Unit verdes, duplo por herança) + objecto de autorização `ZMM_PAC` (SU21, classe de objecto `ZPAC`) serializado — activo no DEV (2026-10-17) [REQ-15]
 - [ ] 2.9 `ZCL_MM_PAC_UPLOAD` + testes com duplos [REQ-10, REQ-11, REQ-12, REQ-13, REQ-15]
 
 ## 3. Interface
