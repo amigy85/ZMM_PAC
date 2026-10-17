@@ -1,11 +1,12 @@
 class ZCX_MM_PAC definition
   public
   inheriting from CX_STATIC_CHECK
-  create private .
+  create public .
 
 public section.
 
   interfaces IF_T100_MESSAGE .
+  interfaces IF_T100_DYN_MSG .
 
   constants:
     begin of NO_AUTHORIZATION,
@@ -49,15 +50,11 @@ CLASS ZCX_MM_PAC IMPLEMENTATION.
 
 
   method CONSTRUCTOR.
-CALL METHOD SUPER->CONSTRUCTOR
-EXPORTING
-PREVIOUS = PREVIOUS
-.
-clear me->textid.
-if textid is initial.
-  IF_T100_MESSAGE~T100KEY = IF_T100_MESSAGE=>DEFAULT_TEXTID.
-else.
-  IF_T100_MESSAGE~T100KEY = TEXTID.
-endif.
+    super->constructor( previous = previous ).
+    if textid is initial.
+      if_t100_message~t100key = if_t100_message=>default_textid.
+    else.
+      if_t100_message~t100key = textid.
+    endif.
   endmethod.
 ENDCLASS.
