@@ -1,28 +1,37 @@
-CLASS zcl_mm_pac_auth DEFINITION
-  PUBLIC
-  CREATE PUBLIC .
+class ZCL_MM_PAC_AUTH definition
+  public
+  create public .
 
-  PUBLIC SECTION.
-    CONSTANTS:
-      c_actvt_display TYPE activ_auth VALUE '03',   " simular / consultar (REQ-15)
-      c_actvt_create  TYPE activ_auth VALUE '01'.   " gravar
+public section.
+
+  constants C_ACTVT_DISPLAY type ACTIV_AUTH value '03' ##NO_TEXT. " simular / consultar (REQ-15)
+  constants C_ACTVT_CREATE type ACTIV_AUTH value '01' ##NO_TEXT. " gravar
 
     "! Verifica a autorização para a actividade; se faltar -> ZCX_MM_PAC (050).
-    METHODS check
-      IMPORTING iv_actvt TYPE activ_auth
-      RAISING   zcx_mm_pac.
-
+  methods CHECK
+    importing
+      !IV_ACTVT type ACTIV_AUTH
+    raising
+      ZCX_MM_PAC .
   PROTECTED SECTION.
     "! Executa o AUTHORITY-CHECK e devolve o sy-subrc. Redefinível nos testes
     "! (duplo por herança) para simular autorizado/negado sem autorizações reais.
     METHODS authority_check
       IMPORTING iv_actvt        TYPE activ_auth
       RETURNING VALUE(rv_subrc) TYPE i.
+private section.
 ENDCLASS.
 
 
 
-CLASS zcl_mm_pac_auth IMPLEMENTATION.
+CLASS ZCL_MM_PAC_AUTH IMPLEMENTATION.
+
+
+  METHOD authority_check.
+    AUTHORITY-CHECK OBJECT 'ZMM_PAC' ID 'ACTVT' FIELD iv_actvt.
+    rv_subrc = sy-subrc.
+  ENDMETHOD.
+
 
   METHOD check.
     IF authority_check( iv_actvt ) <> 0.
@@ -30,10 +39,4 @@ CLASS zcl_mm_pac_auth IMPLEMENTATION.
         EXPORTING textid = zcx_mm_pac=>no_authorization.
     ENDIF.
   ENDMETHOD.
-
-  METHOD authority_check.
-    AUTHORITY-CHECK OBJECT 'ZMM_PAC' ID 'ACTVT' FIELD iv_actvt.
-    rv_subrc = sy-subrc.
-  ENDMETHOD.
-
 ENDCLASS.

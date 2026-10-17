@@ -5,16 +5,63 @@
    <PROGDIR>
     <NAME>ZMM_PAC_UPLOAD</NAME>
     <SUBC>1</SUBC>
-    <FIXPT>X</FIXPT>
-    <VARCL>X</VARCL>
     <RSTAT>T</RSTAT>
+    <FIXPT>X</FIXPT>
     <UCCHECK>X</UCCHECK>
    </PROGDIR>
    <TPOOL>
     <item>
+     <ID>I</ID>
+     <KEY>B01</KEY>
+     <ENTRY>Ficheiro</ENTRY>
+     <LENGTH>18</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>B02</KEY>
+     <ENTRY>Modo de execução</ENTRY>
+     <LENGTH>26</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>B03</KEY>
+     <ENTRY>Saída</ENTRY>
+     <LENGTH>15</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>T01</KEY>
+     <ENTRY>Gravação do PAC</ENTRY>
+     <LENGTH>25</LENGTH>
+    </item>
+    <item>
      <ID>R</ID>
      <ENTRY>PAC - Upload do catalogo</ENTRY>
      <LENGTH>24</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_EWONLY</KEY>
+     <ENTRY>Só erros e avisos</ENTRY>
+     <LENGTH>25</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_FILE</KEY>
+     <ENTRY>Ficheiro CSV</ENTRY>
+     <LENGTH>20</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_SIM</KEY>
+     <ENTRY>Simulação</ENTRY>
+     <LENGTH>17</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_UPD</KEY>
+     <ENTRY>Gravação</ENTRY>
+     <LENGTH>16</LENGTH>
     </item>
    </TPOOL>
   </asx:values>
