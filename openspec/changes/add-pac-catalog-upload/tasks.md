@@ -34,7 +34,7 @@ passar (o utilizador confirma a activação). Referência de commit:
 
 ## 3. Interface
 
-- [ ] 3.1 `ZMM_PAC_UPLOAD` com ecrã de selecção, ALV e popup de confirmação; textos de selecção serializados [REQ-01, REQ-16, REQ-17]
+- [x] 3.1 `ZMM_PAC_UPLOAD` (ecrã de selecção, ALV `CL_SALV_TABLE`, popup 066, REQ-17) + `ZCL_MM_PAC_FILE` (F4 + gui_upload cp1252) — activos no DEV (2026-10-17); textos de selecção/símbolos por criar no SE38 [REQ-01, REQ-16, REQ-17]
 - [ ] 3.2 `ZMM_PAC_MENU`; transacções `ZMM_PAC` e `ZMM_PAC_UPLOAD` criadas em SE93 e serializadas [ADR-05]
 
 ## 4. Verificação
