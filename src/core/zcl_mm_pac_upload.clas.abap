@@ -29,6 +29,11 @@ CLASS zcl_mm_pac_upload DEFINITION
       RETURNING VALUE(ro_log) TYPE REF TO zcl_mm_pac_log.
     METHODS has_new
       RETURNING VALUE(rv_ok) TYPE abap_bool.
+    "! Contagens dos registos novos a gravar (para o popup de confirmação 066).
+    METHODS get_summary
+      EXPORTING ev_cat    TYPE i
+                ev_subcat TYPE i
+                ev_year   TYPE zmm_pac_year.
 
   PRIVATE SECTION.
     DATA:
@@ -154,6 +159,12 @@ CLASS zcl_mm_pac_upload IMPLEMENTATION.
 
   METHOD has_new.
     rv_ok = xsdbool( mt_cat IS NOT INITIAL OR mt_subcat IS NOT INITIAL ).
+  ENDMETHOD.
+
+  METHOD get_summary.
+    ev_cat    = lines( mt_cat ).
+    ev_subcat = lines( mt_subcat ).
+    ev_year   = mv_year.
   ENDMETHOD.
 
 ENDCLASS.
