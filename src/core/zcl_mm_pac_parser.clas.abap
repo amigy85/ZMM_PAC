@@ -1,20 +1,23 @@
-CLASS zcl_mm_pac_parser DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC .
+class ZCL_MM_PAC_PARSER definition
+  public
+  final
+  create public .
 
-  PUBLIC SECTION.
-    CONSTANTS:
-      c_separator TYPE c LENGTH 1 VALUE ';',
-      c_max_rows  TYPE i          VALUE 10000.
+public section.
+
+  constants:
+    c_separator TYPE c LENGTH 1 value ';' ##NO_TEXT.
+  constants C_MAX_ROWS type I value 10000 ##NO_TEXT.
 
     "! Lê as linhas físicas do ficheiro e produz as linhas tipadas + mensagens
     "! estruturais (REQ-02) com os códigos normalizados (REQ-05 normalização).
-    METHODS parse
-      IMPORTING it_raw  TYPE string_table
-      EXPORTING et_rows TYPE zif_mm_pac_types=>tt_file_row
-                et_msg  TYPE zif_mm_pac_types=>tt_msg.
-
+  methods PARSE
+    importing
+      !IT_RAW type STRING_TABLE
+    exporting
+      !ET_ROWS type ZIF_MM_PAC_TYPES=>TT_FILE_ROW
+      !ET_MSG type ZIF_MM_PAC_TYPES=>TT_MSG .
+protected section.
   PRIVATE SECTION.
     CONSTANTS:
       c_h1 TYPE string VALUE 'ANO',
@@ -53,7 +56,52 @@ ENDCLASS.
 
 
 
-CLASS zcl_mm_pac_parser IMPLEMENTATION.
+CLASS ZCL_MM_PAC_PARSER IMPLEMENTATION.
+
+
+  METHOD add_msg.
+    DATA lv_text TYPE string.
+    MESSAGE ID 'ZMM_PAC' TYPE iv_type NUMBER iv_no
+            WITH iv_v1 iv_v2 iv_v3 iv_v4 INTO lv_text.
+    APPEND VALUE #( msgty = iv_type msgno = iv_no row = iv_row text = lv_text ) TO ct_msg.
+  ENDMETHOD.
+
+
+  METHOD check_header.
+    rv_ok = abap_true.
+    SPLIT iv_header AT c_separator INTO TABLE DATA(lt_col).
+
+    DATA(lt_exp) = VALUE string_table( ( c_h1 ) ( c_h2 ) ( c_h3 ) ( c_h4 ) ( c_h5 ) ).
+
+    LOOP AT lt_exp ASSIGNING FIELD-SYMBOL(<exp>).
+      DATA(lv_pos) = sy-tabix.
+      DATA(lv_got) = COND string( WHEN line_exists( lt_col[ lv_pos ] )
+                                  THEN to_upper( condense( lt_col[ lv_pos ] ) )
+                                  ELSE space ).
+      IF lv_got <> <exp>.
+        add_msg( EXPORTING iv_type = 'E' iv_no = '004'
+                           iv_v1 = <exp> iv_v2 = |{ lv_pos }| CHANGING ct_msg = ct_msg ).
+        rv_ok = abap_false.
+        RETURN.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
+
+
+  METHOD is_formula_risk.
+    DATA(lv) = condense( iv_text ).
+    IF lv IS INITIAL.
+      rv_ok = abap_false.
+      RETURN.
+    ENDIF.
+    rv_ok = xsdbool( substring( val = lv len = 1 ) CA '=+-@' ).
+  ENDMETHOD.
+
+
+  METHOD norm_code.
+    rv_out = to_upper( condense( iv_in ) ).
+  ENDMETHOD.
+
 
   METHOD parse.
     CLEAR: et_rows, et_msg.
@@ -112,54 +160,9 @@ CLASS zcl_mm_pac_parser IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD check_header.
-    rv_ok = abap_true.
-    SPLIT iv_header AT c_separator INTO TABLE DATA(lt_col).
-
-    DATA(lt_exp) = VALUE string_table( ( c_h1 ) ( c_h2 ) ( c_h3 ) ( c_h4 ) ( c_h5 ) ).
-
-    LOOP AT lt_exp ASSIGNING FIELD-SYMBOL(<exp>).
-      DATA(lv_pos) = sy-tabix.
-      DATA(lv_got) = COND string( WHEN line_exists( lt_col[ lv_pos ] )
-                                  THEN to_upper( condense( lt_col[ lv_pos ] ) )
-                                  ELSE space ).
-      IF lv_got <> <exp>.
-        add_msg( EXPORTING iv_type = 'E' iv_no = '004'
-                           iv_v1 = <exp> iv_v2 = |{ lv_pos }| CHANGING ct_msg = ct_msg ).
-        rv_ok = abap_false.
-        RETURN.
-      ENDIF.
-    ENDLOOP.
-  ENDMETHOD.
-
-
-  METHOD norm_code.
-    rv_out = to_upper( condense( iv_in ) ).
-  ENDMETHOD.
-
-
   METHOD trim_desc.
     rv_out = iv_in.
     SHIFT rv_out LEFT DELETING LEADING space.
     " espaços à direita são irrelevantes nos campos CHAR de destino
   ENDMETHOD.
-
-
-  METHOD is_formula_risk.
-    DATA(lv) = condense( iv_text ).
-    IF lv IS INITIAL.
-      rv_ok = abap_false.
-      RETURN.
-    ENDIF.
-    rv_ok = xsdbool( substring( val = lv len = 1 ) CA '=+-@' ).
-  ENDMETHOD.
-
-
-  METHOD add_msg.
-    DATA lv_text TYPE string.
-    MESSAGE ID 'ZMM_PAC' TYPE iv_type NUMBER iv_no
-            WITH iv_v1 iv_v2 iv_v3 iv_v4 INTO lv_text.
-    APPEND VALUE #( msgty = iv_type msgno = iv_no row = iv_row text = lv_text ) TO ct_msg.
-  ENDMETHOD.
-
 ENDCLASS.

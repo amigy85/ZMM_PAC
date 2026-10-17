@@ -1,22 +1,25 @@
-CLASS zcl_mm_pac_changeset DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC .
+class ZCL_MM_PAC_CHANGESET definition
+  public
+  final
+  create public .
 
-  PUBLIC SECTION.
-    METHODS constructor
-      IMPORTING iv_erdat TYPE dats
-                iv_erzet TYPE tims
-                iv_ernam TYPE syuname DEFAULT sy-uname.
+public section.
 
+  methods CONSTRUCTOR
+    importing
+      !IV_ERDAT type DATS
+      !IV_ERZET type TIMS
+      !IV_ERNAM type SYUNAME default SY-UNAME .
     "! Preenche ERNAM/ERDAT/ERZET (AE* vazios) e VALID_FROM=01.01 / VALID_TO=31.12
     "! em cada registo, devolvendo as tabelas prontas a inserir. Carimbo único.
-    METHODS build
-      IMPORTING it_cat    TYPE zif_mm_pac_types=>tt_catg
-                it_subcat TYPE zif_mm_pac_types=>tt_subcatg
-      EXPORTING et_cat    TYPE zif_mm_pac_types=>tt_catg
-                et_subcat TYPE zif_mm_pac_types=>tt_subcatg.
-
+  methods BUILD
+    importing
+      !IT_CAT type ZIF_MM_PAC_TYPES=>TT_CATG
+      !IT_SUBCAT type ZIF_MM_PAC_TYPES=>TT_SUBCATG
+    exporting
+      !ET_CAT type ZIF_MM_PAC_TYPES=>TT_CATG
+      !ET_SUBCAT type ZIF_MM_PAC_TYPES=>TT_SUBCATG .
+protected section.
   PRIVATE SECTION.
     DATA:
       mv_erdat TYPE dats,
@@ -26,13 +29,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_mm_pac_changeset IMPLEMENTATION.
-
-  METHOD constructor.
-    mv_erdat = iv_erdat.
-    mv_erzet = iv_erzet.
-    mv_ernam = iv_ernam.
-  ENDMETHOD.
+CLASS ZCL_MM_PAC_CHANGESET IMPLEMENTATION.
 
 
   METHOD build.
@@ -59,4 +56,10 @@ CLASS zcl_mm_pac_changeset IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
+
+  METHOD constructor.
+    mv_erdat = iv_erdat.
+    mv_erzet = iv_erzet.
+    mv_ernam = iv_ernam.
+  ENDMETHOD.
 ENDCLASS.

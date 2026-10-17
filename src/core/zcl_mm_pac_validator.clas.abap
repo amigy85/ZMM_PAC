@@ -1,23 +1,27 @@
-CLASS zcl_mm_pac_validator DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC .
+class ZCL_MM_PAC_VALIDATOR definition
+  public
+  final
+  create public .
 
-  PUBLIC SECTION.
-    METHODS constructor
-      IMPORTING iv_today TYPE dats
-                io_log   TYPE REF TO zcl_mm_pac_log.
+public section.
 
+  methods CONSTRUCTOR
+    importing
+      !IV_TODAY type DATS
+      !IO_LOG type ref to ZCL_MM_PAC_LOG .
     "! Valida as linhas do ficheiro (REQ-03..09), regista no log e devolve os
     "! registos novos e válidos a criar (auditoria/validade ficam para o changeset).
-    METHODS validate
-      IMPORTING it_rows            TYPE zif_mm_pac_types=>tt_file_row
-                it_existing_cat    TYPE zif_mm_pac_types=>tt_catg
-                it_existing_subcat TYPE zif_mm_pac_types=>tt_subcatg
-      EXPORTING et_cat             TYPE zif_mm_pac_types=>tt_catg
-                et_subcat          TYPE zif_mm_pac_types=>tt_subcatg
-      RETURNING VALUE(rv_ok)       TYPE abap_bool.
-
+  methods VALIDATE
+    importing
+      !IT_ROWS type ZIF_MM_PAC_TYPES=>TT_FILE_ROW
+      !IT_EXISTING_CAT type ZIF_MM_PAC_TYPES=>TT_CATG
+      !IT_EXISTING_SUBCAT type ZIF_MM_PAC_TYPES=>TT_SUBCATG
+    exporting
+      !ET_CAT type ZIF_MM_PAC_TYPES=>TT_CATG
+      !ET_SUBCAT type ZIF_MM_PAC_TYPES=>TT_SUBCATG
+    returning
+      value(RV_OK) type ABAP_BOOL .
+protected section.
   PRIVATE SECTION.
     CONSTANTS:
       c_re_cat    TYPE string VALUE `^PAC-[A-Z][0-9]{3}$`,
@@ -47,11 +51,114 @@ ENDCLASS.
 
 
 
-CLASS zcl_mm_pac_validator IMPLEMENTATION.
+CLASS ZCL_MM_PAC_VALIDATOR IMPLEMENTATION.
+
+
+  METHOD classify_and_collect.
+    " --- categoria ---
+    READ TABLE it_existing_cat INTO DATA(ls_ex_cat)
+         WITH KEY pac_year = mv_year_n pac_cat = is_row-pac_cat.
+    IF sy-subrc = 0.
+      IF ls_ex_cat-pac_cat_desc = is_row-cat_desc.
+        mo_log->add( iv_type = 'I' iv_no = '033' iv_row = is_row-row iv_v1 = is_row-pac_cat ).
+      ELSE.
+        mo_log->add( iv_type = 'W' iv_no = '032' iv_row = is_row-row iv_v1 = is_row-pac_cat ).
+      ENDIF.
+    ELSE.
+      READ TABLE ct_cat TRANSPORTING NO FIELDS
+           WITH KEY pac_year = mv_year_n pac_cat = is_row-pac_cat.
+      IF sy-subrc <> 0.
+        INSERT VALUE #( pac_year     = mv_year_n
+                        pac_cat      = is_row-pac_cat
+                        pac_cat_desc = is_row-cat_desc
+                        status       = zif_mm_pac_types=>c_status_active ) INTO TABLE ct_cat.
+      ENDIF.
+    ENDIF.
+
+    " --- subcategoria ---
+    READ TABLE it_existing_subcat INTO DATA(ls_ex_sub)
+         WITH KEY pac_year = mv_year_n pac_subcat = is_row-pac_subcat.
+    IF sy-subrc = 0.
+      IF ls_ex_sub-pac_cat <> is_row-pac_cat.
+        mo_log->add( iv_type = 'E' iv_no = '023' iv_row = is_row-row
+                     iv_v1 = is_row-pac_subcat iv_v2 = ls_ex_sub-pac_cat iv_v3 = |{ mv_year_n }| ).
+      ELSEIF ls_ex_sub-pac_subcat_desc = is_row-subcat_desc.
+        mo_log->add( iv_type = 'I' iv_no = '033' iv_row = is_row-row iv_v1 = is_row-pac_subcat ).
+      ELSE.
+        mo_log->add( iv_type = 'W' iv_no = '032' iv_row = is_row-row iv_v1 = is_row-pac_subcat ).
+      ENDIF.
+      RETURN.
+    ENDIF.
+
+    " subcategoria nova: categoria-mãe existente inactiva não aceita novas (REQ-09)
+    READ TABLE it_existing_cat INTO DATA(ls_pcat)
+         WITH KEY pac_year = mv_year_n pac_cat = is_row-pac_cat.
+    IF sy-subrc = 0 AND ls_pcat-status = zif_mm_pac_types=>c_status_inactive.
+      mo_log->add( iv_type = 'E' iv_no = '034' iv_row = is_row-row
+                   iv_v1 = is_row-pac_cat iv_v2 = ls_pcat-status ).
+      RETURN.
+    ENDIF.
+
+    READ TABLE ct_subcat TRANSPORTING NO FIELDS
+         WITH KEY pac_year = mv_year_n pac_subcat = is_row-pac_subcat.
+    IF sy-subrc <> 0.
+      INSERT VALUE #( pac_year        = mv_year_n
+                      pac_subcat      = is_row-pac_subcat
+                      pac_cat         = is_row-pac_cat
+                      pac_subcat_desc = is_row-subcat_desc ) INTO TABLE ct_subcat.
+    ENDIF.
+  ENDMETHOD.
+
 
   METHOD constructor.
     mv_today = iv_today.
     mo_log   = io_log.
+  ENDMETHOD.
+
+
+  METHOD resolve_year.
+    DATA lt_years TYPE SORTED TABLE OF string WITH UNIQUE KEY table_line.
+    DATA lv_empty TYPE abap_bool.
+
+    LOOP AT it_rows ASSIGNING FIELD-SYMBOL(<r>).
+      IF <r>-pac_year IS INITIAL.
+        lv_empty = abap_true.
+      ELSE.
+        INSERT <r>-pac_year INTO TABLE lt_years.
+      ENDIF.
+    ENDLOOP.
+
+    IF lv_empty = abap_true.
+      mo_log->add( iv_type = 'E' iv_no = '010' ).
+    ENDIF.
+
+    IF lines( lt_years ) > 1.
+      mo_log->add( iv_type = 'E' iv_no = '008'
+                   iv_v1 = lt_years[ 1 ] iv_v2 = lt_years[ 2 ] ).
+      RETURN.
+    ENDIF.
+    IF lines( lt_years ) = 0.
+      RETURN.
+    ENDIF.
+
+    DATA(lv_year) = lt_years[ 1 ].
+    DATA(lv_cur)  = CONV i( mv_today(4) ).
+
+    IF NOT matches( val = lv_year regex = `^[0-9]{4}$` ).
+      mo_log->add( iv_type = 'E' iv_no = '011'
+                   iv_v1 = lv_year iv_v2 = |{ lv_cur }| iv_v3 = |{ lv_cur + 1 }| ).
+      RETURN.
+    ENDIF.
+
+    DATA(lv_y) = CONV i( lv_year ).
+    IF lv_y < lv_cur OR lv_y > lv_cur + 1.
+      mo_log->add( iv_type = 'E' iv_no = '011'
+                   iv_v1 = lv_year iv_v2 = |{ lv_cur }| iv_v3 = |{ lv_cur + 1 }| ).
+      RETURN.
+    ENDIF.
+
+    mv_year_n  = lv_year.
+    mv_year_ok = abap_true.
   ENDMETHOD.
 
 
@@ -120,52 +227,6 @@ CLASS zcl_mm_pac_validator IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD resolve_year.
-    DATA lt_years TYPE SORTED TABLE OF string WITH UNIQUE KEY table_line.
-    DATA lv_empty TYPE abap_bool.
-
-    LOOP AT it_rows ASSIGNING FIELD-SYMBOL(<r>).
-      IF <r>-pac_year IS INITIAL.
-        lv_empty = abap_true.
-      ELSE.
-        INSERT <r>-pac_year INTO TABLE lt_years.
-      ENDIF.
-    ENDLOOP.
-
-    IF lv_empty = abap_true.
-      mo_log->add( iv_type = 'E' iv_no = '010' ).
-    ENDIF.
-
-    IF lines( lt_years ) > 1.
-      mo_log->add( iv_type = 'E' iv_no = '008'
-                   iv_v1 = lt_years[ 1 ] iv_v2 = lt_years[ 2 ] ).
-      RETURN.
-    ENDIF.
-    IF lines( lt_years ) = 0.
-      RETURN.
-    ENDIF.
-
-    DATA(lv_year) = lt_years[ 1 ].
-    DATA(lv_cur)  = CONV i( mv_today(4) ).
-
-    IF NOT matches( val = lv_year regex = `^[0-9]{4}$` ).
-      mo_log->add( iv_type = 'E' iv_no = '011'
-                   iv_v1 = lv_year iv_v2 = |{ lv_cur }| iv_v3 = |{ lv_cur + 1 }| ).
-      RETURN.
-    ENDIF.
-
-    DATA(lv_y) = CONV i( lv_year ).
-    IF lv_y < lv_cur OR lv_y > lv_cur + 1.
-      mo_log->add( iv_type = 'E' iv_no = '011'
-                   iv_v1 = lv_year iv_v2 = |{ lv_cur }| iv_v3 = |{ lv_cur + 1 }| ).
-      RETURN.
-    ENDIF.
-
-    mv_year_n  = lv_year.
-    mv_year_ok = abap_true.
-  ENDMETHOD.
-
-
   METHOD validate_row.
     rv_ok = abap_true.
 
@@ -214,61 +275,4 @@ CLASS zcl_mm_pac_validator IMPLEMENTATION.
       ENDIF.
     ENDIF.
   ENDMETHOD.
-
-
-  METHOD classify_and_collect.
-    " --- categoria ---
-    READ TABLE it_existing_cat INTO DATA(ls_ex_cat)
-         WITH KEY pac_year = mv_year_n pac_cat = is_row-pac_cat.
-    IF sy-subrc = 0.
-      IF ls_ex_cat-pac_cat_desc = is_row-cat_desc.
-        mo_log->add( iv_type = 'I' iv_no = '033' iv_row = is_row-row iv_v1 = is_row-pac_cat ).
-      ELSE.
-        mo_log->add( iv_type = 'W' iv_no = '032' iv_row = is_row-row iv_v1 = is_row-pac_cat ).
-      ENDIF.
-    ELSE.
-      READ TABLE ct_cat TRANSPORTING NO FIELDS
-           WITH KEY pac_year = mv_year_n pac_cat = is_row-pac_cat.
-      IF sy-subrc <> 0.
-        INSERT VALUE #( pac_year     = mv_year_n
-                        pac_cat      = is_row-pac_cat
-                        pac_cat_desc = is_row-cat_desc
-                        status       = zif_mm_pac_types=>c_status_active ) INTO TABLE ct_cat.
-      ENDIF.
-    ENDIF.
-
-    " --- subcategoria ---
-    READ TABLE it_existing_subcat INTO DATA(ls_ex_sub)
-         WITH KEY pac_year = mv_year_n pac_subcat = is_row-pac_subcat.
-    IF sy-subrc = 0.
-      IF ls_ex_sub-pac_cat <> is_row-pac_cat.
-        mo_log->add( iv_type = 'E' iv_no = '023' iv_row = is_row-row
-                     iv_v1 = is_row-pac_subcat iv_v2 = ls_ex_sub-pac_cat iv_v3 = |{ mv_year_n }| ).
-      ELSEIF ls_ex_sub-pac_subcat_desc = is_row-subcat_desc.
-        mo_log->add( iv_type = 'I' iv_no = '033' iv_row = is_row-row iv_v1 = is_row-pac_subcat ).
-      ELSE.
-        mo_log->add( iv_type = 'W' iv_no = '032' iv_row = is_row-row iv_v1 = is_row-pac_subcat ).
-      ENDIF.
-      RETURN.
-    ENDIF.
-
-    " subcategoria nova: categoria-mãe existente inactiva não aceita novas (REQ-09)
-    READ TABLE it_existing_cat INTO DATA(ls_pcat)
-         WITH KEY pac_year = mv_year_n pac_cat = is_row-pac_cat.
-    IF sy-subrc = 0 AND ls_pcat-status = zif_mm_pac_types=>c_status_inactive.
-      mo_log->add( iv_type = 'E' iv_no = '034' iv_row = is_row-row
-                   iv_v1 = is_row-pac_cat iv_v2 = ls_pcat-status ).
-      RETURN.
-    ENDIF.
-
-    READ TABLE ct_subcat TRANSPORTING NO FIELDS
-         WITH KEY pac_year = mv_year_n pac_subcat = is_row-pac_subcat.
-    IF sy-subrc <> 0.
-      INSERT VALUE #( pac_year        = mv_year_n
-                      pac_subcat      = is_row-pac_subcat
-                      pac_cat         = is_row-pac_cat
-                      pac_subcat_desc = is_row-subcat_desc ) INTO TABLE ct_subcat.
-    ENDIF.
-  ENDMETHOD.
-
 ENDCLASS.

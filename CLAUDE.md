@@ -233,5 +233,5 @@ Quando uma tarefa depende de um destes, parar e dar ao utilizador as instruçõe
 | D-06 | Regex dos códigos validada com o ficheiro real | **decidida: só PAC; regex `^PAC-[A-Z][0-9]{3}$` / subcat `…\.[1-9][0-9]{0,2}$` validada (0 falhas); domínios cat CHAR 8 / subcat CHAR 12 (reais); parser suporta cp1252; aspas proibidas** — ver `docs/testes/D06_achados.md` | 2026-10-13 |
 | D-07 | Intervalo de anos: corrente a corrente + 1 | **decidida** | 2026-10-12 |
 | D-08 | Suporte `.xlsx` (`CL_FDT_XL_SPREADSHEET` no CBD?) | pendente | |
-| D-09 | Classe do objecto de autorização e segregação de funções | **decidida: classe `MM_E`; perfis Consulta `03`, Gestor `01/02/03`; segregação carregar-vs-fechar fica em aberto** | 2026-10-14 |
+| D-09 | Classe do objecto de autorização e segregação de funções | **decidida: objecto `ZMM_PAC` (campo `ACTVT`) na classe de objecto nova `ZPAC` (não `MM_E`); perfis Consulta `03`, Gestor `01/02/03`; segregação carregar-vs-fechar fica em aberto** | 2026-10-17 |
 | D-10 | Fecho do PAC ao nível do ano | **decidida: não existe fecho anual global (fecha-se ao nível de categoria/item); sem tabela de cabeçalho do ano** | 2026-10-14 |
