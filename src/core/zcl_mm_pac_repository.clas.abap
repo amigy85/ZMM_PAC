@@ -48,9 +48,8 @@ CLASS zcl_mm_pac_repository IMPLEMENTATION.
         system_failure = 2
         OTHERS         = 3.
     IF sy-subrc <> 0.
-      DATA(lv_holder) = CONV syuname( sy-msgv1 ).
       RAISE EXCEPTION TYPE zcx_mm_pac
-        MESSAGE e051(zmm_pac) WITH iv_year lv_holder.
+        EXPORTING textid = zcx_mm_pac=>year_locked.
     ENDIF.
   ENDMETHOD.
 
@@ -72,7 +71,7 @@ CLASS zcl_mm_pac_repository IMPLEMENTATION.
         INSERT zmm_pac_subcatg FROM TABLE @it_subcat.
       CATCH cx_sy_open_sql_db.
         RAISE EXCEPTION TYPE zcx_mm_pac
-          MESSAGE e063(zmm_pac).
+          EXPORTING textid = zcx_mm_pac=>db_insert_failed.
     ENDTRY.
   ENDMETHOD.
 
