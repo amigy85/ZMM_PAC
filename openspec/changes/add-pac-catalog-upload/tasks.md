@@ -27,7 +27,7 @@ passar (o utilizador confirma a activação). Referência de commit:
 - [x] 2.3 `ZCL_MM_PAC_PARSER` + testes (7 ABAP Unit verdes) — activo no DEV (2026-10-16) [REQ-02, REQ-05 normalização]
 - [x] 2.4 `ZCL_MM_PAC_LOG` + testes (4 ABAP Unit verdes) — activo no DEV (2026-10-16) [REQ-16]
 - [x] 2.5 `ZCL_MM_PAC_VALIDATOR` + testes (12 ABAP Unit verdes) — activo no DEV (2026-10-16) [REQ-03..REQ-09]
-- [ ] 2.6 `ZCL_MM_PAC_CHANGESET` + testes [REQ-14]
+- [x] 2.6 `ZCL_MM_PAC_CHANGESET` + testes (5 ABAP Unit verdes) — activo no DEV (2026-10-17) [REQ-14]
 - [ ] 2.7 `ZCL_MM_PAC_REPOSITORY`; bloqueio `ENQUEUE_E_TABLE` verificado em SM12 (criar `EZ_MM_PAC` se falhar) [REQ-13, REQ-11]
 - [ ] 2.8 `ZCL_MM_PAC_AUTH` e objecto de autorização `ZMM_PAC` (SU21) serializado [REQ-15]
 - [ ] 2.9 `ZCL_MM_PAC_UPLOAD` + testes com duplos [REQ-10, REQ-11, REQ-12, REQ-13, REQ-15]
