@@ -35,7 +35,7 @@ passar (o utilizador confirma a activação). Referência de commit:
 ## 3. Interface
 
 - [x] 3.1 `ZMM_PAC_UPLOAD` (ecrã de selecção, ALV `CL_SALV_TABLE`, popup 066, REQ-17) + `ZCL_MM_PAC_FILE` (F4 + gui_upload cp1252) — activos no DEV (2026-10-17); textos de selecção/símbolos por criar no SE38 [REQ-01, REQ-16, REQ-17]
-- [ ] 3.2 `ZMM_PAC_MENU`; transacções `ZMM_PAC` e `ZMM_PAC_UPLOAD` criadas em SE93 e serializadas [ADR-05]
+- [x] 3.2 `ZMM_PAC_MENU` activo no DEV + transacções `ZMM_PAC` / `ZMM_PAC_UPLOAD` criadas em SE93 e serializadas (2026-10-17) [ADR-05] — nota: os `.tran.xml` ficaram em `src/core` (package `ZMM_PAC_CORE`); mover para `ZMM_PAC_UI` é opcional
 
 ## 4. Verificação
 

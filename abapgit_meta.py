@@ -269,7 +269,7 @@ FILENAME_RE = re.compile(r"^[a-z0-9_#\-]+\.[a-z0-9]+(\.[a-z0-9_.]+)?\.[a-z0-9]+$
 # tipos cujo metafile e o unico ficheiro (sem .abap associado)
 METADATA_ONLY = {"devc", "tabl", "dtel", "doma", "ttyp", "msag", "enqu",
                  "view", "shlp", "sicf", "auth", "susc", "suso", "iarp",
-                 "nrob", "para", "ssfo", "ssst", "tobj", "type"}
+                 "nrob", "para", "ssfo", "ssst", "tobj", "type", "tran"}
 
 
 def read_text(path):
