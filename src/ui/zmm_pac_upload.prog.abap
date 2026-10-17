@@ -110,7 +110,9 @@ CLASS lcl_app IMPLEMENTATION.
   METHOD display.
     DATA(lt_msg) = io_log->get_messages( ).
     IF p_ewonly = abap_true.
-      DELETE lt_msg WHERE msgty <> 'E' AND msgty <> 'W'.
+      " esconde só os informativos por-registo (I, ex.: 033 idêntico);
+      " mantém E/W e os de resultado (S: 060/062/064/065) para haver feedback
+      DELETE lt_msg WHERE msgty = 'I'.
     ENDIF.
 
     TRY.
