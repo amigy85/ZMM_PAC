@@ -46,9 +46,10 @@ CLASS lcl_app IMPLEMENTATION.
     ENDIF.
 
     " leitura do posto de trabalho (cp1252)
+    DATA lv_failed TYPE abap_bool.
     DATA(lo_file) = NEW zcl_mm_pac_file( ).
     DATA(lt_raw)  = lo_file->read( EXPORTING iv_name   = CONV string( p_file )
-                                   IMPORTING ev_failed = DATA(lv_failed) ).
+                                   IMPORTING ev_failed = lv_failed ).
     IF lv_failed = abap_true.
       MESSAGE e002(zmm_pac) WITH p_file.
       RETURN.
