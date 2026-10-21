@@ -44,3 +44,4 @@ passar (o utilizador confirma a activação). Referência de commit:
 - [ ] 4.3 Testes manuais em QAS da §14.3 executados e evidenciados (SE16N, SCU3, SM12, SU53, SM37)
 - [ ] 4.4 REQ-18 medido em QAS com ficheiro de 10 000 linhas (< 60 s)
 - [ ] 4.5 `abapgit_meta.py check` sem erros; pull limpo (sem diffs fantasma) no DEV
+- [ ] 4.6 **(follow-up de segurança)** Mover o `AUTHORITY-CHECK '03'` para **antes** da leitura do ficheiro (REQ-15 / §4.6): o programa faz `gui_upload` antes do `prepare` (que tem o auth). Recomendação: `check('03')` no programa antes de `zcl_mm_pac_file->read`. Desvio de conformidade (não explorável — ficheiro do próprio utilizador). A implementar no fim.
