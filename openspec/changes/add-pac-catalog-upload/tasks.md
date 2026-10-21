@@ -39,7 +39,7 @@ passar (o utilizador confirma a activação). Referência de commit:
 
 ## 4. Verificação
 
-- [ ] 4.1 Todos os testes ABAP Unit verdes (mapeamento cenário → teste da §14.1) [REQ-01..REQ-17]
+- [x] 4.1 Todos os testes ABAP Unit verdes — 36/36 no package `ZMM_PAC_CORE` (parser 7, log 4, validator 12, changeset 5, auth 2, upload 6), 2026-10-17 [REQ-01..REQ-17]
 - [ ] 4.2 ATC/Code Inspector sem findings de prioridade 1 e 2
 - [ ] 4.3 Testes manuais em QAS da §14.3 executados e evidenciados (SE16N, SCU3, SM12, SU53, SM37)
 - [ ] 4.4 REQ-18 medido em QAS com ficheiro de 10 000 linhas (< 60 s)
