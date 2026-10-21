@@ -33,7 +33,7 @@ CLASS zcl_mm_pac_repository IMPLEMENTATION.
 
   METHOD zif_mm_pac_repository~lock_year.
     " VARKEY é CHAR (não string): argumento genérico do bloqueio = ano.
-    DATA lv_varkey TYPE c LENGTH 100.
+    DATA lv_varkey TYPE rstable-varkey.
     lv_varkey = iv_year.
     CALL FUNCTION 'ENQUEUE_E_TABLE'
       EXPORTING
@@ -53,7 +53,7 @@ CLASS zcl_mm_pac_repository IMPLEMENTATION.
 
 
   METHOD zif_mm_pac_repository~unlock_year.
-    DATA lv_varkey TYPE c LENGTH 100.
+    DATA lv_varkey TYPE rstable-varkey.
     lv_varkey = iv_year.
     CALL FUNCTION 'DEQUEUE_E_TABLE'
       EXPORTING
