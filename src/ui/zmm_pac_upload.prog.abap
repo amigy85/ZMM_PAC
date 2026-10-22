@@ -45,6 +45,15 @@ CLASS lcl_app IMPLEMENTATION.
       RETURN.
     ENDIF.
 
+    " REQ-15 / §4.6: autorização ANTES de ler o ficheiro.
+    DATA(lo_auth) = NEW zcl_mm_pac_auth( ).
+    TRY.
+        lo_auth->check( zcl_mm_pac_auth=>c_actvt_display ).
+      CATCH zcx_mm_pac.
+        MESSAGE e050(zmm_pac) WITH zcl_mm_pac_auth=>c_actvt_display.
+        RETURN.
+    ENDTRY.
+
     " leitura do posto de trabalho (cp1252)
     DATA lv_failed TYPE abap_bool.
     DATA(lo_file) = NEW zcl_mm_pac_file( ).
@@ -58,7 +67,7 @@ CLASS lcl_app IMPLEMENTATION.
     DATA(lo_log)    = NEW zcl_mm_pac_log( ).
     DATA(lo_upload) = NEW zcl_mm_pac_upload(
       io_repository = NEW zcl_mm_pac_repository( )
-      io_auth       = NEW zcl_mm_pac_auth( )
+      io_auth       = lo_auth
       io_parser     = NEW zcl_mm_pac_parser( )
       io_log        = lo_log
       iv_today      = sy-datum ).
