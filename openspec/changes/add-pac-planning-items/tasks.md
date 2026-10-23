@@ -5,7 +5,7 @@ utilizador confirma). Referência de commit: `[refs: add-pac-planning-items <n.�
 Depende da mudança 1 (catálogo activo). Não transportar antes da 1.
 
 ## 0. Preparação
-- [ ] 0.1 Decisões D5-01..D5-07 registadas em `proposal.md`
+- [x] 0.1 Decisões D5-01..D5-07 registadas em `proposal.md`; proposta revista e aprovada (2026-10-23)
 - [ ] 0.2 Objecto de intervalo de números (SNRO) para `PAC_ITEM` criado no DEV; nº da ordem de transporte registado
 - [ ] 0.3 `ZMM_PAC_ITEM` esvaziada (dados de amostra) antes da conversão DDIC
 
