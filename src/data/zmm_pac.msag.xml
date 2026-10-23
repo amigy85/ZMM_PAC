@@ -259,6 +259,54 @@
      <MSGNR>071</MSGNR>
      <TEXT>A subcategoria PAC &amp;1 (status &amp;2) não pode ser usada em novas PR.</TEXT>
     </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>080</MSGNR>
+     <TEXT>Subcategoria &amp;1 não existe no catálogo do ano &amp;2.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>081</MSGNR>
+     <TEXT>Categoria da subcategoria &amp;1 está inactiva.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>082</MSGNR>
+     <TEXT>Quantidade inválida (&amp;1): deve ser numérica e não negativa.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>083</MSGNR>
+     <TEXT>Valor inválido (&amp;1): deve ser numérico e não negativo.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>084</MSGNR>
+     <TEXT>Moeda &amp;1 inválida.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>085</MSGNR>
+     <TEXT>Unidade de medida &amp;1 inválida.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>086</MSGNR>
+     <TEXT>PAC &amp;1 gravado: &amp;2 itens criados.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>087</MSGNR>
+     <TEXT>Nada a gravar: nenhum item novo válido.</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>
