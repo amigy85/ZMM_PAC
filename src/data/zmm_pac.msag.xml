@@ -307,6 +307,12 @@
      <MSGNR>087</MSGNR>
      <TEXT>Nada a gravar: nenhum item novo válido.</TEXT>
     </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>088</MSGNR>
+     <TEXT>Descrição do item não informada</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>
