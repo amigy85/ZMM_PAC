@@ -18,7 +18,7 @@ Depende da mudança 1 (catálogo activo). Não transportar antes da 1.
 ## 2. Núcleo
 - [x] 2.1 `ZIF_MM_PAC_TYPES`: `ty_item_row`/`tt_item_row`/`tt_item` acrescentados; activo (2026-10-26) [modelo de dados]
 - [x] 2.2 `ZIF_MM_PAC_ITEM_REPOSITORY` (read_categories/subcategories, lock/unlock, next_item_number, insert_new, commit, rollback); activo (2026-10-26)
-- [ ] 2.3 `ZCL_MM_PAC_ITEM_PARSER` + testes [REQ-21, normalização]
+- [x] 2.3 `ZCL_MM_PAC_ITEM_PARSER` + testes (7 ABAP Unit verdes) — activo (2026-10-26) [REQ-21, normalização]
 - [ ] 2.4 `ZCL_MM_PAC_ITEM_VALIDATOR` + testes (iv_today; catálogo em memória por duplo) [REQ-22..25]
 - [ ] 2.5 `ZCL_MM_PAC_ITEM_CHANGESET` + testes (carimbo único, status `D`) [REQ-26]
 - [ ] 2.6 `ZCL_MM_PAC_ITEM_REPOSITORY` (Open SQL, `NUMBER_GET_NEXT`, bloqueio por ano) [REQ-26, REQ-20]
