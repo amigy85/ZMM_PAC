@@ -40,6 +40,11 @@ CLASS zcl_mm_pac_item_parser DEFINITION
       CHANGING  ct_msg       TYPE zif_mm_pac_types=>tt_msg
       RETURNING VALUE(rv_ok) TYPE abap_bool.
 
+    METHODS get_field
+      IMPORTING it_field      TYPE string_table
+                iv_pos        TYPE i
+      RETURNING VALUE(rv_val) TYPE string.
+
     METHODS norm
       IMPORTING iv_in         TYPE clike
       RETURNING VALUE(rv_out) TYPE string.
@@ -79,25 +84,28 @@ CLASS zcl_mm_pac_item_parser IMPLEMENTATION.
     LOOP AT it_raw ASSIGNING FIELD-SYMBOL(<raw>) FROM 2.
       DATA(lv_row) = sy-tabix.
 
-      SPLIT <raw> AT c_separator INTO TABLE DATA(lt_field).
-      IF lines( lt_field ) <> 9.
+      " nº de campos = nº de separadores + 1 (robusto a campos finais vazios,
+      " que o SPLIT INTO TABLE não materializa)
+      DATA(lv_fields) = count( val = <raw> sub = c_separator ) + 1.
+      IF lv_fields <> 9.
         add_msg( EXPORTING iv_type = 'E' iv_no = '005' iv_row = lv_row
-                           iv_v1 = '9' iv_v2 = |{ lines( lt_field ) }|
+                           iv_v1 = '9' iv_v2 = |{ lv_fields }|
                  CHANGING ct_msg = et_msg ).
         CONTINUE.
       ENDIF.
 
+      SPLIT <raw> AT c_separator INTO TABLE DATA(lt_field).
       DATA(ls_row) = VALUE zif_mm_pac_types=>ty_item_row(
         row         = lv_row
-        pac_year    = norm( lt_field[ 1 ] )
-        pac_subcat  = norm( lt_field[ 2 ] )
-        description = trim_desc( lt_field[ 3 ] )
-        quantidade  = condense( lt_field[ 4 ] )
-        unidade     = norm( lt_field[ 5 ] )
-        valor       = condense( lt_field[ 6 ] )
-        moeda       = norm( lt_field[ 7 ] )
-        centro      = norm( lt_field[ 8 ] )
-        conta       = norm( lt_field[ 9 ] ) ).
+        pac_year    = norm( get_field( it_field = lt_field iv_pos = 1 ) )
+        pac_subcat  = norm( get_field( it_field = lt_field iv_pos = 2 ) )
+        description = trim_desc( get_field( it_field = lt_field iv_pos = 3 ) )
+        quantidade  = condense( get_field( it_field = lt_field iv_pos = 4 ) )
+        unidade     = norm( get_field( it_field = lt_field iv_pos = 5 ) )
+        valor       = condense( get_field( it_field = lt_field iv_pos = 6 ) )
+        moeda       = norm( get_field( it_field = lt_field iv_pos = 7 ) )
+        centro      = norm( get_field( it_field = lt_field iv_pos = 8 ) )
+        conta       = norm( get_field( it_field = lt_field iv_pos = 9 ) ) ).
       APPEND ls_row TO et_rows.
 
       IF is_formula_risk( ls_row-description ) = abap_true.
@@ -129,6 +137,13 @@ CLASS zcl_mm_pac_item_parser IMPLEMENTATION.
         RETURN.
       ENDIF.
     ENDLOOP.
+  ENDMETHOD.
+
+
+  METHOD get_field.
+    IF line_exists( it_field[ iv_pos ] ).
+      rv_val = it_field[ iv_pos ].
+    ENDIF.
   ENDMETHOD.
 
 
