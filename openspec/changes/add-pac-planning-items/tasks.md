@@ -22,7 +22,7 @@ Depende da mudança 1 (catálogo activo). Não transportar antes da 1.
 - [x] 2.4 `ZCL_MM_PAC_ITEM_VALIDATOR` + testes (8 ABAP Unit verdes; msg 088 na MSAG) — activo (2026-10-26) [REQ-22..25]
 - [x] 2.5 `ZCL_MM_PAC_ITEM_CHANGESET` + testes (4 ABAP Unit verdes; carimbo único, status `D`) — activo (2026-10-26) [REQ-26]
 - [x] 2.6 `ZCL_MM_PAC_ITEM_REPOSITORY` (Open SQL, `NUMBER_GET_NEXT`, bloqueio por ano) — activo (2026-10-26) [REQ-26, REQ-20]
-- [ ] 2.7 `ZCL_MM_PAC_ITEM_UPLOAD` + testes com duplos (REQ-20 sem COMMIT em simulação; número só na escrita) [REQ-20, REQ-26, REQ-27]
+- [x] 2.7 `ZCL_MM_PAC_ITEM_UPLOAD` + testes com duplos (6 ABAP Unit verdes; nº só na escrita) — activo (2026-10-26) [REQ-20, REQ-26, REQ-27]
 
 ## 3. Interface
 - [ ] 3.1 `ZMM_PAC_ITEM_UPLOAD` (ecrã de selecção, ALV, popup, REQ-27 fundo→erro); textos no SE38 [REQ-20, REQ-27]
