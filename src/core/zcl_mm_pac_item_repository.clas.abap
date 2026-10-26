@@ -67,7 +67,7 @@ CLASS zcl_mm_pac_item_repository IMPLEMENTATION.
 
 
   METHOD zif_mm_pac_item_repository~next_item_number.
-    DATA lv_number TYPE inri-nrlevel.
+    DATA lv_number TYPE nrlevel.
     CALL FUNCTION 'NUMBER_GET_NEXT'
       EXPORTING
         nr_range_nr             = c_nr_int
