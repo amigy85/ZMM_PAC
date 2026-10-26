@@ -120,3 +120,4 @@ CLASS ltc_item_validator IMPLEMENTATION.
   ENDMETHOD.
 
 ENDCLASS.
+*"* use this source file for your ABAP unit test classes

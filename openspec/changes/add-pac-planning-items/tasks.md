@@ -25,7 +25,7 @@ Depende da mudança 1 (catálogo activo). Não transportar antes da 1.
 - [x] 2.7 `ZCL_MM_PAC_ITEM_UPLOAD` + testes com duplos (6 ABAP Unit verdes; nº só na escrita) — activo (2026-10-26) [REQ-20, REQ-26, REQ-27]
 
 ## 3. Interface
-- [ ] 3.1 `ZMM_PAC_ITEM_UPLOAD` (ecrã de selecção, ALV, popup, REQ-27 fundo→erro); textos no SE38 [REQ-20, REQ-27]
+- [x] 3.1 `ZMM_PAC_ITEM_UPLOAD` (ecrã de selecção, ALV, popup, REQ-27 fundo→erro); textos no SE38; msg 089 criada — activo (2026-10-26) [REQ-20, REQ-27]
 - [ ] 3.2 Transacção `ZMM_PAC_ITEM_UPLOAD` (SE93) e botão no `ZMM_PAC_MENU`; serializar [ADR-05]
 
 ## 4. Verificação

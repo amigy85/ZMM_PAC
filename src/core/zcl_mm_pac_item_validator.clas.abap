@@ -1,23 +1,27 @@
-CLASS zcl_mm_pac_item_validator DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC .
+class ZCL_MM_PAC_ITEM_VALIDATOR definition
+  public
+  final
+  create public .
 
-  PUBLIC SECTION.
-    METHODS constructor
-      IMPORTING iv_today TYPE dats
-                io_log   TYPE REF TO zcl_mm_pac_log.
+public section.
 
+  methods CONSTRUCTOR
+    importing
+      !IV_TODAY type DATS
+      !IO_LOG type ref to ZCL_MM_PAC_LOG .
     "! Valida as linhas de itens (REQ-22..25), regista no log e devolve os itens
     "! novos a criar (PAC_CAT derivado da subcategoria; STATUS='D'; PAC_ITEM e
     "! auditoria ficam para o repositório/changeset).
-    METHODS validate
-      IMPORTING it_rows            TYPE zif_mm_pac_types=>tt_item_row
-                it_existing_cat    TYPE zif_mm_pac_types=>tt_catg
-                it_existing_subcat TYPE zif_mm_pac_types=>tt_subcatg
-      EXPORTING et_item            TYPE zif_mm_pac_types=>tt_item
-      RETURNING VALUE(rv_ok)       TYPE abap_bool.
-
+  methods VALIDATE
+    importing
+      !IT_ROWS type ZIF_MM_PAC_TYPES=>TT_ITEM_ROW
+      !IT_EXISTING_CAT type ZIF_MM_PAC_TYPES=>TT_CATG
+      !IT_EXISTING_SUBCAT type ZIF_MM_PAC_TYPES=>TT_SUBCATG
+    exporting
+      !ET_ITEM type ZIF_MM_PAC_TYPES=>TT_ITEM
+    returning
+      value(RV_OK) type ABAP_BOOL .
+protected section.
   PRIVATE SECTION.
     CONSTANTS:
       c_re_num      TYPE string             VALUE `^[0-9]+(\.[0-9]+)?$`,
@@ -47,29 +51,44 @@ ENDCLASS.
 
 
 
-CLASS zcl_mm_pac_item_validator IMPLEMENTATION.
+CLASS ZCL_MM_PAC_ITEM_VALIDATOR IMPLEMENTATION.
+
+
+  METHOD collect.
+    " pertença: a subcategoria tem de existir no catálogo do ano (REQ-24)
+    READ TABLE it_existing_subcat INTO DATA(ls_sub)
+         WITH KEY pac_year = mv_year_n pac_subcat = is_row-pac_subcat.
+    IF sy-subrc <> 0.
+      mo_log->add( iv_type = 'E' iv_no = '080' iv_row = is_row-row
+                   iv_v1 = is_row-pac_subcat iv_v2 = |{ mv_year_n }| ).
+      RETURN.
+    ENDIF.
+
+    " categoria-mãe (derivada da subcategoria) não pode estar inactiva
+    READ TABLE it_existing_cat INTO DATA(ls_cat)
+         WITH KEY pac_year = mv_year_n pac_cat = ls_sub-pac_cat.
+    IF sy-subrc = 0 AND ls_cat-status = zif_mm_pac_types=>c_status_inactive.
+      mo_log->add( iv_type = 'E' iv_no = '081' iv_row = is_row-row iv_v1 = is_row-pac_subcat ).
+      RETURN.
+    ENDIF.
+
+    APPEND VALUE #( pac_year    = mv_year_n
+                    pac_cat     = ls_sub-pac_cat
+                    pac_subcat  = is_row-pac_subcat
+                    description = is_row-description
+                    quantidade  = is_row-quantidade
+                    meins       = is_row-unidade
+                    valor       = is_row-valor
+                    moeda       = is_row-moeda
+                    centro      = is_row-centro
+                    saknr       = is_row-conta
+                    status      = c_status_draft ) TO ct_item.
+  ENDMETHOD.
+
 
   METHOD constructor.
     mv_today = iv_today.
     mo_log   = io_log.
-  ENDMETHOD.
-
-
-  METHOD validate.
-    CLEAR et_item.
-    resolve_year( it_rows ).
-
-    LOOP AT it_rows ASSIGNING FIELD-SYMBOL(<r>).
-      IF validate_row( <r> ) = abap_false OR mv_year_ok = abap_false.
-        CONTINUE.
-      ENDIF.
-      collect( EXPORTING is_row             = <r>
-                         it_existing_cat    = it_existing_cat
-                         it_existing_subcat = it_existing_subcat
-               CHANGING  ct_item            = et_item ).
-    ENDLOOP.
-
-    rv_ok = xsdbool( mo_log->num_errors( ) = 0 ).
   ENDMETHOD.
 
 
@@ -113,6 +132,24 @@ CLASS zcl_mm_pac_item_validator IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD validate.
+    CLEAR et_item.
+    resolve_year( it_rows ).
+
+    LOOP AT it_rows ASSIGNING FIELD-SYMBOL(<r>).
+      IF validate_row( <r> ) = abap_false OR mv_year_ok = abap_false.
+        CONTINUE.
+      ENDIF.
+      collect( EXPORTING is_row             = <r>
+                         it_existing_cat    = it_existing_cat
+                         it_existing_subcat = it_existing_subcat
+               CHANGING  ct_item            = et_item ).
+    ENDLOOP.
+
+    rv_ok = xsdbool( mo_log->num_errors( ) = 0 ).
+  ENDMETHOD.
+
+
   METHOD validate_row.
     rv_ok = abap_true.
 
@@ -141,37 +178,4 @@ CLASS zcl_mm_pac_item_validator IMPLEMENTATION.
       rv_ok = abap_false.
     ENDIF.
   ENDMETHOD.
-
-
-  METHOD collect.
-    " pertença: a subcategoria tem de existir no catálogo do ano (REQ-24)
-    READ TABLE it_existing_subcat INTO DATA(ls_sub)
-         WITH KEY pac_year = mv_year_n pac_subcat = is_row-pac_subcat.
-    IF sy-subrc <> 0.
-      mo_log->add( iv_type = 'E' iv_no = '080' iv_row = is_row-row
-                   iv_v1 = is_row-pac_subcat iv_v2 = |{ mv_year_n }| ).
-      RETURN.
-    ENDIF.
-
-    " categoria-mãe (derivada da subcategoria) não pode estar inactiva
-    READ TABLE it_existing_cat INTO DATA(ls_cat)
-         WITH KEY pac_year = mv_year_n pac_cat = ls_sub-pac_cat.
-    IF sy-subrc = 0 AND ls_cat-status = zif_mm_pac_types=>c_status_inactive.
-      mo_log->add( iv_type = 'E' iv_no = '081' iv_row = is_row-row iv_v1 = is_row-pac_subcat ).
-      RETURN.
-    ENDIF.
-
-    APPEND VALUE #( pac_year    = mv_year_n
-                    pac_cat     = ls_sub-pac_cat
-                    pac_subcat  = is_row-pac_subcat
-                    description = is_row-description
-                    quantidade  = is_row-quantidade
-                    meins       = is_row-unidade
-                    valor       = is_row-valor
-                    moeda       = is_row-moeda
-                    centro      = is_row-centro
-                    saknr       = is_row-conta
-                    status      = c_status_draft ) TO ct_item.
-  ENDMETHOD.
-
 ENDCLASS.

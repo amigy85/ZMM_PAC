@@ -1,36 +1,39 @@
-CLASS zcl_mm_pac_item_upload DEFINITION
-  PUBLIC
-  CREATE PUBLIC .
+class ZCL_MM_PAC_ITEM_UPLOAD definition
+  public
+  create public .
 
-  PUBLIC SECTION.
-    METHODS constructor
-      IMPORTING io_repository TYPE REF TO zif_mm_pac_item_repository
-                io_auth       TYPE REF TO zcl_mm_pac_auth
-                io_parser     TYPE REF TO zcl_mm_pac_item_parser
-                io_log        TYPE REF TO zcl_mm_pac_log
-                iv_today      TYPE dats.
+public section.
 
+  methods CONSTRUCTOR
+    importing
+      !IO_REPOSITORY type ref to ZIF_MM_PAC_ITEM_REPOSITORY
+      !IO_AUTH type ref to ZCL_MM_PAC_AUTH
+      !IO_PARSER type ref to ZCL_MM_PAC_ITEM_PARSER
+      !IO_LOG type ref to ZCL_MM_PAC_LOG
+      !IV_TODAY type DATS .
     "! Autoriza, lê/parsa e (modo Gravação) bloqueia + lê catálogo + valida + prepara
     "! os itens. NÃO grava nem consome números. Levanta ZCX_MM_PAC (050/051).
-    METHODS prepare
-      IMPORTING it_raw   TYPE string_table
-                iv_write TYPE abap_bool
-      RAISING   zcx_mm_pac.
-
+  methods PREPARE
+    importing
+      !IT_RAW type STRING_TABLE
+      !IV_WRITE type ABAP_BOOL
+    raising
+      ZCX_MM_PAC .
     "! Zona sem diálogos: atribui PAC_ITEM (nº-range), INSERT + COMMIT.
-    METHODS write.
-
+  methods WRITE .
     "! Liberta o bloqueio (chamar sempre, também em excepção).
-    METHODS release.
-
-    METHODS get_log
-      RETURNING VALUE(ro_log) TYPE REF TO zcl_mm_pac_log.
-    METHODS has_new
-      RETURNING VALUE(rv_ok) TYPE abap_bool.
-    METHODS get_summary
-      EXPORTING ev_count TYPE i
-                ev_year  TYPE zmm_pac_year.
-
+  methods RELEASE .
+  methods GET_LOG
+    returning
+      value(RO_LOG) type ref to ZCL_MM_PAC_LOG .
+  methods HAS_NEW
+    returning
+      value(RV_OK) type ABAP_BOOL .
+  methods GET_SUMMARY
+    exporting
+      !EV_COUNT type I
+      !EV_YEAR type ZMM_PAC_YEAR .
+protected section.
   PRIVATE SECTION.
     DATA:
       mo_repository TYPE REF TO zif_mm_pac_item_repository,
@@ -46,7 +49,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_mm_pac_item_upload IMPLEMENTATION.
+CLASS ZCL_MM_PAC_ITEM_UPLOAD IMPLEMENTATION.
+
 
   METHOD constructor.
     mo_repository = io_repository.
@@ -54,6 +58,22 @@ CLASS zcl_mm_pac_item_upload IMPLEMENTATION.
     mo_parser     = io_parser.
     mo_log        = io_log.
     mv_today      = iv_today.
+  ENDMETHOD.
+
+
+  METHOD get_log.
+    ro_log = mo_log.
+  ENDMETHOD.
+
+
+  METHOD get_summary.
+    ev_count = lines( mt_item ).
+    ev_year  = mv_year.
+  ENDMETHOD.
+
+
+  METHOD has_new.
+    rv_ok = xsdbool( mt_item IS NOT INITIAL ).
   ENDMETHOD.
 
 
@@ -106,6 +126,14 @@ CLASS zcl_mm_pac_item_upload IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD release.
+    IF mv_locked = abap_true.
+      mo_repository->unlock_year( mv_year ).
+      mv_locked = abap_false.
+    ENDIF.
+  ENDMETHOD.
+
+
   METHOD write.
     IF mv_write = abap_false.
       RETURN.                                   " simulação nunca grava (REQ-20)
@@ -132,29 +160,4 @@ CLASS zcl_mm_pac_item_upload IMPLEMENTATION.
         mo_log->add( iv_type = 'E' iv_no = '063' ).
     ENDTRY.
   ENDMETHOD.
-
-
-  METHOD release.
-    IF mv_locked = abap_true.
-      mo_repository->unlock_year( mv_year ).
-      mv_locked = abap_false.
-    ENDIF.
-  ENDMETHOD.
-
-
-  METHOD get_log.
-    ro_log = mo_log.
-  ENDMETHOD.
-
-
-  METHOD has_new.
-    rv_ok = xsdbool( mt_item IS NOT INITIAL ).
-  ENDMETHOD.
-
-
-  METHOD get_summary.
-    ev_count = lines( mt_item ).
-    ev_year  = mv_year.
-  ENDMETHOD.
-
 ENDCLASS.

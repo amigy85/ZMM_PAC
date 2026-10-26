@@ -313,6 +313,12 @@
      <MSGNR>088</MSGNR>
      <TEXT>Descrição do item não informada</TEXT>
     </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>089</MSGNR>
+     <TEXT>Gravar &amp;1 itens no PAC &amp;2?</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>
