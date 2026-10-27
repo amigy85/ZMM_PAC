@@ -33,4 +33,4 @@ Depende da mudança 1 (catálogo activo). Não transportar antes da 1.
 - [x] 4.2 ATC sem findings P1/P2 (só P3: instruções críticas LUW/bloqueio/nº-range + SLIN, esperados) (2026-10-27)
 - [ ] 4.3 Testes manuais em QAS (SE16N, SCU3, SM12, SU53, SM37; numeração sequencial; conversão CURR)
 - [ ] 4.4 Volume (10 000 itens < 60 s) em QAS
-- [ ] 4.5 `abapgit_meta.py check` sem erros; pull limpo no DEV
+- [x] 4.5 `abapgit_meta.py check` sem erros; disco alinhado com SAP (menu c/ P02 re-serializado) (2026-10-27)

@@ -23,6 +23,12 @@
      <LENGTH>52</LENGTH>
     </item>
     <item>
+     <ID>I</ID>
+     <KEY>P02</KEY>
+     <ENTRY>Carregar Item PAC (upload)</ENTRY>
+     <LENGTH>52</LENGTH>
+    </item>
+    <item>
      <ID>R</ID>
      <ENTRY>PAC - Menu / lancador</ENTRY>
      <LENGTH>21</LENGTH>
