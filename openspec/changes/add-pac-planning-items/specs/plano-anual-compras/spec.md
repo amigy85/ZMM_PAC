@@ -40,14 +40,20 @@ corrente a corrente + 1 (D-07). O `PAC_ITEM` **não** vem no ficheiro.
 - THEN é registado erro de ano múltiplo e a gravação fica impedida
 
 ### Requirement: REQ-23 — Campos obrigatórios do item
-O sistema DEVE (MUST) exigir, por linha: `COD_SUBCATEGORIA`, `DESCRICAO`, `QUANTIDADE`,
-`UNIDADE`, `VALOR` e `MOEDA`. Os campos `CENTRO` e `CONTA_RAZAO` são opcionais e NÃO DEVEM
-(MUST NOT) ser validados contra tabelas standard.
+O sistema DEVE (MUST) exigir, por linha, **todas as colunas**: `COD_SUBCATEGORIA`,
+`DESCRICAO`, `QUANTIDADE`, `UNIDADE`, `VALOR`, `MOEDA`, `CENTRO` e `CONTA_RAZAO` (D5-08
+tornou `CENTRO`/`CONTA_RAZAO` obrigatórios). Qualquer campo em falta é erro de linha e
+impede a gravação.
 
 #### Scenario: valor em falta
 - GIVEN uma linha sem `VALOR`
 - WHEN o upload é executado
 - THEN é registado erro de campo obrigatório para essa linha
+
+#### Scenario: centro em falta
+- GIVEN uma linha sem `CENTRO`
+- WHEN o upload é executado
+- THEN é registado erro de campo obrigatório (`092`) e a gravação fica impedida
 
 ### Requirement: REQ-24 — A subcategoria tem de existir e ser utilizável no catálogo do ano
 O sistema DEVE (MUST) rejeitar um item cuja `COD_SUBCATEGORIA` não exista em
@@ -64,15 +70,23 @@ inactiva. A `PAC_CAT` do item é derivada da subcategoria do catálogo (não vem
 - WHEN o upload é executado
 - THEN é registado erro e o item não é criado
 
-### Requirement: REQ-25 — Validação de quantidade, valor, moeda e unidade
-O sistema DEVE (MUST) rejeitar `QUANTIDADE` ou `VALOR` não numéricos ou negativos, e
-`MOEDA` ou `UNIDADE` não reconhecidas pelo sistema (TCURC / T006), de forma a não provocar
-dump na gravação dos campos `CURR`/`QUAN`.
+### Requirement: REQ-25 — Validação de quantidade, valor e dados-mestre
+O sistema DEVE (MUST) rejeitar `QUANTIDADE` ou `VALOR` não numéricos ou negativos, e, de
+forma **bloqueante** (D5-08), DEVE (MUST) rejeitar valores de dados-mestre inexistentes:
+`MOEDA` em TCURC (`090`), `UNIDADE` em T006 após conversão externa→interna (`091`),
+`CENTRO` em T001W (`093`) e `CONTA_RAZAO` em `SKB1` para a empresa `P_BUKRS` (`095`,
+semântica da ajuda de pesquisa `C_SAKNR`). Isto evita também dump na gravação dos campos
+`CURR`/`QUAN`.
 
 #### Scenario: moeda inválida
 - GIVEN um item com `MOEDA` inexistente em TCURC
 - WHEN o upload é executado
 - THEN é registado erro de moeda inválida e a gravação fica impedida
+
+#### Scenario: conta-razão inexistente na empresa
+- GIVEN um item com `CONTA_RAZAO` que não existe em `SKB1` para `P_BUKRS`
+- WHEN o upload é executado
+- THEN é registado erro de conta inexistente (`095`) e a gravação fica impedida
 
 ### Requirement: REQ-26 — Criação de itens numerados, auditados e em rascunho
 O sistema DEVE (MUST) criar cada linha válida como um **item novo** com `PAC_ITEM` obtido

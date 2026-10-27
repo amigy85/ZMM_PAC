@@ -20,15 +20,17 @@ log, ALV, simulação + gravação atómica e bloqueio por ano).
   - `QUANTIDADE` mantém-se `QUAN` com referência de unidade a `MEINS`.
   - **Remover `KOSTL`** (centro de custo): um item de planeamento não deve ficar amarrado a uma UO/centro de custo específico.
   - `PAC_ITEM` (NUMC 5) **numerado por objecto de intervalo de números** (não vem no ficheiro).
-  - **Foreign keys** de `PAC_CAT`→`ZMM_PAC_CATG` e `PAC_SUBCAT`→`ZMM_PAC_SUBCATG`.
+  - **Foreign keys** de `PAC_CAT`→`ZMM_PAC_CATG` e `PAC_SUBCAT`→`ZMM_PAC_SUBCATG`;
+    e (D5-08) `MOEDA`→`TCURC`, `MEINS`→`T006`, `CENTRO`→`T001W`.
   - Domínio de status do item `ZMM_PACITEM_STATUS` com ciclo de vida **`D/A/B/C/F`** (D-02/D-03) e matriz de transições.
 - **Upload de itens por ficheiro CSV** (simulação por omissão / gravação atómica após confirmação), layout:
   `ANO;COD_SUBCATEGORIA;DESCRICAO;QUANTIDADE;UNIDADE;VALOR;MOEDA;CENTRO;CONTA_RAZAO`
-  (cp1252, `;`, máximo de 10 000 linhas; `CENTRO`/`CONTA_RAZAO` opcionais).
+  (cp1252, `;`, máximo de 10 000 linhas; **todas as colunas obrigatórias** — ver D5-08).
 - **Validação completa antes de gravar**: estrutura do ficheiro; ano único e no intervalo;
   campos obrigatórios (subcategoria, descrição, quantidade, unidade, valor, moeda);
   **a subcategoria tem de existir e ser utilizável no catálogo do ano** (a categoria é
-  derivada dela); quantidade/valor numéricos ≥ 0; moeda/unidade reconhecidas pelo SAP.
+  derivada dela); quantidade/valor numéricos ≥ 0; **moeda (TCURC), unidade (T006),
+  centro (T001W) e conta-razão (SKB1 na empresa `P_BUKRS`) existentes no sistema** (D5-08).
 - **Só cria** (`INSERT`), nunca altera itens existentes; cada linha = um item novo
   (numeração automática); auditoria com carimbo único; status inicial **`D` (Rascunho)**.
 - **Entrega**: novas classes `ZCL_MM_PAC_ITEM_*` (parser/validador/changeset/repositório/
@@ -65,7 +67,8 @@ Mudança **5 de 6**. Depende de 1. Ver quadro de faseamento no `proposal.md` da 
 - Manutenção/alteração de itens e transições de status com motivo (mudança 3, alargada ao item).
 - Verificação de uso em PR (mudança 4) e relatório de execução (mudança 6).
 - Ficheiros `.xlsx` (D-08).
-- Validação de `CENTRO`/`CONTA_RAZAO` contra o standard (decisão: opcionais, sem validação).
+- Autorização do utilizador sobre o **centro** (`M_*`): valida-se só a existência em T001W, não o acesso.
+- Validação da conta por **plano de contas** (`SKA1`/`KTOPL`): usa-se a empresa (`SKB1`/`P_BUKRS`).
 
 ## Riscos
 
@@ -83,10 +86,11 @@ Mudança **5 de 6**. Depende de 1. Ver quadro de faseamento no `proposal.md` da 
 | D5-01 | Layout do CSV = `ANO;COD_SUBCATEGORIA;DESCRICAO;QUANTIDADE;UNIDADE;VALOR;MOEDA;CENTRO;CONTA_RAZAO` (categoria derivada da subcategoria) | **decidida (2026-10-23)** |
 | D5-02 | `PAC_ITEM` por **intervalo de números** (não no ficheiro); numeração contínua | **decidida** |
 | D5-03 | Status inicial do item = **`D` (Rascunho)** | **decidida** |
-| D5-04 | **Remover `KOSTL`**; `CENTRO` e `CONTA_RAZAO` **opcionais, sem validação** | **decidida (2026-10-23)** |
+| D5-04 | **Remover `KOSTL`**. `CENTRO`/`CONTA_RAZAO` eram opcionais sem validação — **revisto pela D5-08**: passam a obrigatórios e validados | **revista (2026-10-27)** |
 | D5-05 | `VALOR` → `CURR` (ref. `MOEDA`); validar `MOEDA`/`UNIDADE` (evitar dump); `VALOR`/`QUANTIDADE` ≥ 0 | **decidida** |
 | D5-06 | Cada linha do ficheiro = **um item novo**; sem detecção de duplicados; vários itens por subcategoria | **decidida** |
 | D5-07 | Reutilizar infra da mudança 1 (log/auth/excepção/tipos); classes próprias `ZCL_MM_PAC_ITEM_*` | **decidida** |
+| D5-08 | **Validação de dados-mestre dos itens (bloqueante)**: `MOEDA`→TCURC (`090`), `UNIDADE`→T006 c/ conversão externa→interna (`091`), `CENTRO` obrigatório→T001W (`092`/`093`), `CONTA_RAZAO` obrigatório→`SKB1 WHERE BUKRS = P_BUKRS` semântica de `C_SAKNR` (`094`/`095`). `P_BUKRS` parâmetro de ecrã obrigatório, default **`HCB`**. DDIC: foreign keys `MOEDA→TCURC`, `MEINS→T006`, `CENTRO→T001W` na `ZMM_PAC_ITEM`. Reverte a parte "opcionais" da D5-04. | **decidida (2026-10-27)** |
 
 ## Ordem de transporte
 

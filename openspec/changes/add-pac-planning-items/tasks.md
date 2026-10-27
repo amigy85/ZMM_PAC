@@ -28,6 +28,14 @@ Depende da mudança 1 (catálogo activo). Não transportar antes da 1.
 - [x] 3.1 `ZMM_PAC_ITEM_UPLOAD` (ecrã de selecção, ALV, popup, REQ-27 fundo→erro); textos no SE38; msg 089 criada — activo (2026-10-26) [REQ-20, REQ-27]
 - [x] 3.2 Transacção `ZMM_PAC_ITEM_UPLOAD` (SE93) e 2.º botão no `ZMM_PAC_MENU` (P02); `.tran.xml` + TPOOL serializados (2026-10-27) [ADR-05]
 
+## 5. Adenda D5-08 — validação de dados-mestre (moeda/unidade/centro/conta)
+- [ ] 5.1 DDIC: foreign keys `MOEDA→TCURC`, `MEINS→T006`, `CENTRO→T001W` na `ZMM_PAC_ITEM`; `.tabl.xml` reserializado [D5-08]
+- [ ] 5.2 Mensagens `090`–`095` na classe `ZMM_PAC` serializadas [D5-08]
+- [ ] 5.3 `ZIF_MM_PAC_ITEM_REPOSITORY` + `ZCL_..._REPOSITORY`: `read_currencies`/`read_units`/`read_plants`/`read_gl_accounts(iv_bukrs)` (1 SELECT cada, HASHED); `normalize_uom` (conversão externa→interna) — activo [D5-08]
+- [ ] 5.4 `ZCL_MM_PAC_ITEM_VALIDATOR`: centro/conta obrigatórios + existência de moeda/unidade/centro/conta (bloqueante); testes novos verdes [D5-08]
+- [ ] 5.5 `ZCL_MM_PAC_ITEM_UPLOAD` + programa: parâmetro `P_BUKRS` (default `HCB`); injectar conjuntos no validador; testes verdes [D5-08]
+- [ ] 5.6 Fixtures regenerados (centros `MPM/CHIM/SONG` e contas reais da `HCB` sempre preenchidos; happy-path real gitignored); fixtures de erro para 092–095
+
 ## 4. Verificação
 - [x] 4.1 Todos os ABAP Unit verdes (61/61: 36 catálogo + 25 item; sem regressão) (2026-10-27)
 - [x] 4.2 ATC sem findings P1/P2 (só P3: instruções críticas LUW/bloqueio/nº-range + SLIN, esperados) (2026-10-27)
