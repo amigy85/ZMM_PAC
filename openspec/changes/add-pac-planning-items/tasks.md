@@ -26,7 +26,7 @@ Depende da mudança 1 (catálogo activo). Não transportar antes da 1.
 
 ## 3. Interface
 - [x] 3.1 `ZMM_PAC_ITEM_UPLOAD` (ecrã de selecção, ALV, popup, REQ-27 fundo→erro); textos no SE38; msg 089 criada — activo (2026-10-26) [REQ-20, REQ-27]
-- [ ] 3.2 Transacção `ZMM_PAC_ITEM_UPLOAD` (SE93) e botão no `ZMM_PAC_MENU`; serializar [ADR-05]
+- [x] 3.2 Transacção `ZMM_PAC_ITEM_UPLOAD` (SE93) e 2.º botão no `ZMM_PAC_MENU` (P02); `.tran.xml` + TPOOL serializados (2026-10-27) [ADR-05]
 
 ## 4. Verificação
 - [x] 4.1 Todos os ABAP Unit verdes (61/61: 36 catálogo + 25 item; sem regressão) (2026-10-27)
