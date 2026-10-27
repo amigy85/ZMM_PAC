@@ -33,6 +33,26 @@ Linha física: cabeçalho = 1, primeira linha de dados = 2.
 | `ansi_1252.csv` | Ficheiro **válido** em cp1252 com acentos; verifica que os acentos são preservados na leitura ANSI. | — (sem erro) | REQ-02 | cenário "acentos preservados num ficheiro cp1252" |
 | `10001_linhas.csv` | 10 001 linhas de dados (excede o limite de 10 000). Linhas válidas; só o volume é erro. | `007` | REQ-02 | `more_than_max_rows_rejected` |
 
+## Fixtures de ITEM (mudança 5 — `ZMM_PAC_ITEM`)
+
+Layout de 9 colunas `ANO;COD_SUBCATEGORIA;DESCRICAO;QUANTIDADE;UNIDADE;VALOR;MOEDA;CENTRO;CONTA_RAZAO`
+(CENTRO/CONTA_RAZAO opcionais, sem validação — D5). Referenciam subcategorias reais
+(anonimizadas) do `valido_303.csv` (`PAC-E001.1`…), pelo que **o catálogo tem de estar
+carregado no ano 2026** antes de os usar. Gerados por `scratchpad/gen_item_fixtures.py`.
+
+| Ficheiro | Conteúdo | Msg esperada | Uso |
+|---|---|---|---|
+| `item_valido.csv` | 15 itens válidos (cp1252, 1 descrição com acentos; CENTRO/CONTA mistos). | — (086 na gravação) | Caso feliz 4.3 |
+| `item_so_cabecalho.csv` | Só cabeçalho. | `006` | Estrutural |
+| `item_cabecalho_errado.csv` | 3.ª coluna `DESC` (esperado `DESCRICAO`). | `004` | Estrutural |
+| `item_colunas_erradas.csv` | Linha 3 com 7 campos (esperados 9). | `005` | Estrutural |
+| `item_dois_anos.csv` | Linhas 2026 e 2027. | `008` | REQ-03 |
+| `item_erros.csv` | 6 linhas, 1 erro cada: qtd `abc` (082), valor `-5` (083), descrição vazia (088), unidade `UNID` (085), moeda `DOLAR` (084), subcat `PAC-Z999.9` inexistente (080). Bloqueia a gravação toda (061/INV-6). | `082/083/088/085/084/080`, `061` | REQ-22..25, INV-6 |
+| `item_10000.csv` | 10 000 itens válidos (ciclando as 303 subcats). | — | Volume 4.4 |
+
+Para o cenário **categoria-mãe inactiva (081)**: pôr manualmente uma categoria a `STATUS='I'`
+(SE16N em DEV) e carregar um item dessa família.
+
 ## Notas
 
 - **`status_invalido.csv` não existe** (estava no §14.2 da spec v2): com a D-02 o

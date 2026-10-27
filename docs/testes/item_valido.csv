@@ -1,0 +1,16 @@
+ANO;COD_SUBCATEGORIA;DESCRICAO;QUANTIDADE;UNIDADE;VALOR;MOEDA;CENTRO;CONTA_RAZAO
+2026;PAC-E001.1;Aquisição de material com acento ção;5;UN;1000.00;MZN;1000;620000
+2026;PAC-E001.2;Item de planeamento 002 - aquisicao generica;10;KG;2000.07;USD;;
+2026;PAC-E002.1;Item de planeamento 003 - aquisicao generica;15;CX;3000.14;ZAR;1000;
+2026;PAC-E002.2;Item de planeamento 004 - aquisicao generica;20;LT;4000.21;MZN;;620000
+2026;PAC-E003.1;Item de planeamento 005 - aquisicao generica;25;M;5000.28;USD;1000;
+2026;PAC-E003.2;Item de planeamento 006 - aquisicao generica;30;UN;6000.35;ZAR;;
+2026;PAC-E004.1;Item de planeamento 007 - aquisicao generica;35;KG;7000.42;MZN;1000;620000
+2026;PAC-E004.2;Item de planeamento 008 - aquisicao generica;40;CX;8000.49;USD;;
+2026;PAC-E005.1;Item de planeamento 009 - aquisicao generica;45;LT;9000.56;ZAR;1000;
+2026;PAC-E005.2;Item de planeamento 010 - aquisicao generica;50;M;10000.63;MZN;;620000
+2026;PAC-E006.1;Item de planeamento 011 - aquisicao generica;55;UN;11000.70;USD;1000;
+2026;PAC-E006.2;Item de planeamento 012 - aquisicao generica;60;KG;12000.77;ZAR;;
+2026;PAC-E007.1;Item de planeamento 013 - aquisicao generica;65;CX;13000.84;MZN;1000;620000
+2026;PAC-E007.2;Item de planeamento 014 - aquisicao generica;70;LT;14000.91;USD;;
+2026;PAC-E008.1;Item de planeamento 015 - aquisicao generica;75;M;15000.98;ZAR;1000;
