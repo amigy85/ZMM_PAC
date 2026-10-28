@@ -40,15 +40,25 @@ Layout de 9 colunas `ANO;COD_SUBCATEGORIA;DESCRICAO;QUANTIDADE;UNIDADE;VALOR;MOE
 (anonimizadas) do `valido_303.csv` (`PAC-E001.1`…), pelo que **o catálogo tem de estar
 carregado no ano 2026** antes de os usar. Gerados por `scratchpad/gen_item_fixtures.py`.
 
-| Ficheiro | Conteúdo | Msg esperada | Uso |
-|---|---|---|---|
-| `item_valido.csv` | 15 itens válidos (cp1252, 1 descrição com acentos; CENTRO/CONTA mistos). | — (086 na gravação) | Caso feliz 4.3 |
-| `item_so_cabecalho.csv` | Só cabeçalho. | `006` | Estrutural |
-| `item_cabecalho_errado.csv` | 3.ª coluna `DESC` (esperado `DESCRICAO`). | `004` | Estrutural |
-| `item_colunas_erradas.csv` | Linha 3 com 7 campos (esperados 9). | `005` | Estrutural |
-| `item_dois_anos.csv` | Linhas 2026 e 2027. | `008` | REQ-03 |
-| `item_erros.csv` | 6 linhas, 1 erro cada: qtd `abc` (082), valor `-5` (083), descrição vazia (088), unidade `UNID` (085), moeda `DOLAR` (084), subcat `PAC-Z999.9` inexistente (080). Bloqueia a gravação toda (061/INV-6). | `082/083/088/085/084/080`, `061` | REQ-22..25, INV-6 |
-| `item_10000.csv` | 10 000 itens válidos (ciclando as 303 subcats). | — | Volume 4.4 |
+Com a D5-08 o `CENTRO` e a `CONTA_RAZAO` passaram a **obrigatórios e validados** (centro em
+T001W, conta em SKB1 pela empresa `P_BUKRS`). O happy-path precisa de centros e contas
+**reais** da `HCB`, por isso fica **gitignored** (`*.real.csv`, CLAUDE.md §8); versiona-se
+apenas os fixtures de erro, com valores propositadamente inválidos (sem contas reais).
+
+| Ficheiro | Versionado? | Conteúdo | Msg esperada | Uso |
+|---|---|---|---|---|
+| `item_valido.real.csv` | **não** (gitignored) | 15 itens válidos (cp1252, 1 descrição com acentos); centros `MPM/CHIM/SONG/RSUL` e contas reais da `HCB`. | — (086 na gravação) | Caso feliz 4.3 |
+| `item_10000.real.csv` | **não** (gitignored) | 10 000 itens válidos (centros/contas reais). | — | Volume 4.4 |
+| `item_so_cabecalho.csv` | sim | Só cabeçalho. | `006` | Estrutural |
+| `item_cabecalho_errado.csv` | sim | 3.ª coluna `DESC` (esperado `DESCRICAO`). | `004` | Estrutural |
+| `item_colunas_erradas.csv` | sim | Linha 3 com 7 campos (esperados 9). | `005` | Estrutural |
+| `item_dois_anos.csv` | sim | Linhas 2026 e 2027. | `008` | REQ-03 |
+| `item_erros.csv` | sim | 12 linhas, uma por erro: `082/083/088/085/084` (formato), `092` centro vazio, `094` conta vazia, `080` subcat inexistente, `090` moeda `XYZ`, `091` unidade `XX`, `093` centro `ZZZZ`, `095` conta `9999999999`. Bloqueia a gravação toda (061/INV-6). | `082/083/088/085/084/092/094/080/090/091/093/095`, `061` | REQ-22..25, D5-08, INV-6 |
+
+Notas sobre o `item_erros.csv`: os erros ao nível de `collect` (`080/090/091/093/095`) só são
+alcançados se a linha passar os obrigatórios (centro+conta preenchidos), por isso essas linhas
+trazem `MPM` + `9999999999` (conta inexistente) — o que faz algumas acusarem também `095`; o
+importante é que cada mensagem-alvo aparece e o ficheiro é rejeitado.
 
 Para o cenário **categoria-mãe inactiva (081)**: pôr manualmente uma categoria a `STATUS='I'`
 (SE16N em DEV) e carregar um item dessa família.

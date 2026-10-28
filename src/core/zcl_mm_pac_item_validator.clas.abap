@@ -99,7 +99,9 @@ CLASS ZCL_MM_PAC_ITEM_VALIDATOR IMPLEMENTATION.
       lv_ok = abap_false.
     ENDIF.
 
-    IF NOT line_exists( it_gl_accounts[ table_line = CONV saknr( is_row-conta ) ] ).
+    " conta-razão com conversão ALPHA (zeros à esquerda), como é guardada na SKB1
+    DATA(lv_conta) = CONV saknr( |{ is_row-conta ALPHA = IN }| ).
+    IF NOT line_exists( it_gl_accounts[ table_line = lv_conta ] ).
       mo_log->add( iv_type = 'E' iv_no = '095' iv_row = is_row-row iv_v1 = is_row-conta ).
       lv_ok = abap_false.
     ENDIF.
@@ -117,7 +119,7 @@ CLASS ZCL_MM_PAC_ITEM_VALIDATOR IMPLEMENTATION.
                     valor       = is_row-valor
                     moeda       = is_row-moeda
                     centro      = is_row-centro
-                    saknr       = is_row-conta
+                    saknr       = lv_conta
                     status      = c_status_draft ) TO ct_item.
   ENDMETHOD.
 
