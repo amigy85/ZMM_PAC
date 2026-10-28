@@ -119,9 +119,9 @@ CLASS ltc_item_upload IMPLEMENTATION.
   METHOD with_catalog.
     mo_repo->mt_cat = VALUE #( ( pac_year = '2026' pac_cat = 'PAC-E001' pac_cat_desc = 'Cat' status = 'A' ) ).
     mo_repo->mt_sub = VALUE #( ( pac_year = '2026' pac_subcat = 'PAC-E001.1' pac_cat = 'PAC-E001' pac_subcat_desc = 'Sub' ) ).
-    mo_repo->mt_cur = VALUE #( ( `MZN` ) ).
-    mo_repo->mt_plt = VALUE #( ( `MPM` ) ).
-    mo_repo->mt_gl  = VALUE #( ( `0000620000` ) ).   " forma ALPHA (como na SKB1)
+    mo_repo->mt_cur = VALUE #( ( 'MZN' ) ).
+    mo_repo->mt_plt = VALUE #( ( 'MPM' ) ).
+    mo_repo->mt_gl  = VALUE #( ( '0000620000' ) ).   " forma ALPHA (como na SKB1)
   ENDMETHOD.
 
   METHOD raw_valid.

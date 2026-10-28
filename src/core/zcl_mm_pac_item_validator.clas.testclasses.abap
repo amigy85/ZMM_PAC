@@ -83,15 +83,15 @@ CLASS ltc_item_validator IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD def_cur.
-    rt = VALUE #( ( `MZN` ) ( `USD` ) ( `ZAR` ) ).
+    rt = VALUE #( ( 'MZN' ) ( 'USD' ) ( 'ZAR' ) ).
   ENDMETHOD.
 
   METHOD def_plt.
-    rt = VALUE #( ( `MPM` ) ( `CHIM` ) ( `SONG` ) ).
+    rt = VALUE #( ( 'MPM' ) ( 'CHIM' ) ( 'SONG' ) ).
   ENDMETHOD.
 
   METHOD def_gl.
-    rt = VALUE #( ( `0000620000` ) ).   " forma ALPHA (como na SKB1)
+    rt = VALUE #( ( '0000620000' ) ).   " forma ALPHA (como na SKB1)
   ENDMETHOD.
 
   METHOD def_uom.
