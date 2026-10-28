@@ -83,19 +83,22 @@ CLASS ltc_item_validator IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD def_cur.
-    INSERT 'MZN' INTO TABLE rt.
-    INSERT 'USD' INTO TABLE rt.
-    INSERT 'ZAR' INTO TABLE rt.
+    DATA lv TYPE waers.
+    lv = 'MZN'. INSERT lv INTO TABLE rt.
+    lv = 'USD'. INSERT lv INTO TABLE rt.
+    lv = 'ZAR'. INSERT lv INTO TABLE rt.
   ENDMETHOD.
 
   METHOD def_plt.
-    INSERT 'MPM'  INTO TABLE rt.
-    INSERT 'CHIM' INTO TABLE rt.
-    INSERT 'SONG' INTO TABLE rt.
+    DATA lv TYPE werks_d.
+    lv = 'MPM'.  INSERT lv INTO TABLE rt.
+    lv = 'CHIM'. INSERT lv INTO TABLE rt.
+    lv = 'SONG'. INSERT lv INTO TABLE rt.
   ENDMETHOD.
 
   METHOD def_gl.
-    INSERT '0000620000' INTO TABLE rt.   " forma ALPHA (como na SKB1)
+    DATA lv TYPE saknr.
+    lv = '0000620000'. INSERT lv INTO TABLE rt.   " forma ALPHA (como na SKB1)
   ENDMETHOD.
 
   METHOD def_uom.
