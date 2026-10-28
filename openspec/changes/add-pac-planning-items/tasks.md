@@ -29,7 +29,7 @@ Depende da mudança 1 (catálogo activo). Não transportar antes da 1.
 - [x] 3.2 Transacção `ZMM_PAC_ITEM_UPLOAD` (SE93) e 2.º botão no `ZMM_PAC_MENU` (P02); `.tran.xml` + TPOOL serializados (2026-10-27) [ADR-05]
 
 ## 5. Adenda D5-08 — validação de dados-mestre (moeda/unidade/centro/conta)
-- [ ] 5.1 DDIC: foreign keys `MOEDA→TCURC`, `MEINS→T006` activas; **`CENTRO→T001W` ficou mal (no `MANDT`) — a corrigir**; `.tabl.xml` a reserializar [D5-08]
+- [x] 5.1 DDIC: foreign keys `MOEDA→TCURC`, `MEINS→T006`, `CENTRO→T001W` activas e correctas; `.tabl.xml` reserializado (2026-10-28) [D5-08]
 - [x] 5.2 Mensagens `090`–`095` na classe `ZMM_PAC` serializadas (confirmado via MCP) (2026-10-27) [D5-08]
 - [x] 5.3 `ZIF/ZCL_MM_PAC_ITEM_REPOSITORY`: `read_currencies`/`read_plants`/`read_gl_accounts(iv_bukrs)`/`normalize_uom` — activo (2026-10-27) [D5-08]
 - [x] 5.4 `ZCL_MM_PAC_ITEM_VALIDATOR`: centro/conta obrigatórios + existência (bloqueante); 14 testes verdes (2026-10-27) [D5-08]
