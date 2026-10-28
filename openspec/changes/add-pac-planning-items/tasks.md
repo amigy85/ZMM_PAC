@@ -29,12 +29,12 @@ Depende da mudança 1 (catálogo activo). Não transportar antes da 1.
 - [x] 3.2 Transacção `ZMM_PAC_ITEM_UPLOAD` (SE93) e 2.º botão no `ZMM_PAC_MENU` (P02); `.tran.xml` + TPOOL serializados (2026-10-27) [ADR-05]
 
 ## 5. Adenda D5-08 — validação de dados-mestre (moeda/unidade/centro/conta)
-- [ ] 5.1 DDIC: foreign keys `MOEDA→TCURC`, `MEINS→T006`, `CENTRO→T001W` na `ZMM_PAC_ITEM`; `.tabl.xml` reserializado [D5-08]
-- [ ] 5.2 Mensagens `090`–`095` na classe `ZMM_PAC` serializadas [D5-08]
-- [ ] 5.3 `ZIF_MM_PAC_ITEM_REPOSITORY` + `ZCL_..._REPOSITORY`: `read_currencies`/`read_units`/`read_plants`/`read_gl_accounts(iv_bukrs)` (1 SELECT cada, HASHED); `normalize_uom` (conversão externa→interna) — activo [D5-08]
-- [ ] 5.4 `ZCL_MM_PAC_ITEM_VALIDATOR`: centro/conta obrigatórios + existência de moeda/unidade/centro/conta (bloqueante); testes novos verdes [D5-08]
-- [ ] 5.5 `ZCL_MM_PAC_ITEM_UPLOAD` + programa: parâmetro `P_BUKRS` (default `HCB`); injectar conjuntos no validador; testes verdes [D5-08]
-- [ ] 5.6 Fixtures regenerados (centros `MPM/CHIM/SONG` e contas reais da `HCB` sempre preenchidos; happy-path real gitignored); fixtures de erro para 092–095
+- [ ] 5.1 DDIC: foreign keys `MOEDA→TCURC`, `MEINS→T006` activas; **`CENTRO→T001W` ficou mal (no `MANDT`) — a corrigir**; `.tabl.xml` a reserializar [D5-08]
+- [x] 5.2 Mensagens `090`–`095` na classe `ZMM_PAC` serializadas (confirmado via MCP) (2026-10-27) [D5-08]
+- [x] 5.3 `ZIF/ZCL_MM_PAC_ITEM_REPOSITORY`: `read_currencies`/`read_plants`/`read_gl_accounts(iv_bukrs)`/`normalize_uom` — activo (2026-10-27) [D5-08]
+- [x] 5.4 `ZCL_MM_PAC_ITEM_VALIDATOR`: centro/conta obrigatórios + existência (bloqueante); 14 testes verdes (2026-10-27) [D5-08]
+- [x] 5.5 `ZCL_MM_PAC_ITEM_UPLOAD` + programa: `P_BUKRS` (default `HCB`); `resolve_uom`; injecção dos conjuntos; testes verdes (2026-10-27) [D5-08]
+- [ ] 5.6 Fixtures regenerados (centros `MPM/CHIM/SONG` e contas reais da `HCB` sempre preenchidos; happy-path real gitignored); fixtures de erro para 090–095
 
 ## 4. Verificação
 - [x] 4.1 Todos os ABAP Unit verdes (61/61: 36 catálogo + 25 item; sem regressão) (2026-10-27)
