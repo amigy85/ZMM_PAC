@@ -34,7 +34,7 @@ Depende da mudança 1 (catálogo activo). Não transportar antes da 1.
 - [x] 5.3 `ZIF/ZCL_MM_PAC_ITEM_REPOSITORY`: `read_currencies`/`read_plants`/`read_gl_accounts(iv_bukrs)`/`normalize_uom` — activo (2026-10-27) [D5-08]
 - [x] 5.4 `ZCL_MM_PAC_ITEM_VALIDATOR`: centro/conta obrigatórios + existência (bloqueante); 14 testes verdes (2026-10-27) [D5-08]
 - [x] 5.5 `ZCL_MM_PAC_ITEM_UPLOAD` + programa: `P_BUKRS` (default `HCB`); `resolve_uom`; injecção dos conjuntos; testes verdes (2026-10-27) [D5-08]
-- [ ] 5.6 Fixtures regenerados (centros `MPM/CHIM/SONG` e contas reais da `HCB` sempre preenchidos; happy-path real gitignored); fixtures de erro para 090–095
+- [x] 5.6 Fixtures regenerados: happy-path/volume reais gitignored; `item_erros.csv` versionado cobre 082–095 (2026-10-27) [D5-08]
 
 ## 4. Verificação
 - [x] 4.1 Todos os ABAP Unit verdes (61/61: 36 catálogo + 25 item; sem regressão) (2026-10-27)
