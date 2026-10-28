@@ -14,6 +14,10 @@ SELECTION-SCREEN BEGIN OF BLOCK b_mode WITH FRAME TITLE TEXT-b02.
               p_upd RADIOBUTTON GROUP mode.
 SELECTION-SCREEN END OF BLOCK b_mode.
 
+SELECTION-SCREEN BEGIN OF BLOCK b_org WITH FRAME TITLE TEXT-b04.
+  PARAMETERS p_bukrs TYPE bukrs OBLIGATORY DEFAULT 'HCB'.
+SELECTION-SCREEN END OF BLOCK b_org.
+
 SELECTION-SCREEN BEGIN OF BLOCK b_out WITH FRAME TITLE TEXT-b03.
   PARAMETERS p_ewonly AS CHECKBOX DEFAULT 'X'.
 SELECTION-SCREEN END OF BLOCK b_out.
@@ -69,7 +73,8 @@ CLASS lcl_app IMPLEMENTATION.
       io_auth       = lo_auth
       io_parser     = NEW zcl_mm_pac_item_parser( )
       io_log        = lo_log
-      iv_today      = sy-datum ).
+      iv_today      = sy-datum
+      iv_bukrs      = p_bukrs ).
 
     TRY.
         lo_upload->prepare( it_raw = lt_raw iv_write = p_upd ).

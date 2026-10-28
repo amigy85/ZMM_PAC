@@ -31,6 +31,26 @@ INTERFACE zif_mm_pac_item_repository
     IMPORTING it_item TYPE zif_mm_pac_types=>tt_item
     RAISING   zcx_mm_pac.
 
+  "! Dados-mestre para validação (D5-08). Cada conjunto lido uma vez para HASHED.
+  "! Moedas existentes (TCURC).
+  METHODS read_currencies
+    RETURNING VALUE(rt_waers) TYPE zif_mm_pac_types=>tt_waers.
+
+  "! Centros/fábricas existentes (T001W).
+  METHODS read_plants
+    RETURNING VALUE(rt_werks) TYPE zif_mm_pac_types=>tt_werks.
+
+  "! Contas-razão criadas na empresa (SKB1), semântica da ajuda de pesquisa C_SAKNR.
+  METHODS read_gl_accounts
+    IMPORTING iv_bukrs        TYPE bukrs
+    RETURNING VALUE(rt_saknr) TYPE zif_mm_pac_types=>tt_saknr.
+
+  "! Converte uma unidade externa na interna (CONVERSION_EXIT_CUNIT_INPUT). Devolve
+  "! vazio se não existir no sistema (T006) — o validador trata como erro 091.
+  METHODS normalize_uom
+    IMPORTING iv_external        TYPE clike
+    RETURNING VALUE(rv_internal) TYPE meins.
+
   "! Único ponto de COMMIT WORK (sem AND WAIT).
   METHODS commit.
 

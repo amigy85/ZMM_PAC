@@ -319,6 +319,42 @@
      <MSGNR>089</MSGNR>
      <TEXT>Gravar &amp;1 itens no PAC &amp;2?</TEXT>
     </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>090</MSGNR>
+     <TEXT>Moeda &amp;1 inexistente</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>091</MSGNR>
+     <TEXT>Unidade &amp;1 inexistente</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>092</MSGNR>
+     <TEXT>Centro obrigatorio</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>093</MSGNR>
+     <TEXT>Centro &amp;1 inexistente</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>094</MSGNR>
+     <TEXT>Conta-razao obrigatoria</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>095</MSGNR>
+     <TEXT>Conta &amp;1 inexistente na empresa &amp;2</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

@@ -10,7 +10,8 @@ public section.
       !IO_AUTH type ref to ZCL_MM_PAC_AUTH
       !IO_PARSER type ref to ZCL_MM_PAC_ITEM_PARSER
       !IO_LOG type ref to ZCL_MM_PAC_LOG
-      !IV_TODAY type DATS .
+      !IV_TODAY type DATS
+      !IV_BUKRS type BUKRS default 'HCB' .
     "! Autoriza, lê/parsa e (modo Gravação) bloqueia + lê catálogo + valida + prepara
     "! os itens. NÃO grava nem consome números. Levanta ZCX_MM_PAC (050/051).
   methods PREPARE
@@ -41,10 +42,17 @@ protected section.
       mo_parser     TYPE REF TO zcl_mm_pac_item_parser,
       mo_log        TYPE REF TO zcl_mm_pac_log,
       mv_today      TYPE dats,
+      mv_bukrs      TYPE bukrs,
       mv_write      TYPE abap_bool,
       mv_year       TYPE zmm_pac_year,
       mv_locked     TYPE abap_bool,
       mt_item       TYPE zif_mm_pac_types=>tt_item.
+
+    "! Resolve as unidades externas distintas das linhas na unidade interna (MEINS),
+    "! via o repositório; só entram no mapa as que existem no sistema (T006).
+    METHODS resolve_uom
+      IMPORTING it_rows       TYPE zif_mm_pac_types=>tt_item_row
+      RETURNING VALUE(rt_uom) TYPE zif_mm_pac_types=>tt_uom.
 ENDCLASS.
 
 
@@ -58,6 +66,7 @@ CLASS ZCL_MM_PAC_ITEM_UPLOAD IMPLEMENTATION.
     mo_parser     = io_parser.
     mo_log        = io_log.
     mv_today      = iv_today.
+    mv_bukrs      = iv_bukrs.
   ENDMETHOD.
 
 
@@ -112,6 +121,10 @@ CLASS ZCL_MM_PAC_ITEM_UPLOAD IMPLEMENTATION.
       EXPORTING it_rows            = lt_rows
                 it_existing_cat    = mo_repository->read_categories( mv_year )
                 it_existing_subcat = mo_repository->read_subcategories( mv_year )
+                it_currencies      = mo_repository->read_currencies( )
+                it_plants          = mo_repository->read_plants( )
+                it_gl_accounts     = mo_repository->read_gl_accounts( mv_bukrs )
+                it_uom             = resolve_uom( lt_rows )
       IMPORTING et_item            = DATA(lt_item) ).
 
     IF mo_log->has_errors( ) = abap_false.
@@ -123,6 +136,20 @@ CLASS ZCL_MM_PAC_ITEM_UPLOAD IMPLEMENTATION.
     ELSE.
       mo_log->add( iv_type = 'E' iv_no = '061' iv_v1 = |{ mo_log->num_errors( ) }| ).
     ENDIF.
+  ENDMETHOD.
+
+
+  METHOD resolve_uom.
+    DATA lt_seen TYPE SORTED TABLE OF string WITH UNIQUE KEY table_line.
+    LOOP AT it_rows ASSIGNING FIELD-SYMBOL(<r>) WHERE unidade IS NOT INITIAL.
+      INSERT <r>-unidade INTO TABLE lt_seen.
+    ENDLOOP.
+    LOOP AT lt_seen ASSIGNING FIELD-SYMBOL(<u>).
+      DATA(lv_internal) = mo_repository->normalize_uom( <u> ).
+      IF lv_internal IS NOT INITIAL.
+        INSERT VALUE #( external = <u> internal = lv_internal ) INTO TABLE rt_uom.
+      ENDIF.
+    ENDLOOP.
   ENDMETHOD.
 
 

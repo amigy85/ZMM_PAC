@@ -56,7 +56,17 @@ INTERFACE zif_mm_pac_types
     END OF ty_item_row,
     tt_item_row TYPE STANDARD TABLE OF ty_item_row WITH DEFAULT KEY,
     "! Itens de planeamento a inserir (estrutura real da tabela)
-    tt_item     TYPE STANDARD TABLE OF zmm_pac_item WITH DEFAULT KEY.
+    tt_item     TYPE STANDARD TABLE OF zmm_pac_item WITH DEFAULT KEY,
+    "! Conjuntos de dados-mestre para validação (D5-08); HASHED para lookup O(1)
+    tt_waers    TYPE HASHED TABLE OF waers   WITH UNIQUE KEY table_line,
+    tt_werks    TYPE HASHED TABLE OF werks_d WITH UNIQUE KEY table_line,
+    tt_saknr    TYPE HASHED TABLE OF saknr   WITH UNIQUE KEY table_line,
+    "! Mapa unidade externa (ficheiro) -> interna (MEINS), resolvido pelo orquestrador
+    BEGIN OF ty_uom,
+      external TYPE string,
+      internal TYPE meins,
+    END OF ty_uom,
+    tt_uom      TYPE HASHED TABLE OF ty_uom WITH UNIQUE KEY external.
 
   CONSTANTS:
     c_status_active   TYPE zmm_pac_status VALUE 'A',

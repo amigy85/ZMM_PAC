@@ -101,6 +101,37 @@ CLASS zcl_mm_pac_item_repository IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD zif_mm_pac_item_repository~read_currencies.
+    SELECT waers FROM tcurc INTO TABLE @rt_waers.
+  ENDMETHOD.
+
+
+  METHOD zif_mm_pac_item_repository~read_plants.
+    SELECT werks FROM t001w INTO TABLE @rt_werks.
+  ENDMETHOD.
+
+
+  METHOD zif_mm_pac_item_repository~read_gl_accounts.
+    SELECT saknr FROM skb1 WHERE bukrs = @iv_bukrs INTO TABLE @rt_saknr.
+  ENDMETHOD.
+
+
+  METHOD zif_mm_pac_item_repository~normalize_uom.
+    CALL FUNCTION 'CONVERSION_EXIT_CUNIT_INPUT'
+      EXPORTING
+        input          = iv_external
+        language       = sy-langu
+      IMPORTING
+        output         = rv_internal
+      EXCEPTIONS
+        unit_not_found = 1
+        OTHERS         = 2.
+    IF sy-subrc <> 0.
+      CLEAR rv_internal.
+    ENDIF.
+  ENDMETHOD.
+
+
   METHOD zif_mm_pac_item_repository~commit.
     COMMIT WORK.
   ENDMETHOD.

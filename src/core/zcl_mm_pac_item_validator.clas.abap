@@ -17,6 +17,10 @@ public section.
       !IT_ROWS type ZIF_MM_PAC_TYPES=>TT_ITEM_ROW
       !IT_EXISTING_CAT type ZIF_MM_PAC_TYPES=>TT_CATG
       !IT_EXISTING_SUBCAT type ZIF_MM_PAC_TYPES=>TT_SUBCATG
+      !IT_CURRENCIES type ZIF_MM_PAC_TYPES=>TT_WAERS optional
+      !IT_PLANTS type ZIF_MM_PAC_TYPES=>TT_WERKS optional
+      !IT_GL_ACCOUNTS type ZIF_MM_PAC_TYPES=>TT_SAKNR optional
+      !IT_UOM type ZIF_MM_PAC_TYPES=>TT_UOM optional
     exporting
       !ET_ITEM type ZIF_MM_PAC_TYPES=>TT_ITEM
     returning
@@ -46,6 +50,10 @@ protected section.
       IMPORTING is_row             TYPE zif_mm_pac_types=>ty_item_row
                 it_existing_cat    TYPE zif_mm_pac_types=>tt_catg
                 it_existing_subcat TYPE zif_mm_pac_types=>tt_subcatg
+                it_currencies      TYPE zif_mm_pac_types=>tt_waers
+                it_plants          TYPE zif_mm_pac_types=>tt_werks
+                it_gl_accounts     TYPE zif_mm_pac_types=>tt_saknr
+                it_uom             TYPE zif_mm_pac_types=>tt_uom
       CHANGING  ct_item            TYPE zif_mm_pac_types=>tt_item.
 ENDCLASS.
 
@@ -72,12 +80,40 @@ CLASS ZCL_MM_PAC_ITEM_VALIDATOR IMPLEMENTATION.
       RETURN.
     ENDIF.
 
+    " dados-mestre (D5-08), bloqueante
+    DATA(lv_ok) = abap_true.
+
+    IF NOT line_exists( it_currencies[ table_line = CONV waers( is_row-moeda ) ] ).
+      mo_log->add( iv_type = 'E' iv_no = '090' iv_row = is_row-row iv_v1 = is_row-moeda ).
+      lv_ok = abap_false.
+    ENDIF.
+
+    READ TABLE it_uom INTO DATA(ls_uom) WITH KEY external = is_row-unidade.
+    IF sy-subrc <> 0.
+      mo_log->add( iv_type = 'E' iv_no = '091' iv_row = is_row-row iv_v1 = is_row-unidade ).
+      lv_ok = abap_false.
+    ENDIF.
+
+    IF NOT line_exists( it_plants[ table_line = CONV werks_d( is_row-centro ) ] ).
+      mo_log->add( iv_type = 'E' iv_no = '093' iv_row = is_row-row iv_v1 = is_row-centro ).
+      lv_ok = abap_false.
+    ENDIF.
+
+    IF NOT line_exists( it_gl_accounts[ table_line = CONV saknr( is_row-conta ) ] ).
+      mo_log->add( iv_type = 'E' iv_no = '095' iv_row = is_row-row iv_v1 = is_row-conta ).
+      lv_ok = abap_false.
+    ENDIF.
+
+    IF lv_ok = abap_false.
+      RETURN.
+    ENDIF.
+
     APPEND VALUE #( pac_year    = mv_year_n
                     pac_cat     = ls_sub-pac_cat
                     pac_subcat  = is_row-pac_subcat
                     description = is_row-description
                     quantidade  = is_row-quantidade
-                    meins       = is_row-unidade
+                    meins       = ls_uom-internal
                     valor       = is_row-valor
                     moeda       = is_row-moeda
                     centro      = is_row-centro
@@ -143,6 +179,10 @@ CLASS ZCL_MM_PAC_ITEM_VALIDATOR IMPLEMENTATION.
       collect( EXPORTING is_row             = <r>
                          it_existing_cat    = it_existing_cat
                          it_existing_subcat = it_existing_subcat
+                         it_currencies      = it_currencies
+                         it_plants          = it_plants
+                         it_gl_accounts     = it_gl_accounts
+                         it_uom             = it_uom
                CHANGING  ct_item            = et_item ).
     ENDLOOP.
 
@@ -175,6 +215,14 @@ CLASS ZCL_MM_PAC_ITEM_VALIDATOR IMPLEMENTATION.
     ENDIF.
     IF is_row-moeda IS INITIAL OR strlen( is_row-moeda ) > c_moeda_len.
       mo_log->add( iv_type = 'E' iv_no = '084' iv_row = is_row-row iv_v1 = is_row-moeda ).
+      rv_ok = abap_false.
+    ENDIF.
+    IF is_row-centro IS INITIAL.
+      mo_log->add( iv_type = 'E' iv_no = '092' iv_row = is_row-row ).
+      rv_ok = abap_false.
+    ENDIF.
+    IF is_row-conta IS INITIAL.
+      mo_log->add( iv_type = 'E' iv_no = '094' iv_row = is_row-row ).
       rv_ok = abap_false.
     ENDIF.
   ENDMETHOD.

@@ -12,6 +12,9 @@ CLASS ltd_item_repo DEFINITION.
       mv_raise_on_insert TYPE abap_bool,
       mt_cat             TYPE zif_mm_pac_types=>tt_catg,
       mt_sub             TYPE zif_mm_pac_types=>tt_subcatg,
+      mt_cur             TYPE zif_mm_pac_types=>tt_waers,
+      mt_plt             TYPE zif_mm_pac_types=>tt_werks,
+      mt_gl              TYPE zif_mm_pac_types=>tt_saknr,
       mt_inserted        TYPE zif_mm_pac_types=>tt_item.
 ENDCLASS.
 
@@ -21,6 +24,18 @@ CLASS ltd_item_repo IMPLEMENTATION.
   ENDMETHOD.
   METHOD zif_mm_pac_item_repository~read_subcategories.
     rt_subcat = mt_sub.
+  ENDMETHOD.
+  METHOD zif_mm_pac_item_repository~read_currencies.
+    rt_waers = mt_cur.
+  ENDMETHOD.
+  METHOD zif_mm_pac_item_repository~read_plants.
+    rt_werks = mt_plt.
+  ENDMETHOD.
+  METHOD zif_mm_pac_item_repository~read_gl_accounts.
+    rt_saknr = mt_gl.
+  ENDMETHOD.
+  METHOD zif_mm_pac_item_repository~normalize_uom.
+    rv_internal = iv_external.   " o duplo aceita a unidade tal como vem
   ENDMETHOD.
   METHOD zif_mm_pac_item_repository~lock_year.
     mv_lock = mv_lock + 1.
@@ -104,12 +119,15 @@ CLASS ltc_item_upload IMPLEMENTATION.
   METHOD with_catalog.
     mo_repo->mt_cat = VALUE #( ( pac_year = '2026' pac_cat = 'PAC-E001' pac_cat_desc = 'Cat' status = 'A' ) ).
     mo_repo->mt_sub = VALUE #( ( pac_year = '2026' pac_subcat = 'PAC-E001.1' pac_cat = 'PAC-E001' pac_subcat_desc = 'Sub' ) ).
+    mo_repo->mt_cur = VALUE #( ( `MZN` ) ).
+    mo_repo->mt_plt = VALUE #( ( `MPM` ) ).
+    mo_repo->mt_gl  = VALUE #( ( `620000` ) ).
   ENDMETHOD.
 
   METHOD raw_valid.
     rt = VALUE #(
       ( `ANO;COD_SUBCATEGORIA;DESCRICAO;QUANTIDADE;UNIDADE;VALOR;MOEDA;CENTRO;CONTA_RAZAO` )
-      ( `2026;PAC-E001.1;Item;10;UN;100;MZN;;` ) ).
+      ( `2026;PAC-E001.1;Item;10;UN;100;MZN;MPM;620000` ) ).
   ENDMETHOD.
 
   METHOD has.
