@@ -94,5 +94,6 @@ Mudança **5 de 6**. Depende de 1. Ver quadro de faseamento no `proposal.md` da 
 
 ## Ordem de transporte
 
-- **Nº da ordem de transporte**: _a registar no DEV antes do primeiro pull da mudança 5_.
+- **Nº da ordem de transporte**: **`CBDK918074`** (a mesma da mudança 1 — as duas vão juntas
+  DEV→QAS, respeitando "não transportar antes da 1"). Registada em 2026-10-29.
   Commits seguem `feat(pac): … [refs: add-pac-planning-items <n.º>]`.
