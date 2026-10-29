@@ -21,9 +21,10 @@ Esta é a **mudança 4 de 6** e **depende das mudanças 1 (catálogo) e 5 (itens
   - a categoria-mãe tem de estar **activa** no catálogo do ano;
   - o item tem de estar no estado **`A` (Activo)** — rascunho (`D`), bloqueado (`B`),
     cancelado (`C`) e fechado (`F`) são recusados.
-- **Obrigatoriedade condicional** da atribuição (D4-05): obrigatória para itens não eliminados
-  cuja **categoria de imputação** seja centro de custo (`KNTTP = 'K'`); opcional nos restantes.
-  *(Condição a confirmar na revisão.)*
+- **Obrigatoriedade condicional** da atribuição (D4-05): obrigatória para itens **não
+  eliminados** quando o **método de procurement do cabeçalho** `ZEBAN_HEADER-ZMANB` ∈
+  `{CP, CL, AD, DF}` (todos excepto `NS` Normal/Shopping); opcional nos restantes. Quando
+  presente, é sempre validada pelos REQ-30..REQ-32.
 - **Alinhamento mínimo às regras** (D4-03): substituir os `MESSAGE` com **texto literal** da
   subtela 0111 (`ZXM02I01`/`ZXM02F01`) por mensagens da classe `ZMM_PAC`. O popup de selecção
   de itens (`REUSE_ALV_POPUP_TO_SELECT`) **mantém-se** (produtivo e estável).
@@ -66,8 +67,8 @@ refactor do popup para `CL_SALV`; o exit legado `EXIT_SAPLMEREQ_005` (`AFNAM`/`B
 | D4-02 | Item utilizável só com `STATUS = 'A'` (recusa D/B/C/F) | **decidida (2026-10-29)** |
 | D4-03 | Refactor **só das mensagens** da subtela 0111 (→ classe `ZMM_PAC`); manter o popup `REUSE_ALV` | **decidida (2026-10-29)** |
 | D4-04 | Âmbito **só atribuição + validação**; consumo vs plano fica na mudança 6 | **decidida (2026-10-29)** |
-| D4-05 | Atribuição **obrigatória por condição** — proposta: `KNTTP = 'K'` e item não eliminado | pendente (confirmar a condição) |
-| D4-06 | Autorização para atribuir/validar: reutilizar objecto `ZMM_PAC` (`ACTVT 03`) ou nova | pendente |
+| D4-05 | Atribuição **obrigatória** para itens não eliminados quando `ZEBAN_HEADER-ZMANB` ∈ `{CP, CL, AD, DF}` (excepto `NS`); opcional nos restantes | **decidida (2026-10-29)** |
+| D4-06 | **Sem autorização adicional**: a validação corre sempre; não se exige `ACTVT` extra para atribuir | **decidida (2026-10-29)** |
 
 ## Ordem de transporte
 

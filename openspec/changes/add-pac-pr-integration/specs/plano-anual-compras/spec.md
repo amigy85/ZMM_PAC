@@ -45,17 +45,17 @@ atribuíveis e a gravação DEVE (MUST) ser impedida.
 
 ### Requirement: REQ-33 — Obrigatoriedade condicional da atribuição
 O sistema DEVE (MUST) exigir atribuição PAC (ano/categoria/subcategoria/item) nos itens de RC
-**não eliminados** que cumpram a condição definida (proposta: categoria de imputação
-`KNTTP = 'K'`). Nos restantes itens a atribuição é opcional; quando presente, é sempre
-validada pelos REQ-30..REQ-32.
+**não eliminados** quando o método de procurement do cabeçalho `ZEBAN_HEADER-ZMANB` for um de
+`CP`, `CL`, `AD` ou `DF` (todos excepto `NS` Normal/Shopping). Nos restantes casos a atribuição
+é opcional; quando presente, é sempre validada pelos REQ-30..REQ-32.
 
-#### Scenario: item obrigatório sem atribuição
-- GIVEN um item de RC que cumpre a condição de obrigatoriedade e não tem item PAC
+#### Scenario: método formal sem atribuição
+- GIVEN uma RC com `ZMANB` = `CP` (ou `CL`/`AD`/`DF`) e um item não eliminado sem item PAC
 - WHEN a RC é gravada
-- THEN é registado erro de atribuição em falta e a gravação é impedida
+- THEN é registado erro de atribuição PAC em falta e a gravação é impedida
 
-#### Scenario: item opcional sem atribuição
-- GIVEN um item de RC fora da condição e sem atribuição PAC
+#### Scenario: método NS sem atribuição
+- GIVEN uma RC com `ZMANB` = `NS` e um item sem atribuição PAC
 - WHEN a RC é gravada
 - THEN não é produzido erro de atribuição PAC
 

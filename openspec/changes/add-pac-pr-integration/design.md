@@ -32,12 +32,16 @@ subtela 0111 (ZXM02F01 LCL_PAC)  → mensagens literais substituídas por ZMM_PA
 ```
 
 - **`ZCL_MM_PAC_REQ_VALIDATOR`** (novo, `ZMM_PAC_CORE`): recebe os dados PAC de um item de RC
-  (ano/cat/subcat/item, knttp, loekz) e devolve o veredicto + nº de mensagem `ZMM_PAC`.
-  Lê o catálogo/itens via `SELECT SINGLE` com **buffer `HASHED`** por chamada de `CHECK`
-  (o `CHECK` pode iterar muitos itens; evita `SELECT` repetido — padrão já usado por `LCL_PAC`).
-  Testável com ABAP Unit (dados-mestre injectados por duplo, à semelhança da mudança 5).
-- **`CHECK`** (gancho fino): percorre `im_header->get_items( )`; por item não eliminado chama
-  o validador e, havendo erro, `mmpur_message 'E' 'ZMM_PAC' '<nnn>' …`. Não grava nada.
+  (ano/cat/subcat/item, `loekz`) e um sinal **`iv_mandatory`** (obrigatoriedade já resolvida
+  pelo cabeçalho) e devolve o veredicto + nº de mensagem `ZMM_PAC`. Lê o catálogo/itens via
+  `SELECT SINGLE` com **buffer `HASHED`** por chamada de `CHECK` (o `CHECK` pode iterar muitos
+  itens; evita `SELECT` repetido — padrão já usado por `LCL_PAC`). Testável com ABAP Unit
+  (dados-mestre injectados por duplo, à semelhança da mudança 5).
+- **`CHECK`** (gancho fino): lê **uma vez** o cabeçalho (`im_header->get_data( )` →
+  `MEREQ_HEADER` com o append `ZMANB`) e calcula `lv_mandatory = xsdbool( zmanb ∈ {CP,CL,AD,DF} )`;
+  percorre `im_header->get_items( )`; por item **não eliminado** chama o validador com
+  `iv_mandatory = lv_mandatory` e, havendo erro, `mmpur_message 'E' 'ZMM_PAC' '<nnn>' …`.
+  Não grava nada.
 - **Subtela 0111** (`LCL_PAC~selecionar_item`): trocar os 2 `MESSAGE` com texto literal
   ("Indique primeiro a subcategoria…", "Sem itens PAC para…") por mensagens `ZMM_PAC`. O
   popup `REUSE_ALV_POPUP_TO_SELECT` mantém-se (D4-03).
@@ -56,8 +60,9 @@ obrigatória em falta. A subtela reutiliza/!acrescenta: `105` indicar primeiro a
 
 ## Autorização
 
-D4-06 em aberto: validar sempre (o `CHECK` corre para todos) e, se necessário, exigir
-`ACTVT 03` do objecto `ZMM_PAC` para *atribuir* na subtela. Decidir antes do `apply`.
+D4-06 decidida: **sem autorização adicional**. A validação do `CHECK` corre sempre, para
+todos os utilizadores; não se exige nenhum `ACTVT` extra para atribuir/validar o PAC na RC
+(a autorização da própria RC é a do standard).
 
 ## Entrega (abapGit vs transporte) — importante
 

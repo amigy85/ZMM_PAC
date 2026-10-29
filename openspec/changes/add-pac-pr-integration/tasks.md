@@ -5,7 +5,7 @@ confirma). Referência de commit: `[refs: add-pac-pr-integration <n.º>]`. **Dep
 mudanças 1 e 5** (catálogo e itens activos). Não transportar antes delas.
 
 ## 0. Preparação
-- [ ] 0.1 Fechar D4-05 (condição de obrigatoriedade; proposta `KNTTP='K'` + item não eliminado) e D4-06 (autorização) em `proposal.md`; proposta revista e aprovada
+- [ ] 0.1 Decisões D4-00..D4-06 registadas (D4-05 = `ZMANB ∈ {CP,CL,AD,DF}` + item não eliminado; D4-06 = sem autorização adicional); proposta revista e aprovada
 - [ ] 0.2 Nº da ordem de transporte registado em `proposal.md`
 
 ## 1. Mensagens (classe `ZMM_PAC`)
@@ -18,7 +18,7 @@ mudanças 1 e 5** (catálogo e itens activos). Não transportar antes delas.
 - [ ] 2.2 ABAP Unit do validador (item inexistente, subcat/ano trocados, categoria inactiva, estado ≠ A, obrigatório sem atribuição, opcional sem atribuição, caso válido) — verdes [REQ-30..REQ-33]
 
 ## 3. Ganchos (pacote `ZMM`, entrega por transporte; só chamam o validador)
-- [ ] 3.1 Bloco PAC no `IF_EX_ME_PROCESS_REQ_CUST~CHECK` (`ZCL_IM_ME_PROCESS_REQ_CUST`): por item não eliminado chama `ZCL_MM_PAC_REQ_VALIDATOR` e emite `mmpur_message 'E' 'ZMM_PAC' …`; não grava — activo [REQ-30, REQ-35]
+- [ ] 3.1 Bloco PAC no `IF_EX_ME_PROCESS_REQ_CUST~CHECK` (`ZCL_IM_ME_PROCESS_REQ_CUST`): lê o cabeçalho (`ZMANB`), calcula a obrigatoriedade (`∈ {CP,CL,AD,DF}`), por item não eliminado chama `ZCL_MM_PAC_REQ_VALIDATOR` e emite `mmpur_message 'E' 'ZMM_PAC' …`; não grava — activo [REQ-30, REQ-33, REQ-35]
 - [ ] 3.2 Subtela 0111 (`ZXM02F01` `LCL_PAC~selecionar_item`): substituir os `MESSAGE` com texto literal por mensagens `ZMM_PAC` (`105`/`106`); popup `REUSE_ALV` mantido [REQ-34, REQ-03/D4-03]
 
 ## 4. Verificação
