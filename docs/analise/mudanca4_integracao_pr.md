@@ -34,13 +34,28 @@ Subtela de cliente **0111** em `SAPLXM02`; código de cliente no include `ZXM02Z
   - `EXIT_SAPLMEREQ_001` / `ZXM02U01` — **RC → subtela**: lê `MEREQ_ITEM`, copia `PAC_*` para os campos de ecrã; se houver `PAC_ITEM`, `SELECT SINGLE` do `ZMM_PAC_ITEM`.
   - `EXIT_SAPLMEREQ_003` / `ZXM02U03` — **subtela → RC**: deteta mudança de subcategoria/ano (limpa o item), escreve `PAC_*` de volta via `im_req_item->set_data( )`, marca `ex_changed`.
   - `EXIT_SAPLMEREQ_002` / `_004` — vazios.
-  - `EXIT_SAPLMEREQ_005` / `ZXM02U05` — **legado não-PAC**: validação de `AFNAM` (vs `ZREQ`) e `BEDNR` (vs `ZACOMP`), mensagens `e001`/`e019` da classe `ZMM` (autor Suely Pereira, 2013). **Não mexer sem necessidade.**
+  - `EXIT_SAPLMEREQ_005` / `ZXM02U05` — **legado não-PAC**: validação de `AFNAM` (vs `ZREQ`) e `BEDNR` (vs `ZACOMP`), mensagens `e001`/`e019` da classe `ZMM` (autor Suely Pereira, 2013). **Não mexer.**
+
+### BAdI `ME_PROCESS_REQ_CUST` — `ZCL_IM_ME_PROCESS_REQ_CUST` (mecanismo moderno, já activo no `ZMM`)
+
+Implementa `IF_EX_ME_PROCESS_REQ_CUST`. Métodos relevantes já implementados:
+- **`CHECK`** — validações de item que **bloqueiam a gravação** (knttp/pstyp/werks, centro de
+  custo `ZRQCCUSTO`, requisitante `ZREQ`, grupo de mercadorias, RC-vs-PO em ME22N). Lança erros
+  via a macro `mmpur_message` (`INCLUDE mm_messages_mac`) contra a classe `ZMM`. Percorre
+  `im_header->get_items( )` → `ref->get_data( )` (`MEREQ_ITEM` com os campos `PAC_*`).
+- `PROCESS_ITEM` — defaults (`werks='MPM'`, `lgort='GM'`), ordem de investimento (`knttp='A'`).
+- `POST` — email HTML em ME51N; `OPEN` — `ZPR_OPEN` (tab de cabeçalho); restantes vazios.
+
+**Decisão de arquitectura (confirmada com o utilizador):** a validação PAC na gravação da RC
+fica no método **`CHECK` desta BAdI**, não no `EXIT_SAPLMEREQ_005`. A subtela 0111 (UI +
+transporte `001`/`003`) mantém-se no `XM02`. Mensagens pela classe `ZMM_PAC` via `mmpur_message`.
 
 ## 3. Lacunas face às regras da solução (a resolver na mudança 4)
 
-1. **Sem validação na gravação da RC.** O exit de save (`005`) não valida o PAC. Hoje é
-   possível gravar uma RC com `PAC_ITEM` inexistente, de ano errado, subcategoria trocada ou
-   de categoria inactiva. A mudança 4 deve validar no `EXIT_SAPLMEREQ_005` (ou `003`):
+1. **Sem validação na gravação da RC.** Nenhum dos exits/BAdI valida hoje o PAC. É possível
+   gravar uma RC com `PAC_ITEM` inexistente, de ano errado, subcategoria trocada ou de
+   categoria inactiva. A mudança 4 deve validar no **método `CHECK` da BAdI
+   `ME_PROCESS_REQ_CUST` (`ZCL_IM_ME_PROCESS_REQ_CUST`)** — ver §2:
    - o item existe em `ZMM_PAC_ITEM` para `PAC_YEAR + PAC_SUBCAT + PAC_ITEM`;
    - a subcategoria/categoria batem certo com o item e a categoria está activa;
    - **estado do item** utilizável (ver ponto 3) — bloquear itens em `D` (Rascunho)/`B`/`C`/`F`.
@@ -59,7 +74,8 @@ Subtela de cliente **0111** em `SAPLXM02`; código de cliente no include `ZXM02Z
 
 | ID | Questão |
 |---|---|
-| D4-01 | Validação na gravação da RC: bloquear (erro) vs avisar. Recomendado **bloquear**. |
+| D4-00 | Mecanismo: validação no método `CHECK` da BAdI `ME_PROCESS_REQ_CUST` (`ZCL_IM_ME_PROCESS_REQ_CUST`), não no `EXIT_SAPLMEREQ_005`. **Decidida (2026-10-29)**. |
+| D4-01 | Validação na gravação da RC: **bloquear (erro)** via `mmpur_message`. **Decidida (2026-10-29)**. |
 | D4-02 | Estado mínimo do item para atribuição (só `A`? `A`+`B`?). |
 | D4-03 | Refactor do protótipo às regras (CL_SALV + classe de mensagens) vs manter. |
 | D4-04 | Âmbito: só atribuição+validação (mud. 4) e deixar "consumo vs plano" para a mud. 6. |
