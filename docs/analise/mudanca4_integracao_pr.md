@@ -76,11 +76,11 @@ transporte `001`/`003`) mantém-se no `XM02`. Mensagens pela classe `ZMM_PAC` vi
 |---|---|
 | D4-00 | Mecanismo: validação no método `CHECK` da BAdI `ME_PROCESS_REQ_CUST` (`ZCL_IM_ME_PROCESS_REQ_CUST`), não no `EXIT_SAPLMEREQ_005`. **Decidida (2026-10-29)**. |
 | D4-01 | Validação na gravação da RC: **bloquear (erro)** via `mmpur_message`. **Decidida (2026-10-29)**. |
-| D4-02 | Estado mínimo do item para atribuição (só `A`? `A`+`B`?). |
-| D4-03 | Refactor do protótipo às regras (CL_SALV + classe de mensagens) vs manter. |
-| D4-04 | Âmbito: só atribuição+validação (mud. 4) e deixar "consumo vs plano" para a mud. 6. |
-| D4-05 | Atribuição obrigatória ou opcional por tipo de RC/categoria. |
-| D4-06 | Autorização: reutilizar objecto `ZMM_PAC` (`ACTVT 03` para atribuir?) ou nova. |
+| D4-02 | Estado mínimo do item: **só `A` (Activo)**. Recusa D/B/C/F. **Decidida (2026-10-29)**. |
+| D4-03 | Protótipo: **refactor só das mensagens** (MESSAGE literais → classe `ZMM_PAC`); manter o popup `REUSE_ALV`. **Decidida (2026-10-29)**. |
+| D4-04 | Âmbito: **só atribuição + validação**; consumo vs plano fica na mud. 6. **Decidida (2026-10-29)**. |
+| D4-05 | Atribuição **obrigatória por condição** (ex. por `knttp`/categoria de imputação). **Condição a definir** na proposta. |
+| D4-06 | Autorização: reutilizar objecto `ZMM_PAC` (`ACTVT 03` para atribuir?) ou nova. Em aberto. |
 
 ## 5. Âmbito proposto (rascunho)
 
