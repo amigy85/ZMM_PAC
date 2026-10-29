@@ -37,7 +37,7 @@ Depende da mudança 1 (catálogo activo). Não transportar antes da 1.
 - [x] 5.6 Fixtures regenerados: happy-path/volume reais gitignored; `item_erros.csv` versionado cobre 082–095 (2026-10-27) [D5-08]
 
 ## 4. Verificação
-- [x] 4.1 Todos os ABAP Unit verdes (61/61: 36 catálogo + 25 item; sem regressão) (2026-10-27)
+- [x] 4.1 Todos os ABAP Unit verdes (61/61 com a D5-08: parser 7 + validador 14 + changeset 4 + upload 6 + catálogo; sem regressão) (2026-10-29)
 - [x] 4.2 ATC sem findings P1/P2 (só P3: instruções críticas LUW/bloqueio/nº-range + SLIN, esperados) (2026-10-27)
 - [x] 4.3 Testes manuais em DEV: B1 simulação (060), B2 gravação (086, SE16N: PAC_ITEM 00001-15, SAKNR c/ zeros, VALOR CURR, STATUS D), B3 erros (082-095 + 061, 0 gravados), B4 numeração contínua (00016-30) (2026-10-29)
 - [x] 4.4 Volume: 10 000 itens em 12 s (< 60 s), PAC_ITEM contínuo (2026-10-29)
