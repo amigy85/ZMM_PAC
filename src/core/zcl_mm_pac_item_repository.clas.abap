@@ -112,7 +112,12 @@ CLASS zcl_mm_pac_item_repository IMPLEMENTATION.
 
 
   METHOD zif_mm_pac_item_repository~read_gl_accounts.
-    SELECT saknr FROM skb1 WHERE bukrs = @iv_bukrs INTO TABLE @rt_saknr.
+    " SKB1 tem buffering de registo individual; com chave parcial (só BUKRS) o
+    " buffer não ajuda — ATC exige BYPASSING BUFFER (acesso directo à BD).
+    SELECT saknr FROM skb1
+      WHERE bukrs = @iv_bukrs
+      INTO TABLE @rt_saknr
+      BYPASSING BUFFER.
   ENDMETHOD.
 
 
