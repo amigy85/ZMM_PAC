@@ -42,3 +42,7 @@ Depende da mudança 1 (catálogo activo). Não transportar antes da 1.
 - [x] 4.3 Testes manuais em DEV: B1 simulação (060), B2 gravação (086, SE16N: PAC_ITEM 00001-15, SAKNR c/ zeros, VALOR CURR, STATUS D), B3 erros (082-095 + 061, 0 gravados), B4 numeração contínua (00016-30) (2026-10-29)
 - [x] 4.4 Volume: 10 000 itens em 12 s (< 60 s), PAC_ITEM contínuo (2026-10-29)
 - [x] 4.5 `abapgit_meta.py check` sem erros; disco alinhado com SAP (menu c/ P02 re-serializado) (2026-10-27)
+
+## 6. Transporte / QAS
+- [x] 6.1 Ordem `CBDK918074` (mudanças 1+5) importada em QAS e testada — todas as funcionalidades OK (2026-10-30)
+- [ ] 6.2 Promoção QAS → PRD (após aceitação) e, depois, `openspec archive`
