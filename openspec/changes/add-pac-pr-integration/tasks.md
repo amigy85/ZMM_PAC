@@ -14,8 +14,8 @@ mudanças 1 e 5** (catálogo e itens activos). Não transportar antes delas.
       `103` estado não utilizável, `104` atribuição obrigatória em falta, `105`/`106` subtela)
 
 ## 2. Núcleo (pacote `ZMM_PAC_CORE`, abapGit)
-- [ ] 2.1 `ZCL_MM_PAC_REQ_VALIDATOR`: valida existência/coerência/estado/obrigatoriedade de um item de RC; leitura com buffer `HASHED`; devolve veredicto + nº de mensagem `ZMM_PAC` — activo [REQ-30..REQ-33]
-- [ ] 2.2 ABAP Unit do validador (item inexistente, subcat/ano trocados, categoria inactiva, estado ≠ A, obrigatório sem atribuição, opcional sem atribuição, caso válido) — verdes [REQ-30..REQ-33]
+- [x] 2.1 `ZIF/ZCL_MM_PAC_REQ_READER` (SELECT SINGLE + buffer `HASHED`) + `ZCL_MM_PAC_REQ_VALIDATOR` (veredicto `100`–`104`) — activo (2026-10-30) [REQ-30..REQ-33]
+- [x] 2.2 ABAP Unit do validador — 7 testes verdes (`104` obrigatório, opcional-OK, `100`, `101`, `102`, `103`, caso válido) (2026-10-30) [REQ-30..REQ-33]
 
 ## 3. Ganchos (pacote `ZMM`, entrega por transporte; só chamam o validador)
 - [ ] 3.1 Bloco PAC no `IF_EX_ME_PROCESS_REQ_CUST~CHECK` (`ZCL_IM_ME_PROCESS_REQ_CUST`): lê o cabeçalho (`ZMANB`), calcula a obrigatoriedade (`∈ {CP,CL,AD,DF}`), por item não eliminado chama `ZCL_MM_PAC_REQ_VALIDATOR` e emite `mmpur_message 'E' 'ZMM_PAC' …`; não grava — activo [REQ-30, REQ-33, REQ-35]
