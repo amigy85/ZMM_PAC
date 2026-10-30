@@ -355,6 +355,48 @@
      <MSGNR>095</MSGNR>
      <TEXT>Conta &amp;1 inexistente na empresa &amp;2</TEXT>
     </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>100</MSGNR>
+     <TEXT>Item PAC &amp;1 inexistente (ano &amp;2, subcategoria &amp;3)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>101</MSGNR>
+     <TEXT>Item PAC &amp;1 nao pertence a subcategoria &amp;2 do ano &amp;3</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>102</MSGNR>
+     <TEXT>Categoria PAC &amp;1 inactiva no ano &amp;2</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>103</MSGNR>
+     <TEXT>Item PAC &amp;1 em estado &amp;2; so itens activos sao permitidos</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>104</MSGNR>
+     <TEXT>Atribuicao PAC obrigatoria neste item da requisicao</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>105</MSGNR>
+     <TEXT>Indique primeiro a subcategoria PAC</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>P</SPRSL>
+     <ARBGB>ZMM_PAC</ARBGB>
+     <MSGNR>106</MSGNR>
+     <TEXT>Sem itens PAC para subcategoria &amp;1 (ano &amp;2)</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>
