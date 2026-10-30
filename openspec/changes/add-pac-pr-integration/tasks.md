@@ -9,7 +9,7 @@ mudanças 1 e 5** (catálogo e itens activos). Não transportar antes delas.
 - [ ] 0.2 Nº da ordem de transporte registado em `proposal.md`
 
 ## 1. Mensagens (classe `ZMM_PAC`)
-- [ ] 1.1 Mensagens `100`–`106` criadas e serializadas (SE91) [REQ-30..REQ-34]
+- [x] 1.1 Mensagens `100`–`106` criadas e serializadas (SE91); search helps `ZMM_PAC_CATG`/`SUBCATG` versionadas (2026-10-30) [REQ-30..REQ-34]
       (`100` item inexistente, `101` incoerência ano/cat/subcat, `102` categoria inactiva,
       `103` estado não utilizável, `104` atribuição obrigatória em falta, `105`/`106` subtela)
 
